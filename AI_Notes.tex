@@ -303,8 +303,9 @@ $$x_2\rightarrow x_1$$
 \end{figure}
 
 \subsubsection{Multiple inputs example}
-In this case we can see that we have three possible inputs, we can discriminate the inputs in excitatory input and
-inhibitory input. The first tries to contributes to the final computation of the neuron in such a way that the results
+In this case we can see that we have three possible inputs, we can discriminate the
+inputs in excitatory input and inhibitory input. The first tries to contributes
+to the final computation of the neuron in such a way that the results
 will be greater than the threshold, the other neuron does the opposite.
 
 \begin{figure}[H]
@@ -315,9 +316,289 @@ will be greater than the threshold, the other neuron does the opposite.
 \end{figure}
 
 \subsection{Geometric interpretation}
-\subsection{Linear separability}
-\subsection{Convex hull}
+The geometric interpretation is significantly helpful to derive a \textit{method} to
+configure the threshold and the weights starting from the data. We will consider a
+single and simple TLU, we will try to understand how we can interpret the
+behavior of the TLU in a geometrical way.
+
+You know that is possible to represent a straight line on a plane in any of
+the following forms :
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=10cm]{images/geom_interp.png}
+    \caption{Different form for representing a straight line}
+    \label{fig:line_repr}
+\end{figure}
+
+If i \textbf{implicit form}, where you have a weighted combination of the two variables plus a
+possible threshold, a vector representation in point-direction form and normal form.
+Any of this is fine to represent a straight line in the plane, we are considering just
+two variables $x_1$ and $x_2$, and use one of the many representations.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=9cm]{images/geom_interp_impl.png}
+    \caption{Implicit form representation legend}
+    \label{fig:line_impl_form_legend}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{images/geom1.png}
+    \label{fig:geom_1}
+\end{figure}
+
+In the case of the \textit{explicit/implicit form} the $\vec{b}$ is the \textbf{inclination}
+(or \textit{gradient}) of the straight line in respect of the horizontal axis,
+and $c$ is the intercept of the vertical axis.
+
+If we look to the normal $\vec{n}$ we want to pick the vector which is \textit{orthogonal}
+to the straight line. The straight line is represented by all the points which starts from the
+origin and has a quantity in the direction of the normal. The vector $\vec{p}$ identifies a
+point in the example, we consider that point belonging to our straight line,
+the distance of the straight line respect to the origin $O$ is given by $|\vec{q}|$ which is
+the projection of $\vec{p}$ on straight line $g$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{images/geom2.png}
+    \label{fig:geom_2}
+\end{figure}
+
+Considering this other graphical representation it is possible to know on which side
+a points lands. If we take the vector representing $\vec{y}$ a point,
+and i compute the projection in the direction of the normal, the projection
+of this is the vector $\vec{z}$.
+
+To understand on which side the points are, i just need to see if the vector $\vec{z}$ (which is the
+projection of our point) is shorter or longer than the point i observe on the straight line, which
+is pointed by $\vec{q}$. This means that all points (expressed by a vector) which have a \textbf{module}
+higher then the projected point onto the straight line ($\vec{q}$), are part of the plane above the
+straight line (they will \textit{satisfies} the solution), viceversa, they will be below the plane if the
+module will be shorter then $\vec{q}$ (they won't satisfy the condition).
+
+Basically the straight line which defines the behavior of my TLU, splits the plane in two parts (since i'm
+considering only $x_1$ and $x_2$). All the points which distance is greater then
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.8]{images/tlu_examples_interp.png}
+    \caption{Solution of the \textit{conjunction} and \textit{bi-implication}}
+    \label{fig:example_interp}
+\end{figure}
+
+Now Let’s go back to the two examples that we have seen before,
+starting with the conjunction, in this means that I have three points in which the output
+has to be $0$, and one point where the result is $1$. This means that if I represent the straight
+line with $x_1=3$, $x_2=3$ and the intercept equal to $4$ i will draw a line which is actually
+separating in a clear way the element in which the output is equal to $1$ from the values
+where the output is equal to $0$.
+\newline
+\newline
+For the case of three variables, this is more complex, we need to generalize this idea moving from
+a plane to a three-dimensional space. Think about the three axis and look at the combination of the
+dots, you need to set a plane, so you have to separate one set of inputs for which the output has
+to be equal to $1$ from the set of inputs combinations where the output is equal to $0$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{images/three_input_sol_example.png}
+    \caption{Solution of the complex TLU}
+    \label{fig:example_three_sol}
+\end{figure}
+
+Basically, if you represent the plane using these information’s you will have this
+kind of plane (that looks like a hexagon) dividing the solution from the $0$ values.
+
+\textit{So how we choose the threshold and interconnection weights?} I have to look at geometrical
+distribution of the points for the combination of the input which the output must be equal to $1$
+and the one where the output must be equal to $0$, I have to take a straight line or plane and I
+need to position the divisor in a way that I clearly separate the two groups. If I can do that,
+that set of values (inputs and threshold) are the one that I need to use in my ANN.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{images/bi_implic_no_sol.png}
+    \caption{The bi-implication problem}
+    \label{fig:bi-impl-problem}
+\end{figure}
+
+Let’s analyze another example, the bi-implication problem, this problem results in this kind of
+distribution in the plane, as you can see it is not possible to separate these points with a
+straight line. As a consequence, we don’t have any TLU for solving this problem, even if this is
+a simple problem. We have to introduce some notions for understanding the reasons behind
+this problem.
+\subsubsection{Linear separability}
+Two set of points in the \textbf{Euclidean Space}, consider $x_1, x_2,...,x_n$ as the variable for
+the TLU, since we have n possible inputs you are analyzing a problem represented in $n$
+dimensional Euclidean space.
+
+If you have in this Euclidean space two set of points they are \textbf{linearly separable},
+if and only if there exists at least one point, line, plane or hyperplane, such that all
+points of the first set lie on one side and all points of the other set lie on the
+other side of this point, line, plane or hyperplane.
+
+The point sets can be separated by a linear decision function.
+
+If you are in a mono dimensional space you have one input only,
+your Euclidean Space is a line, you have one point on this straight line which is separating
+your space the line in two parts, the output is one, for the other point the output is $0$.
+If you have a plane, we have two input variables, we have to find a plane that separates
+the two sets of points.
+\subsubsection{Convex hull}
+A set of points in the Euclidean Space is called \textbf{convex} if it is non-empty and
+connected and for every pair of points in it every point on the straight-line segment
+connecting the points of the pair is also in the set.
+
+A \textbf{convex hull} of a set of points $X$ in a Euclidean Space is the smallest convex set of
+points that contains $X$. Alternatively, the convex hull of a set of points $X$ is the intersection
+of all convex sets that contain $X$.
 \subsection{Solution of the bi-implication problem}
+Two sets of points in Euclidean Space are linearly separable if and only if their convex hulls
+are disjoint. In the bi-implication problem, the convex hulls are the diagonal line segments.
+
+They share their intersection point and this means that they are not disjoint, therefore
+the double implication is not linearly separable.
+
+\begin{figure}[H]
+    \includegraphics[scale=0.8]{images/sol_bi_implic_problem.png}
+    \centering
+    \caption{TLUs to the bi-implication problem}
+\end{figure}
+What we can do is putting together more neurons to try to address more complex problem where
+one neuron can’t solve. We are creating a network of TLUs, we are splitting the problem in two
+sub problems.
+
+The problem of implication can be solved with a single TLU, we create a more complex structure
+in which are able to solve the problem.
+
+Let’s see what happens geometrically, the two points $a$ and $c$, are going to be separated
+from the first two  TLUs, I set one of the TLU so that all points which are below the straight
+line represented by $g_2$ fives and output equal to $1$, and then i set a second straight line
+represented by $g_1$ where all points are all over the straight line the values are equal to $1$,
+and then I merge this information.
+
+\begin{figure}[H]
+    \includegraphics[scale=0.8]{images/sol_bi_implic_problem_graph.png}
+    \centering
+    \caption{Solution of the bi-implication problem}
+\end{figure}
+
+I combine these information from the previous group in the third neuron so that I transform
+the representation of the information, I can merge the information of the points $a$ and $c$,
+so that both the output of the two TLU is equal to $1$ is represented by one points (in this case
+they are the same) and then I have the two other points $b$ and $d$ which are in both the parts
+above and below the line, for them the solicitation is not enough to generate an output
+equal to $1$, as a consequence I obtained a linear separability.
+
+I transformed the stripe in a semi plane with the third TLU, which identifies the linear
+separability, I don’t have that propriety only with the first TLU but also with the second,
+both TLUs allow me to partition the first space in three parts.
+
 \subsection{Arbitrary boolean functions}
+I can work with any arbitrary \textbf{Boolean function}; in this example I have a
+Boolean function of three variables. I have these values of the value $y$ according to the formula.
+
+\begin{figure}[H]
+    \includegraphics[scale=1.0]{images/arb_bool_funcs.png}
+    \centering
+    \caption{Table of values}
+\end{figure}
+
+What we can do is to build a network of TLUs that allow me to compute each of the component
+for which the output has to be $1$ and then with a conjunction unit I put together all
+the possible value with a or for merging the individual TLUs.
+
+\begin{figure}[H]
+    \includegraphics[scale=1]{images/arb_bool_funcs_graph.png}
+    \centering
+    \caption{Network of TLUs solving the boolean function}
+\end{figure}
+
+
 \subsection{Training TLUs}
+The geometric interpretation that we have seen before about the operation of TLUs gives us the
+understanding of how we can place the various parameters for our networks in order to
+construct TLUs with $2$ and $3$ inputs.
+
+But this makes sense when we are using $2$ or $3$ input, but this is something that is not
+feasible when we are having more than three inputs, also this is not an automated method.
+
+We want an automatic method for visualizing the space and points in the space, especially when
+we have more then $3$ inputs.
+
+What we want to do is to have an automatic way which adjusts the weights and the threshold
+of the network so that I can reach the desired solution (if the two sets are linearly separable).
+
+The \textbf{automatic training} of TLUs consist in the fact that we can start from a random value
+of the weights and threshold, and then when we want to configure a TLU we need to evaluate
+the error that we are generating at the output (of the TLU) in respect to the input pattern
+that we have presented.
+
+Basically, we have chosen randomly the threshold, the TLU generates an output, we evaluate
+the error respect to the desired output, and then we try to adjust the weights and the
+threshold to reduce the error.
+
+We repeat this operation for all inputs until the error is really reduced or vanished.
+\begin{enumerate}
+    \item Start with random values for weights and threshold.
+    \item Determine the error from the output of the TLU.
+    \item Consider the error as a function of the weights and the threshold $e=e(w_1,...,w_n,\theta)$.
+    \item Adapt weights and threshold so that the error becomes smaller.
+    \item Iterate adaptation until the error vanishes.
+\end{enumerate}
+
+\subsubsection{Negation example}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{images/neg_example.png}
+    \caption{TLU that perform negation}
+    \label{fig:neg_example}
+\end{figure}
+$$\neg x$$
+In this case we have two really simple parameters, the weights and the threshold.
+Let’s represent the error for all possible weights and all possible threshold at least
+for a subset that we are interested in analyzing. Let’s consider the $x=0$, in this case
+the desired output is $1$, if we take $w=2$ and we multiply it by $0$ the weighted input
+will be $0$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{images/errors_exampl.png}
+    \caption{Diagrams of the errors expressed in terms of $\theta$ and $w$}
+    \label{fig:neg_tlu_errors}
+\end{figure}
+Let's consider the first diagram on the left, with the various values of $\theta$ and $w$, and
+with an input value of $x=0$.
+Let's see the error that we have with the various possible combinations, we see that
+for any values of the weight where the threshold is \textit{less} than zero, the \textbf{error}
+is zero. Viceversa, for any value of the weight for a $\theta$ greater or equal to zero, the
+error is one (a \textit{plateau}).
+
+Now let's consider $x=1$, we are on the central diagram, in the left triangular part
+of the domain there will be the error of $1$ defined $\forall w$.
+
+Let's try to sum the errors and see what we obtains: we get an intersection for the error
+equal to one, and also an intersection for the error equal to \textit{two} (which is strange,
+since the error in this kind of example is always $1$ since the $y$ output is binary, but there
+we are talking about a sum).
+
+The only part where the error is equal to zero is a small triangle on the bottom. The problem
+with this definition of the error is that is not suited for define an algorithm which allow
+me to find the zero error.
+
+\begin{figure}[H]
+    \includegraphics[scale=0.6]{images/desc_2_of_error.png}
+    \centering
+    \caption{Output error modified as function of weight and threshold}
+\end{figure}
+
+What i can do is modify the description of the error and consider that for each value
+of the input i will not have just the error which is $1,0$ or $2$, but i will consider
+a covering and continuos \textbf{surface area} (such that is possible to increase progressively
+the error).
+
+
+\subsection{Artificial neural network}
+
 \end{document}
