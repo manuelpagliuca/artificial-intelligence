@@ -588,7 +588,7 @@ with this definition of the error is that is not suited for define an algorithm 
 me to find the zero error.
 
 \begin{figure}[H]
-    \includegraphics[scale=0.6]{images/desc_2_of_error.png}
+    \includegraphics[scale=0.5]{images/desc_2_of_error.png}
     \centering
     \caption{Output error modified as function of weight and threshold}
 \end{figure}
@@ -598,7 +598,370 @@ of the input i will not have just the error which is $1,0$ or $2$, but i will co
 a covering and continuos \textbf{surface area} (such that is possible to increase progressively
 the error).
 
+\begin{figure}[H]
+    \includegraphics[scale=0.6]{images/desc_2_of_error_topview.png}
+    \centering
+    \caption{Top view output error modified as function of weight and threshold}
+\end{figure}
+
+So i can start from a random point and iteratively adapt parameters according to the direction
+corresponding to the current point, i will stop if the error vanishes.
+
+There are two ways of training a neural network:
+\begin{itemize}
+    \item \textbf{online learning}, we receive the learning pattern at time from the
+          external environment, we compute the parameter corrections for this learning pattern (like
+          we saw in the negation example) and in the end we apply the parameter corrections. In
+          case of the \textit{negation}, first we adapt the weight and the threshold according to the left diagram,
+          then we adapt them according to the middle diagram, then we adapt them again
+          according to the left diagram and so forth until the error vanishes.
+
+    \item \textbf{batch learning}, consists in not applying the changes immediately after every
+          training example, but aggregating them over all training examples. Only at the end of
+          a (learning/training) epoch, that is, after all training examples have been traversed,
+          the aggregated changes are applied. Then the training examples are traversed again
+          and at the end the weight and the threshold are adapted and so forth until the error
+          vanishes.
+\end{itemize}
+
+\subsubsection{Delta rule (Widrow-Hoff)}
+Given:
+\begin{itemize}
+    \item $\vec{x}=(x_1,...,x_n)^T$ be an input vector of TLUs.
+    \item $o$ is the desired output for this input vector.
+    \item $y$ the actual output of the TLU.
+    \item $\eta$ as learning rate.
+\end{itemize}
+If $y\neq o$, then, in order to reduce the error, the threshold $\theta$ and the weight
+vector $\vec{w}=(w_1,...,w_n)$ are adapted as follow:
+$$\theta^{(new)}=\theta^{(old)}+\Delta\theta\text{, with }\Delta\theta=-\eta (o-y)$$
+$$w_i^{(new)}=w_i^{(old)}+\Delta w_i\text{, with }\Delta w_i = \eta (o-y)x_i$$
+$$\forall i \in \{1,...,n\}$$
+
+The first equation is correction (delta) of the threshold and the second is the correction of the
+weight. The variation is given by an expression which is proportional to the difference
+between the actual and expected output (which is the error).
+
+The correction for the weight is proportional not only to the error but also to the input.
+Essentially, if i have an actual output smaller then the desired one, i take the input
+that are bigger, and i try to push them to contribute more to the excitation
+of \textit{threshold logic function} so that the output will be higher and as
+consequence the error will be lower.
+
+The $\eta$ controls the speed of updates, the bigger is the bigger will be the update.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/online_training.png}
+    \caption{Online training with $\theta = \frac{3}{2},w=2,\eta =1$}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/batch_training.png}
+    \caption{Batch training with $\theta = \frac{3}{2},w=2,\eta = 1$}
+\end{figure}
+
+Basically what happens in the online training, if i start in the first move i may go here,
+and so on, i'll move one step at the time since the amount of change is control by the
+learning rate.
+
+in this case i move in one direction, since i apply together the two errors correction,
+so i'm moving in combination of the two changes of the secondo batch, then again i'm applying
+the two changes and i move. I do less move respect to the other since  i combine the two
+correction for the expression that i shown.
+
+I can try to do the same for the more complex case of the TLU, with two inputs. here i have
+the conjunction with the truth table describing the implementation. What i'm doing basically
+i have found the straight line that gives the satisfied and unsatisfied area for determining
+the solution.
+
+\subsubsection{Convergence theorem}
+If we consider a set of training patterns: $L=\{(\vec{x},o_1),...,(\vec{x}_m,o_m)\}$,
+each consisting of an input vector $\vec{x_i}\in\mathbb{R}$ and a desired
+output $o_i\in\{0,1\}$.
+
+Furthermore, let's consider $L_0=\{(\vec{x},o)\in L|o=0\}$ and
+$L_1=\{(\vec{x},o)\in L | o=1\}$. If i can show that $L_0$ and $L_1$ are
+\textbf{linearly separable}, then is possible to prove that we have a
+$\vec{w}\in\mathbb{R}^n$ and $\theta\in\mathbb{R}$ such that:
+$$\forall (\vec{x},0)\in L_0 :\vec{w}^T\vec{x} <\theta$$
+$$\text{and}$$
+$$\forall (\vec{x},1)\in L_0:\vec{w}^T\vec{x}\geq\theta$$
+
+This means that is possible to divide the two sets, and then the online or batch
+training procedure is able to terminate. So if the two sets are linearly separable they
+will give us a final value in a \textbf{finite time}. The final error will e zero.
+
+The problem is that if we are not able to perform the linear separation of $L_0$ and $L_1$,
+the algorithm is \textbf{not able to terminate}. The algorithm will oscillate around and we
+will not be able to find a solution with the zero error.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{images/batch_training_example_graph.png}
+    \caption{Example of online and batch training (also with summed errors)}
+\end{figure}
+
+The correction of the parameters maybe slowed down due to the fact that we have $0$ and $1$
+to the possible values for our outputs. This implies that if we have an output for our
+threshold logic function equal to $1$, we can find an adjustment and apply it.
+If we have an input which is $0$ whichever weight we have, we may not be able to compute
+a correction that in the end will reduce the final error.
+
+So when we apply an input which is one we can change the weight for finding a better value
+for the configuration, if we apply the change on an input which is zero the possible changes
+actually vanishes since we are multiplying by zero, we are not observing a variation.
+
+To avoid to waste to much time on this issue, we can change the representation of the values,
+for \textit{true} we are considering $1$ and for \textit{false} we are considering $-1$.
+
+What we can point out, is that a \textit{single} TLU, is able to point out any linearly
+separable function. We have just to apply the delta rule which is easy and fast and
+guarantee to find a solution, if one exists.
+
+The problem is given by a more complex structure, like a network of TLUs,
+in this case we cannot apply directly the delta rule, because we have no clue
+about which is the output. We need something more complex for managing that.
 
 \subsection{Artificial neural network}
+An ANN in general ha a very simple definition since it is a \textbf{directed}
+graph $G=(U,C)$ composed by nodes and edges, in the graph we have processing
+nodes that can elaborate the information incoming in, some arcs that
+are bringing in the network some external information, and others that extract
+the computation performed by our network (which is a structure that mimic our
+brain).
+
+The connections are the axon-synaptic connections which connect the nucleus of the
+neurons. In a general neural network this is the very abstract definition, in practice
+in order to use this kind of structure we will need to have more regular more focused
+organization of neurons connections.
+
+The set of vertices $U$ is partitioned into:
+\begin{itemize}
+    \item $U_{in}$ is the set of input neurons.
+    \item $U_{out}$ is the set of output neurons, whi are the one delivering the
+          result of the computation to the outside world.
+    \item $U_{hidden}$ is the set of hidden neurons, they don't have any direct
+          connection to the external world.
+\end{itemize}
+
+\subsubsection{General structure of the neuron}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/general_structure_neuron.png}
+    \caption{Internal representation of a neuron}
+\end{figure}
+
+We see that we have inputs that are coming in the network and usually this inputs are
+manipulated in order to understand which is the global stimulus that the neuron
+receive from the external world.
+
+If an incoming signal from a previous neuron has relevance, we want to multiply the
+amount o signal incoming in by an appropriate constant in order to have a stronger weight
+for a subsequent processing in this neuron.
+
+In this example we associate the weight $w_{uv_1}$, which is the weight for the neuron
+$u$ respect to the incoming neuron $v_1$.
+
+These inputs are processed by three stages in which we perform specific operations, we want
+to see how much the neuron is actually solicited. For these reason we have three
+stage functions:
+
+\begin{itemize}
+    \item The $f_{net}^{(u)}$, takes the input with the \textit{relative relevance} of the
+          various inputs to generate the \textbf{global solicitation} for our neuron. This is a general
+          definition, a specific definition changes in base of the network we are considering.
+
+    \item The $f_{act}^{(u)}$, the activation functions analyze the network input from the
+          previous function and generate the \textbf{excitation status} of our neuron. This will tell
+          us if the neuron is sufficiently excited.
+
+    \item The $f_{out}^{(u)}$, which takes the excitation status of the neuron and elaborate
+          the final status of the neuron to deliver to the subsequent neurons.
+\end{itemize}
+
+In general we have also an external variable $ext_u$ which tell us how much the excitation
+should be increased from a stimulus coming directly from the \textit{external world}
+(not from previous neuron, from the external world).
+
+These are the various inputs that any neuron can have, we may have both the input coming
+from other neurons and the input coming from the external world, or we can have for a subset
+of neurons only the stimulus coming from the external world and no other inputs.
+
+We have input neurons coming which are weighted properly, these values are used
+with the \textit{network input function} which is generating the global excitation status
+coming from the other neurons, this one is will generate the \textit{activation status} of the neuron (how much it is
+stimulated by the external neurons).
+
+In the end we have the out function which evaluates the final status of the neuron, which
+is delivered to the other connected neuron.
+
+\subsubsection{Type of artificial neural network}
+In the practice we won't use the general structure introduced before, we will have
+different type of ANN:
+
+\begin{itemize}
+    \item \textbf{feed forward network} are ANN that doesn't contains any cycles, the
+          acronym is FNN.
+    \item \textbf{recurrent network} are ANN that contains cycles (backward connections),
+          the acronym is RNN.
+\end{itemize}
+
+\noindent
+The operation of a general ANN:
+\begin{enumerate}
+    \item \textbf{input phase}, where the external input are acquired by
+          input neurons in the network.
+
+    \item \textbf{work phase}, the external input are disconnect (by freezing
+          the input neurons), we move the excitation generated by the input neurons
+          to the connected neurons, we generate the stimuli for the connected neuron,
+          we compute the output status of them and propagate the output to the
+          neurons which are connected to this one.
+\end{enumerate}
+
+During the \textit{working phase} if the input of neurons are steady (input stimuli
+are not changing), the computation of that neuron doesn't change (every stage
+function generate the same values, FNN).
+
+This is not the case when we have a RNN, since if one of the outputs connected to
+a neuron is connected to an input will repeat the computation and this maybe change
+the output status (due to \textit{recomputation}). I always say \textit{"may"}
+since the actual change will depend specifically by the function that i'm using.
+The \textbf{recomputation} of a neuron output occurs if any of its input changes,
+we can't loop forever and not evolving. This means that the working phase continues
+until the external outputs are steady, or a maximum number of
+recomputation iterations is reached. The \textbf{temporal order} of computation
+depends by the specific NN.
+\newline
+\newline
+\noindent\textbf{Feed-forward neural network}
+\begin{enumerate}
+    \item Computation proceeds from input neurons progressively toward output neurons by following
+          the topological order of the neuron in the network.
+    \item The external inputs are frozen.
+    \item Input neuron compute their outputs which are maintained steady and forwarded
+          to the connected neurons.
+    \item Neurons connected to preceding neurons with steady outputs generate their
+          respective outputs and propagated forward to the subsequent neurons, until the
+          external outputs are generated.
+\end{enumerate}
+\noindent\textbf{Recurrent neural network}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/RNN.png}
+    \caption{A simple recurrent neural network}
+\end{figure}
+In the neurons there is the threshold which is considered for the operation,
+and we have some interconnection weights which define the weights to be applied to the output
+of a neuron when his output is delivered as input to a subsequent neuron.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{images/RNN_simpl_ex1.png}
+    \caption{Dataset for the previous RNN, for the $u_3,u_2,u_1$ order}
+\end{figure}
+In this case we choice to start from the input $1,0,0$ and with an updating order of
+neurons that is $u_3,u_1,u_2,u_3,u_1,u_2,u_3,...$. Each bold number in working phase
+entry of the table is an output of the \textit{ordered} neuron ($0$ if greater less than $\theta$
+or viceversa $1$). In this case we can reach a steady state, and exit the RNN.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{images/RNN_simpl_ex2.png}
+    \caption{Different dataset of the same RNN with $u_3,u_2,u_1$ order}
+\end{figure}
+Now let's consider a different ordering $u_3,u_2,u_1,u_3,u_2,u_1,u_3,...$, in this case
+it is not possible to reach a steady state inside the RNN (\textbf{no stable state}, \textit{
+    oscillation} of output).
+
+\subsubsection{Configuration of a neural network}
+The details of the configuration strictly depends from the
+structure opf the network, in general we have two categories of
+learning procedure (or training procedure):
+
+\begin{itemize}
+    \item \textbf{fixed learning task}.
+    \item \textbf{free learning task}
+\end{itemize}
+\pagebreak
+\noindent\textbf{Fixed learning task}
+\newline
+\noindent Considering a NN of $n$ input neurons $U_{in}=\{u_1,...,u_n\}$ and $m$ output neurons
+$U_{out}=\{v_1,...,v_m\}$. A fixed learning task is a set of training patterns
+$l=(\vec{i^{(l)}}, \vec{o^{(l)}})$, each consisting of:
+\begin{itemize}
+    \item an input vector $\vec{i^{(l)}} =(ext_{u_1}^{(l)},...,ext_{u_n}^{(l)})$
+    \item an output vector $\vec{o^{(l)}} =(o_{v_1}^{(l)},...,o_{v_m}^{(l)})$.
+\end{itemize}
+\noindent At the end of the configuration the network is able to generate the desired output
+that correspond to the output vector. Since the examples are composed by an input
+vector and the expected output that we want to get, this is called \textbf{supervised
+    learning}.
+
+A fixed learning task is solved when for all training patterns $l\in L_{fixed}$ the
+neural network computes, from the external inputs contained in the input vector
+$\vec{i^{(l)}}$ of a training pattern $l$, the outputs contained in the
+corresponding output vector $\vec{o^{(l)}}$.
+\newline
+\newline
+\noindent\textbf{The error of a fixed learning task}
+\newline
+The error says how well a neural network solves a given fixed learning task. Essentially
+it is the difference between desired and actual outputs.
+$$e=\sum_{l\in L_{fixed}}e^{(l)}=\sum_{v\in U_{out}}e_v=\sum_{l\in L_{fixed}} \sum_{v\in U_{out}}e_v^{(l)}$$
+$$e_v^{(l)}=\left(o_v^{(l)}-out_v^{(l)}\right)^2$$
+In order to have a number which tell us the final quality what we need to do we have
+to consider the module of the error, what we are doing is consider the difference between
+the actual and the desired output. But in this simple difference could give us a final
+number which is not reflecting the total accuracy of the NN due to the \text{sign}.
+
+A solution to this is to use a squared value, in this way we can avoid the negative
+sign.
+\newline\newline\noindent\textbf{Free learning task}\newline
+A free learning task is the complementary approach of the fixed learning task, in
+which the desired behavior is not defined a priori by the pair of vectors for
+the input and the output.
+
+$$n\text{ input neurons }U_{in}=\{u_1,...,u_n\}$$
+$$\text{one input vector }\vec{i^{(l)}} = \left( ext_{u_1}^{(l)},...,ext_{u_1}^{(l)}\right)$$
+
+We only have a set of input vectors which are presented to the network and the
+learning algorithm will lead to an output vector which is similar to the given input.
+
+\noindent\newline\textbf{Preprocessing}\newline
+In order to be sure that the learning is working properly, we have to be sure
+that one of the input is dominating the operation of the network, as consequence
+we have to do some preprocessing on the data in order to give the same relevance
+to all neurons.
+
+For each component of the input vector we need to compress the representation
+in the same range, this is called \textbf{normalization} (according to the
+average of the input value for each component, we need to be sure that
+the variance $\sigma_k$ is normalized as well).
+$$\mu_k =\frac{1}{|L|}\sum_{l\in L}ext_{u_k}^{(l)}$$
+$$\sigma_k =\sqrt{\frac{1}{|L|-1}\sum_{i\in L}\left(ext_{u_k}^{(l)}-\mu_k\right)^2}$$
+
+This is the standard normalization of the deviation $\sigma_k$, we have also another
+possibility which is called \textbf{unbiased standard deviation} (often preferred
+by statistician since is not polarized on the two direction).
+
+If we apply the normalization this is the external stimuli that we will have after
+the normalization, basically all the stimuli are recomputed with respect to the
+average value and they are normalized in dimension dividing them by the standard
+deviation.
+$$\sigma_{u_k}^{(l)(new)}=\frac{ext_{u_k}^{(l)(old)}-\mu_k}{\sigma_k}$$
+
+There is a problem that we have to seriously consider when we are looking
+to our examples, we need to have \textit{sufficiently descriptive examples},
+which have to be well distributed over the domain that i'm considering (not
+focussing only on a portion of the domain).
+
+So far we have been dealing with integer and real numbers, we want to use
+symbols for represent a group of examples that are similar together in a concise way.
+
+For doing that we need to associate a group of identifiers to a group of examples. For
+being able to represent this symbols we consider the \textbf{1-in-N encoding}, if
+we need to represent $n$ symbols we have a string of $0$ and $1$ and only one bit the one
+that corresponds to the symbol we want to represent will be $1$ (the others will be $0$).
 
 \end{document}
