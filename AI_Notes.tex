@@ -25,6 +25,8 @@
 
 \maketitle
 \tableofcontents
+\newpage
+\pagebreak
 \section{Motivation}
 Artificial neural networks are information processing systems, whose structure and
 operation principles are inspired by the nervous system and the brain of animals and
@@ -745,7 +747,7 @@ The set of vertices $U$ is partitioned into:
           connection to the external world.
 \end{itemize}
 
-\subsubsection{General structure of the neuron}
+\subsection{General structure of the neuron}
 
 \begin{figure}[H]
     \centering
@@ -797,7 +799,7 @@ stimulated by the external neurons).
 In the end we have the out function which evaluates the final status of the neuron, which
 is delivered to the other connected neuron.
 
-\subsubsection{Type of artificial neural network}
+\subsection{Type of artificial neural network}
 In the practice we won't use the general structure introduced before, we will have
 different type of ANN:
 
@@ -874,7 +876,7 @@ Now let's consider a different ordering $u_3,u_2,u_1,u_3,u_2,u_1,u_3,...$, in th
 it is not possible to reach a steady state inside the RNN (\textbf{no stable state}, \textit{
     oscillation} of output).
 
-\subsubsection{Configuration of a neural network}
+\subsection{Configuration of a neural network}
 The details of the configuration strictly depends from the
 structure opf the network, in general we have two categories of
 learning procedure (or training procedure):
@@ -963,5 +965,444 @@ For doing that we need to associate a group of identifiers to a group of example
 being able to represent this symbols we consider the \textbf{1-in-N encoding}, if
 we need to represent $n$ symbols we have a string of $0$ and $1$ and only one bit the one
 that corresponds to the symbol we want to represent will be $1$ (the others will be $0$).
+
+\subsection{Multi-layer Perceptrons}
+A \textbf{multi-layer perceptrons} it is essentially a feed-forward neural network
+in which is present a strictly layered structure. They neurons are connected in groups,
+each groups receives the input only from the previous layer or from the external input.
+The output is delivered by the subsequent group, there are different kinds of layers:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/multi-layer-percep.png}
+    \caption{General structure of $r$-layered perceptron}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{input layer}
+    \item \textbf{hidden layer}
+    \item \textbf{output layer}
+\end{itemize}
+
+Each layers is connected, in multi-layer perceptrons the neurons are strictly connected
+between layers, jump are not allowed (like in the feed-forward network).
+
+The network input function of each \textit{hidden neuron} and of each \textit{output neuron}
+is the \textbf{weighted sum} of its inputs:
+$$f_{net}^{(u)}(\vec{w_u},\vec{in_u})=\vec{w_u}\vec{in_u}=\sum_{v\in pred(u)}w_{uv}out_v$$
+
+The activation function of each hidden neuron is a so-called \textbf{sigmoid function},
+that is, a monotonically non-decreasing function with:
+$$f:\mathbb{R}\rightarrow [0,1]\text{ with }\lim_{x\rightarrow -\infty}f(x)=0\text{ and }\lim_{x\rightarrow\infty}f(x)=1$$
+
+It has a shape that allows a minimum and a maximum value (shaped), such that the possible net status
+of the neurons are inside the continuos domain of the function. If i have enough excitation
+in the network status the sigmoid function will give a positive excitation of the neuron,
+viceversa, it will point out a lower value in the function.
+
+\begin{figure}[H]
+    \includegraphics[scale=0.5]{images/sigmoid_functions.png}
+    \centering
+    \caption{Some \textbf{unipolar} sigmoid activation functions}
+\end{figure}
+
+The activation function of each output neuron can be a sigmoid or can be a \textbf{linear}
+function (depends on what we want to achieve).
+
+There are many types of sigmoid function for representing the general behavior, the
+most simple is the \textbf{step function}.
+
+I have a 0 value until my network excitation reach the value $\theta$, then the output
+of excitation jump to the strongest status (the value of minimum and maximum activation are
+generally $0$ and $1$).
+
+If you prefer a smoother approach you can use the $sin$ approach were the derivative
+is progressively approaching the maximum value.
+
+A \textbf{logistic} function is a function with the same shape but that doesn't reach a saturation
+at the extremes of the range. In this way it is possible to consider the inverse
+of the function, otherwise it is not possible.
+
+We may have some problems during the learning operation when using the \textit{step function},
+since when we have $0$ we won't have any effect on the output of the neuron,
+even if we change the activation the output will be $0$. As solution it is possible to
+use \textbf{bipolar} (opposite to the unipolar, which extends only in one pole)
+sigmoid functions, which changes the ranging to $[-1,+1]$, like the \textit{hyperbolic tangent}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/hyperbolic_function.png}
+    \caption{Bipolar sigmoid activation function (\textit{hyperbolic tangent})}
+\end{figure}
+
+I can describe the group of connections between two \textit{consecutive} layers of
+a multi-layer perception by using a $n\times m$ matrix. Which is the collection of the
+connection weights between the layers:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/weight_matrix.png}
+    \caption{Matrix describing connection weights between two layers}
+\end{figure}
+
+As a consequence the computation can be described in a very simple way,
+by using the vectors:
+$$\vec{net_{U_2}}=\textbf{W}\vec{in_{U_2}}=\textbf{W}\vec{out_{U_1}}$$
+You just take the vector of the input neurons of the second layer
+(which are the output of the preceding layer) and multiply by the
+weight in between the layers.
+
+Let's consider an example with the \textbf{bi-implication}
+three-layer perceptron:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/three_layer_example.png}
+    \caption{Three-layer perceptron for bi-implication}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/weights_three_layer_example.png}
+    \caption{Weight matrices for the input and hidden layers}
+\end{figure}
+
+The only difference respect the TLUs network of bi-implication is that
+each neuron can be an input,hidden and output neuron. In this configuration
+we are dividing everything in layer of neurons, so we have to \textbf{add} a
+input layer for that (in respect to using TLU).
+
+So far we have seen boolean function, but what we want to look now is how we can extend
+the dimensions of a feed-forward network in order to consider not only
+the boolean function of the TLUs but we want to consider in a multi-layer
+perceptron any type of real number (extend the capability of describing the world).
+
+We can see that the multi-layer perceptron,
+with any input real-number can be used for function approximation.
+\newline\newline\noindent\textbf{Function approximation}\newline
+Consider the function in the diagram, it is very simple and continuos,
+and let's consider the points $x_1,...,x_4$ where we want to compute
+the value of the function and we want to find a method to approximate for any other value
+$x$ a value in that function.
+
+What i can do is to consider the \textbf{midpoint Riemann integration}.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{images/midpoint_integra.png}
+    \caption{Approximating a continuos function with step functions}
+    \label{fig:midpoint_int}
+\end{figure}
+
+\begin{itemize}
+    \item Approximate a given function by a step function.
+    \item Construct a neural network that computes the step function.
+    \item Error is measured as the area between the functions.
+\end{itemize}
+
+It is possible to prove that if you take any Riemann integrable function,
+it can be approximated with arbitrary accuracy by a \textit{four-layer
+    perceptron}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/integra_perceptron.png}
+    \caption{NN that computes the step function for integration}
+\end{figure}
+
+The input $x$ is taken by an input neuron, then we have the first
+layer composed by the subdivision of the domain in the points
+$x_1, x_2, x_3,x_4$.
+
+In the second hidden layer, we create one neuron for each step,
+which receives input from the two neurons in the first hidden layer that
+refer to the values $x_i$ and $x_{i+1}$ marking the border of the step.
+Only one neuron in the second layer can be active, and it will represent
+the step where the input values lies (this through the \textbf{combined
+    excitation} of the neurons in the first hidden layer).
+
+The connection from the neurons of the second layer to the output
+neuron are weighted with the function values of the stair steps that
+are represented by the neurons.
+
+Since only one neuron can be active on the second hidden layer, the
+output neuron receives as input the height of the stair step , in which
+the input value lies, as result it computes the correct sampling
+of the function saw in figure \ref{fig:midpoint_int}.
+
+The multi-layer perceptrons can be considered an \textbf{universal
+    approximators} of the Riemann integration technique, with the maximum
+desired error (i can choose the maximum error i want to get for my
+function by choosing the number of neurons for get that accuracy).\newline\newline
+\noindent\textbf{Delta approximation approach}\newline\noindent
+We can actually simplify the error by considering a trick instead of using the
+combined excitation.
+
+I can split the domain of the function for my network in parts like before,
+then instead of defining the value of the function for each interval i just
+use iteratively the $\Delta$ variation respect to the value considered.
+
+\begin{figure}[H]
+    \centering
+    \caption{}
+    \includegraphics[scale=0.5]{images/multi-delta-integra.png}
+    \label{fig:integra_delta}
+\end{figure}
+
+The structure of the network (figure \ref{fig:integra_delta}) will be simpler
+because i will distribute the input of the hidden neurons,
+that will tel me if the value $x$ is before $x_i$ or greater than $x_i$ (i don't care where).
+
+For example, if the value is between $x_1$ and $x_2$ the first neuron
+will generate $\Delta y_1$ and this will be delivered in output.
+
+If i have a value between $x_2$ and $x_3$ i will still have $x_1$ that
+will be excited enough and will generate the \textit{contribution}
+for the output ($x_1$ and $x_2$ will be both excited, their
+contribution will be summed up and then delivered to the output).
+
+This will make simpler the structure of the network.
+
+\subsection{Regression}
+Let's find a way for approximate a function without using the basic calculus approach. In
+order to do this we have to understand the concept of \textbf{regression}.
+We saw that for training an ANN we need to minimize the error function, which is computed by
+considering the squared difference between desired output and actual output.
+
+The regression is a technique used in statistical analysis for extrapolating a straight
+line that better approximate the existing relationship inside a dataset.
+
+Formally, considering the dataset $G=\{(w_0,y_0),...,(w_n,y_n)\}$ let's imagine it exists a functional relationship
+between the input vector $w_i$ and the abscissa $y$, then the regression will help us to find
+the parameters of that function. Different kind of functions will give us different kind of regressions.
+
+\subsubsection{Linear regression}
+If we expect that our quantities $x$ and $y$ exhibits a linear dependence, then we have
+to identify the parameters $a$ and $b$ that extrapolate the straight line $y=g(x)=a+bx$.
+In general, won't be possible to find a straight line that traverse all the points of the
+dataset. What we will do is finding a straight line which deviates the lest possible,
+so that minimize the error as follows:
+$$F(a,b)=\sum_{i=1}^{n}(g(x_i)-y_i)^2=\sum_{i=1}^n(a+bx_i-y_i)^2$$
+
+The necessary condition to find the minimum is given us by mathematical, if i take the
+partial derivatives between the two parameters $a$ and $b$ (which are the variables
+in the formula) setting this partial derivatives of th error to $0$ it will give to
+me the condition that allow us to find the minimum (\textit{Fermat's theorem}).
+
+$$\frac{dF}{da}=\sum_{i=1}^{n}2(a+bx_i-y_i)=0$$
+$$\frac{dF}{db}=\sum_{i=1}^{n}2(a+bx_i-y_i)x_i=0$$
+
+The \textit{linear algebra} tells me the solution is unique unless i'm so unlucky that
+all the values $x$ coincides, in that case i have basically one equations but
+two variable ($a$ and $b$) and as consequence infinite solutions.
+
+For example, if i need to find the regression of these points:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{images/regression_line.png}
+    \caption{Regression line example}
+    \label{fig:regression_line}
+\end{figure}
+
+\subsubsection{Polynomial regression}
+The previous method is generalizable to polynomial of arbitrary order.
+The model i have considered is not a good model, is too approximate, i can look if there
+is instead a very simple straight line a polynomial.
+Instead of considering a polynomial of grade one, i consider a polynomial of grade $m$.
+
+$$y=p(x)=a_0+a_1x+...+a_m x^m$$
+
+The minimization fo the error now can be generalized in this way:
+
+$$F(a_1,...,a_n)=\sum (p(x_i)-y_i)^2=\sum(a_0+a_1x+...+a_n x^n-y_i)^2$$
+
+Like in the linear regression, the necessary conditions for the function to be
+minimized (finding the minimum), are that the partial derivatives respect to the
+parameters $a_i$ vanishes:
+
+$$\frac{dF}{da_0}=0,\frac{dF}{da_1}=0,...,\frac{dF}{da_m}=0$$
+
+\begin{itemize}
+    \item This system can be solved by using the standard methods from linear algebra.
+    \item The solution is unique unless the points lie extactly on a polynomial of
+          lower degree.
+\end{itemize}
+
+
+\subsubsection{Multilinear regression}
+Until now i just tried to make the approximation more accurate going in the
+direction of polynomial,\textit{what happens if i have a function in multiple variables?}
+
+$$z=f(x,y)=a+bx+cy$$
+
+If i want to do a multi-linear regression (since i'm applying linear regression to a function
+of two variables), i have just to apply what i wast doing before.
+
+I have to consider the error in the approximated function $f$, and the actual value given
+by the samples $z_i$ that i'm collecting (minimizing the sum of squared errors):
+
+$$F(a,b,c)=\sum_{i=1}^{n}$$
+
+What we need to do? again we need to find when the error is going to $0$, this happens when
+the partial derivatives of the parameters are $0$.
+
+$$\frac{dF}{da}=\sum_{i=1}^n 2(a+bx_i+cy_i-z_i)=0$$
+$$\frac{dF}{da}=\sum_{i=1}^n 2(a+bx_i+cy_i-z_i)x_i=0$$
+$$\frac{dF}{da}=\sum_{i=1}^n 2(a+bx_i+cy_i-z_i)y_i=0$$
+
+As already said multiple times, the linear algebra will allow me to solve
+this problem since i have three parameters $a,b,c$ and three equations.
+
+Except the unfortunate case where all points are on a straight line, because in this case
+i have a plane that can be rotated in any direction and i have \textit{infinite solutions}.
+
+I can consider trying to approximate with a multi-linear regression a function that
+is defined on $m$ different variables, this is the generalization of what we have
+seen previously (difficult to draw):
+
+$$y=f(x_1,...,x_m)=a_0+\sum_{k=1}^{m} a_k x_k$$
+
+I have to minimize the sum of squared errors (vectors for parameters and matrices to define
+the various values):
+
+$$F(\vec{a})=(\textbf{X}\vec{a}-\vec{y})^T(\textbf{X}\vec{a}-\vec{y})$$
+
+where:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/parameters_multilinear_regre.png}
+    \label{fig:infos_multilinear}
+    \caption{Various $x$ values and vector parameters}
+\end{figure}
+I need to define the \textbf{gradient} which is the generalization of the previous definition
+defined on vectors and not on the partial derivatives of functions as we seen before.
+We need to look where the gradient is $0$ which will give us the \textit{hyperplane}
+touching the surface in the minimum.
+$$\vec{\nabla}_{\vec{a}} F(\vec{a})=\vec{\nabla}_{\vec{a}}(\textbf{X}\vec{a}-\vec{y})^T(\textbf{X}\vec{a}-\vec{y})=\vec{0}$$
+
+This comes out as set of regular equations and linear algebra will allow us to solve it as
+usual unless there is the singular case (if i have all points aligned to a single straight line
+the plane which is minimizing my error is not defined).
+
+The system of normal equations:
+$$\textbf{X}^T\textbf{X}\vec{a}=\textbf{X}^T\vec{y}$$
+
+which has solution unless $\textbf{X}^T\textbf{X}$ is a singular:
+
+$$\vec{a}=(\textbf{X}^T\textbf{X})^{-1}\textbf{X}^T\vec{y}$$
+
+\subsubsection{Logistic regression}
+In the situation in which the dataset is not approximated with sufficient accuracy
+from a polynomial function, we could use different kind of functions, for example:
+$$y=ax^b$$
+We can transform this in a linear equation by applying the operation of logarithm:
+$$\ln{y}=\ln{a}+b\cdot\ln{x}$$
+In the case of ANN we are interested in particular at the \textbf{logistic function}:
+$$y=\frac{Y}{1 + e^{a+bx}}$$
+
+If we apply the logarithm of this equation we can derive a different expression of our
+function $y$ so that the description of this function will be a \textbf{linear description}.
+
+Since lot of ANN uses as proper neuron activation function the logistic function,
+if we would find a way for applying the regression method on that we could determine
+the parameters of any network.
+
+If we would find a way for applying the method of regression om the neurons, we could
+determine the parameters of any network at two layers of only one point. The value $a$
+of the function represent the threshold of the output neuron, while the value of $b$
+represent the weight of the input. We can linearize the logistic function by applying
+the following transformations (called \textbf{logit transformation}):
+
+$$y=\frac{Y}{1+e^{a+bx}}\longleftrightarrow\frac{1}{y} = \frac{1+e^{a+bx}}{Y}
+    \longleftrightarrow\frac{Y-y}{y}=e^{a+bx}\longleftrightarrow\ln{\left(\frac{Y-y}{y}\right)}=a+bx$$
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/logistic_regre_1.png}
+    \label{fig:regr_1}
+    \caption{Example of logistic regression}
+\end{figure}
+The results of the regression line in the example are:
+$$z\approx -1.3775x+4.133, y\approx\frac{6}{1+e^{-1.3775x+4.133}}$$
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/regression_line_2.png}
+    \label{fig_regr_2}
+    \caption{Plot of logistic function}
+\end{figure}
+
+How can we understand the values of this non polynomial approximation by transforming it
+applying the log transformation, so that we can perform the approximation on a
+function that appear to be linear and then transform it back on the original function.
+
+We can consider a logistic function defined on two variables, and we have this bi-dimensional
+shape defined on two arguments. we can apply the same principle that we see before, this
+can be used to solve a problem of separating two groups of examples of different classes (or
+group).
+
+$$y=\frac{1}{1+exp(4-x_1-x_2)}=\frac{1}{1+exp\left(4-(1,1)^T(x_1,x_2)\right)}$$
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.45]{images/logist_bidiminesional_reg.png}
+    \caption{Plot of logistic function with two arguments}
+\end{figure}
+
+\subsubsection{Two-class problems}
+Basically the two class problems can be solved by considering the two attributes,
+which are the name of the class ($C$ is the class of attributes) and a vector random of $m$ dimension.
+$$dom(C)={c_1,c_2}$$
+
+We consider the \textbf{probability} of belonging to the first class $c_1$
+and the probability to be in the second class $c_2$.
+
+$$P(C=c_1|\vec{X}=\vec{x})=p(\vec{x})$$
+$$P(C=c_2|\vec{X}=\vec{x})=1-p(\vec{x})$$
+
+Given a dataset of points $X={\vec{x_1},...,\vec{x_n}}$, each of which belongs to one
+of two classes $c_1$ and $c_2$.
+
+Basically i want to get a \textbf{simple description of the function} $p(\vec{x})$, if i have
+this function i can apply the \textbf{logistic description}:
+
+$$p(\vec{x})=\frac{1}{1+e^{a_0+\vec{a}\vec{x}}}=\frac{1}{1+exp(a_0+\sum_{i=1}^m a_i x_i)}$$
+
+Then i can apply the \textbf{logistic transformation} so that i can obtain the
+\textbf{formal description} of the probability of being on one or the other class:
+
+$$\ln{\left(\frac{1-p(\vec{x})}{p(\vec{x})}\right)}=a_0+\vec{a}\vec{x}=a_0+\sum_{i=1}^m a_i x_i$$
+
+
+\textit{How can i find the specific value of the probability (and so solving the splitting of the
+    example)?}
+We can consider a specific function called \textbf{kernel} that describes
+how strongly a data point influences the probability estimate for neighboring points.
+
+
+which give us the correlation
+in the examples, given some examples how can i say that the example that i observed
+belongs to the group is influenced by similar examples, or belong to the other group
+which means that is similar to the examples of the other group.
+
+With a kernel we can describe the similarity of a
+group of examples, the \textbf{Gaussian function} is commonly used. A function like this
+tell me that if the picked data point is similar to the elements in the middle area, in that
+case i have a significant value of the function, the more i go far from the values
+which are similar the less is the value of the function.
+
+$$K(\vec{x},\vec{y})=\frac{1}{(2\pi\sigma^2)}exp\left(-\frac{(\vec{x}-\vec{y})^T(\vec{x}-\vec{y})}{2\sigma^2}\right)$$
+
+
+If i want to estimate the \textbf{probability density} i will use this expression:
+$$\hat{f} (\vec{x}) = \frac{1}{n} \sum_{i=1}^n K(\vec{x},\vec{x}_i)$$
+The kernel estimation applied to a two-class problems:
+$$\hat{p}(\vec{x})=\frac{\sum_{i=1}^n c(\vec{x_i})K(\vec{x},\vec{x_i})}{\sum_{i=1}^n K(\vec{x},vec{x_i})}$$
+
+If it is $$c(\vec{x})=1$$ the $x_i$ will belong to class $c_1$ if $c(\vec{x})=0$ otherwise.
+
+
+\subsection{}
+
+
+
 
 \end{document}
