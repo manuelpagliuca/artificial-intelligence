@@ -1399,8 +1399,118 @@ $$\hat{p}(\vec{x})=\frac{\sum_{i=1}^n c(\vec{x_i})K(\vec{x},\vec{x_i})}{\sum_{i=
 
 If it is $$c(\vec{x})=1$$ the $x_i$ will belong to class $c_1$ if $c(\vec{x})=0$ otherwise.
 
+\subsection{Training multi-layer perceptrons}
+What we want to do is to follow the idea of the \textbf{gradient descent}, we want
+to find the \textit{minimum} of an error function in order to find the proper set of weights.
 
-\subsection{}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/gradienmt.png}
+    \caption{Intuitive interpretation of the gradient of a real-valued function $z=f(x,y)$ at
+        a point $(x_0,y_0)$}
+    \label{fig:err_surface}
+\end{figure}
+
+Considering this error surface (figure \ref{fig:err_surface}), if we are in the
+central point we can look to the derivatives of the error function in the two directions,
+the \textbf{gradient} $\nabla$ is the vector tangent to the surface and will tell us the direction where
+the surface is more or less increasing.
+
+If we want to find the solution for our learning we need to look for the minimum of this
+error function, so actually we need to look to the opposite direction to the gradient and we
+look to reach the minimum.
+$$e=\sum_{l\in L_{fixed}}e^{(l)} =\sum_{v\in U_{out}} e_v=\sum_{l\in L_{fixed}}\sum_{v\in U_{out}}e_v^{(l)}$$
+
+So we need to evaluate the gradient to find the direction of the decreasing value, and
+we need to go in the proper direction in order to reduce the error. In the case of the MLP
+calculate the gradient means compute the partial derivative of the error function in respect
+of the threshold and the weights taken as parameters.
+
+Given $\vec{w}_u=(-\theta,w_{u_1},...,w_{u_k})$ as the vector of weights of a single layer
+extended with the threshold, then compute the gradient as follow:
+$$\vec{\nabla}_{\vec{w}u}e=\frac{\partial e}{\partial\vec{w}_u}=\left(-\frac{\partial e}{\partial\theta_u},\frac{\partial e}{\partial w_{up1}},...,\frac{\partial e}{\partial w_{up_n}}\right)$$
+
+Since the total error $e$ is given by the sum of the individual errors in respect to all
+neurons and all training patterns $l$, we get that:
+$$\vec{\nabla}_{\vec{w}_u} e=\frac{\partial e}{\partial\vec{w}_u}\sum_{l\in L_{fixed}}e^{(l)}=\sum_{l\in L_{fixed}}\frac{\partial e^{(l)}}{\partial\vec{w}_u}$$
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/logistic_gradient.png}
+    \caption{Logistic function as activation function}
+    \label{fig:log_func_gradient}
+\end{figure}
+
+If we have a \textbf{logistic function} as $f_{(act)}$ we will have that the changes
+performed on the vector $\vec{w}_u$ will be proportional to the derivative of the $f_{(act)}$.
+More near to $0$ the value of the function will be, more precipitous will be the learning.
+
+\noindent\textit{How we can compute the necessary adjustment for each
+    neurons-weight and threshold after we found the error?}
+\newline
+The process that allow this is called \textbf{error backpropagation}:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/error_backpropagation.png}
+    \caption{Schematized structure of the error backpropagation process}
+    \label{fig:error_backpropagation}
+\end{figure}
+
+We assume that the activation functions is a \textit{logistic function} for each neuron
+$u\in U_{(hidden)}\cup U_{(out)}$, except for the input neurons.
+\begin{enumerate}
+    \item Apply the input at the input neurons that is returned without modifications
+          at the subsequent first hidden layer.
+    \item We compute for each neuron of the subsequent layers the weighted sum of the
+          inputs and we apply at the result the logistic function, producing the output
+          that will be propagated in all the network until the terminal neurons.
+    \item Compute the difference between the desired output and the actual output. since
+          it is possible to invert the logistic function $f_{(act)}$, we can know which was
+          the input that has conditioned that particular error ($\delta_u$).
+    \item Now that we have transformed the error of the output variable $out_u$ in
+          that of the input variable $net_u$, we can distribute the error (with the correction)
+          in a proportional way back to previous neuron, we back propagate the error until the
+          input neurons.
+\end{enumerate}
+
+We have to say that given the shape of the logistic function the error can disappear
+completely, since the gradient will approximate more the \textbf{null vector} the
+more it will be near the zero.
+
+If you initialize the \textit{learning rate} $\eta$ with a too high value instead
+of descending the curve we risk to jump from a \textit{"peak"} of the function to another,
+without ever converging to the minimum. Furthermore, it is not all certain that the minimum
+reached in this way is the global minimum of the function.
+
+A solution to the problem could consist in \textit{repeating} the learning, initializing
+the system with a different configuration of weights and threshold, and then choice
+at the end which configuration result in the better minimum.
+
+
+also in this case, waht we can do is to consider if we use for example the logsitic function for
+the activation error the analysis will be intersting: since the function used is
+derivable i have this form as derivative :
+
+
+which means that i can use this informations for making the changes in the weights,
+
+The training in the multi-layer perceptrons, in order to address this problem the er.
+the training will be slower...
+
+The big problem of implement the training in the MLP is that i don't have a single
+easy function to minimize, i do not see immediately the error in the various hidden
+neurons (can't see the desired and actual output and compute the error).
+
+The error back propagation is introduced:
+
+\begin{figure}[H]
+
+\end{figure}
+
+Let's consider the logistic activation function, i will have also on the other side
+
+
+
 
 
 
