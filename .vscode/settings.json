@@ -3,6 +3,7 @@
         "approximators",
         "backpropagation",
         "perceptron",
-        "perceptrons"
+        "perceptrons",
+        "squishification"
     ]
 }

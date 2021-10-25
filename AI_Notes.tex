@@ -247,7 +247,7 @@ from the inputs, then the TLU became \textbf{active} (value $1$) and generates t
     \label{fig:tlu}
 \end{figure}
 
-We have $n$ inputs identified by $x_1,…,x_n$ the unit is generating only one output $y$ each input is \textbf{not}
+We have $n$ inputs identified by $x_1,...,x_n$ the unit is generating only one output $y$ each input is \textbf{not}
 delivered directly to the core of the TLU, but each input is \textbf{weighted}, some are more relevant,
 and others are less relevant (exactly how we are doing when we consider the data from the external world).
 
@@ -995,24 +995,29 @@ The activation function of each hidden neuron is a so-called \textbf{sigmoid fun
 that is, a monotonically non-decreasing function with:
 $$f:\mathbb{R}\rightarrow [0,1]\text{ with }\lim_{x\rightarrow -\infty}f(x)=0\text{ and }\lim_{x\rightarrow\infty}f(x)=1$$
 
-It has a shape that allows a minimum and a maximum value (shaped), such that the possible net status
-of the neurons are inside the continuos domain of the function. If i have enough excitation
-in the network status the sigmoid function will give a positive excitation of the neuron,
+It has a shape that allows a minimum and a maximum value (shaped), such that the possible \textit{net status}
+of the neurons are inside the continuos domain between $0$ and $1$ of the function (squishification of the net status).
+If i have enough excitation in the network status the sigmoid function will give a positive excitation of the neuron,
 viceversa, it will point out a lower value in the function.
-
 \begin{figure}[H]
-    \includegraphics[scale=0.5]{images/sigmoid_functions.png}
+    \includegraphics[scale=0.45]{images/sigmoid_functions.png}
     \centering
     \caption{Some \textbf{unipolar} sigmoid activation functions}
 \end{figure}
+In the contemporary NN the sigmoid function are rarely used, actually the \textbf{ReLU} (\textit{Rectified Linear Unit})
+function is much more used since it is much easier to train (more similar to the behavior of the biological neurons).
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/relu.png}
+    \caption{ReLU function}
+\end{figure}
+
 
 The activation function of each output neuron can be a sigmoid or can be a \textbf{linear}
-function (depends on what we want to achieve).
+function (depends on what we want to achieve). There are many types of sigmoid function for representing
+the general behavior, the most simple is the \textbf{step function}.
 
-There are many types of sigmoid function for representing the general behavior, the
-most simple is the \textbf{step function}.
-
-I have a 0 value until my network excitation reach the value $\theta$, then the output
+I have a $0$ value until my network excitation reach the value $\theta$, then the output
 of excitation jump to the strongest status (the value of minimum and maximum activation are
 generally $0$ and $1$).
 
@@ -1052,6 +1057,10 @@ You just take the vector of the input neurons of the second layer
 (which are the output of the preceding layer) and multiply by the
 weight in between the layers.
 
+Then you apply the sigmoid function $\sigma$ for squish the values between $[0,1]$,
+you can also use a \textbf{bias} value for each independent values by using a vector $\vec{b}$.
+The bias tells you \textit{how high} the threshold has to be in order for the neuron to fire.
+$$\sigma\left(\textbf{W}\vec{in_{(U_2)}}+\vec{b}\right)$$
 Let's consider an example with the \textbf{bi-implication}
 three-layer perceptron:
 
@@ -1228,13 +1237,10 @@ $$\frac{dF}{da_0}=0,\frac{dF}{da_1}=0,...,\frac{dF}{da_m}=0$$
           lower degree.
 \end{itemize}
 
-
 \subsubsection{Multilinear regression}
 Until now i just tried to make the approximation more accurate going in the
 direction of polynomial,\textit{what happens if i have a function in multiple variables?}
-
 $$z=f(x,y)=a+bx+cy$$
-
 If i want to do a multi-linear regression (since i'm applying linear regression to a function
 of two variables), i have just to apply what i wast doing before.
 
@@ -1400,8 +1406,59 @@ $$\hat{p}(\vec{x})=\frac{\sum_{i=1}^n c(\vec{x_i})K(\vec{x},\vec{x_i})}{\sum_{i=
 If it is $$c(\vec{x})=1$$ the $x_i$ will belong to class $c_1$ if $c(\vec{x})=0$ otherwise.
 
 \subsection{Training multi-layer perceptrons}
+\subsubsection{Gradient descend}
+\paragraph{3Blue1Brown}
+Conceptually we think about each neuron to be connected to each neuron of the previous layer,
+and the weighted sum of this neurons expresses the strength of this connections:
+$$\sigma(w_1u_1+w_2u_2+...+w_nu_n+b)$$
+If we consider all the weights and bias initialized randomly, the MLP network will perform
+pretty terrible (he is acting randomly).
+
+What you do is defining a \textbf{cost function} that can express if the result of the NN
+is good or bad (for our objective). The greater the function is the greater is the error of the
+NN respect to desired output.
+$$e_v^{(l)}=\left(o_v^{(l)}-out_v^{(l)}\right)^2$$
+So then what you do is considering the average cost function over all the samples inside the
+NN, it is a cost value that express how good or bad the network is.
+
+We want to use this error in such a way that we can perform better during the next execution,
+let's consider a function $C(w)$ representing just one cost, if we want to find the input that
+minimize the cost of this function we just have to take the derivative $\frac{dC}{dw}(w)=0$, but
+this is not really feasible for complicate functions. You can find different \textbf{local minimum}
+of the function, so what you find isn't the best possible cost function value that you will find.
+Find the global minimum is pretty hard.
+
+But our function will be much more complicated, since we are dealing with lot of parameters (like
+the weights and the biases), let's imagine now a function with two variables where the cost
+function is graphed as a surface above the $xy$ plane. Now, for minimizing the function i should
+ask my self, in \textit{which direction the $C(x,y)$ function decreases most quickly?}, multi-variable
+calculus has a concept of \textbf{gradient}, which is the direction of the steepest increase $\vec{\nabla} C(x,y)$,
+and more to that the \textit{length} of that vector expresses how much steep is the increase.
+The algorithm essentially will be:
+\begin{itemize}
+    \item Compute $\vec{\nabla}C$
+    \item Small step in direction $-\vec{\nabla}C$
+    \item Repeat until convergence
+\end{itemize}
+
+The negative gradient of the cost function will tell you how to change all the weights and biases
+for all the connections, to efficiently decrease the cost (no overshot). The backpropagation
+is an algorithm for computing that \textit{crazy} gradient.
+
+The gradient is a vector expressed as $n$-dimension, where $n$ depends by weights and biases,
+it is usually a giant number (impossible to visualize). The important thing, is that the
+magnitude of each component (so the value) will tell you \textbf{how sensitive} the
+cost function output will be respect to the weight and bias (how much it moves respect the previous
+value).
+
+\paragraph{Lesson notes}
+Now we have to apply this for all the values for all the weights of the network. Essentially when
+we talk about \textbf{training} or the process of learning of a NN it's just about minimizing the
+cost function (or error function). More to that, the negative gradient vector will store
+the relative importance of the weights for each neurons.
+
 What we want to do is to follow the idea of the \textbf{gradient descent}, we want
-to find the \textit{minimum} of an error function in order to find the proper set of weights.
+to find the \textit{local minimum} of an error function in order to find the proper set of weights.
 
 \begin{figure}[H]
     \centering
@@ -1466,9 +1523,9 @@ $u\in U_{(hidden)}\cup U_{(out)}$, except for the input neurons.
           that will be propagated in all the network until the terminal neurons.
     \item Compute the difference between the desired output and the actual output. since
           it is possible to invert the logistic function $f_{(act)}$, we can know which was
-          the input that has conditioned that particular error ($\delta_u$).
+          the input (error) that has induced that particular error ($\delta_u$).
     \item Now that we have transformed the error of the output variable $out_u$ in
-          that of the input variable $net_u$, we can distribute the error (with the correction)
+          the error of the input variable $net_u$, we can distribute the error (with the correction)
           in a proportional way back to previous neuron, we back propagate the error until the
           input neurons.
 \end{enumerate}
@@ -1476,6 +1533,9 @@ $u\in U_{(hidden)}\cup U_{(out)}$, except for the input neurons.
 We have to say that given the shape of the logistic function the error can disappear
 completely, since the gradient will approximate more the \textbf{null vector} the
 more it will be near the zero.
+
+The weight adaptation is performed by the following formula (this tells me how to perform the correction):
+$$\forall w_{up}:\delta w_{up}=\eta \delta_u out_p$$
 
 If you initialize the \textit{learning rate} $\eta$ with a too high value instead
 of descending the curve we risk to jump from a \textit{"peak"} of the function to another,
@@ -1485,34 +1545,100 @@ reached in this way is the global minimum of the function.
 A solution to the problem could consist in \textit{repeating} the learning, initializing
 the system with a different configuration of weights and threshold, and then choice
 at the end which configuration result in the better minimum.
-
-
-also in this case, waht we can do is to consider if we use for example the logsitic function for
-the activation error the analysis will be intersting: since the function used is
-derivable i have this form as derivative :
-
-
-which means that i can use this informations for making the changes in the weights,
-
-The training in the multi-layer perceptrons, in order to address this problem the er.
-the training will be slower...
-
-The big problem of implement the training in the MLP is that i don't have a single
-easy function to minimize, i do not see immediately the error in the various hidden
-neurons (can't see the desired and actual output and compute the error).
-
-The error back propagation is introduced:
-
+\paragraph{Negation example}
+For example let's consider the negation $\lnot x$, there is a two-layer perceptron for this function.
 \begin{figure}[H]
-
+    \centering
+    \includegraphics[scale=0.5]{images/2_per_neg.png}
+    \caption{Two-layer perceptron with single input and training examples for the negation}
 \end{figure}
 
-Let's consider the logistic activation function, i will have also on the other side
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.55]{images/squared_errors.png}
+    \caption{Squared errors for computing the negation by using a logic activation function}
+\end{figure}
 
+From a numeric point of view, this procedure won't allow us to reach really the minimum, we will ahave some
+residual errors due to the computation of the various parameters (this will change according to the
+process we are adopting).
 
+\subsubsection{Variant of Gradient Descend}
+The variant aim to change the \textbf{learning rate} and the \textbf{length of the learning step}.
 
+\begin{itemize}
+    \item \textit{Manhattan training}, taking just the sign of the gradient, very fast but you may not reach
+          the optimum.
 
+    \item \textit{Flat spot elimination}, it tries to limit the culling of the step length when we get near a
+          function plateau by "lifting" artificially the derivative of the function in that point.
 
+    \item \textit{Momentum term}, at each successive step we add to the gradient a fraction of the previous
+          with changed weights, so that we can have a sort of memory of how fast it changes respect to the past.
+
+    \item \textit{Self-adaptive error backpropagation}, i allow to each parameter to have a different
+          learning rate, in this way we can have a grain fine control respect to the characteristic of the single parameter.
+
+    \item \textit{Resilient error backpropagation}, it's a combination of the Manhattan variation with the Self-adaptive.
+
+    \item \textit{Quick propagation}, instead of using the gradient i approximate the function with a parable and i
+          jump directly to the peak of this one.
+
+    \item \textit{Weight decay}, reduces the weights for avoiding to remain trapped in an already saturated region
+          (avoiding too big weights to keep stuck neurons).
+\end{itemize}
+
+\subsection{Number of hidden neurons}
+For a single hidden layer the following rule of thumb is popular (take as granted):
+$$\text{Number of hidden neurons} = \left(\frac{\text{number of inputs}+\text{number of outputs}}{2}\right)$$
+The problem is that if we have to few neurons in the hidden layer, we will not be able to achieve a good approximation
+the function that we need to approximate. We have not enough parameters, this behavior is called \textbf{underfitting}.
+
+On the contrary, if we have very large hidden layers we have many neurons, we have many many parameters to train and this may force the
+NN to learn the examples to much, and this will focus the network on this examples only, we lose the ability of
+generalizing the desired behavior, this is called \textbf{overfitting}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{images/overfitting.png}
+    \caption{The blue curve fits the data points perfectly, not a good model}
+\end{figure}
+For example, the NN learned perfectly the blue line to pass exactly in the points, but this is not what we
+want to have. Now we can't generalize the abstract view of the black line (too many parameters).
+
+\textit{What we need to do in order to understand when we have good quality for our learning?} Follow, the
+next subsection.
+\subsection{Cross validation}
+In order to understand if we have a good quality for our learning we need to
+randomly split our data sets in two parts:
+\begin{itemize}
+    \item Training set: used for the training.
+    \item Validation set: used for checking the quality of the result.
+\end{itemize}
+This will allow us to see (by using the validation set) if the training makes the NN overfitting the configuration or
+not, if the error that we have is still reasonable low, we have a good quality of the learning
+(we still can do good generalization), viceversa we have a bad learning quality.
+
+We can do the splitting in two ways:
+\begin{itemize}
+    \item \textbf{Cross validation}: splits randomly the data in two subsets (for training and validation),
+          we train the MLP with different numbers of hidden neurons on the training data and evaluate them on the
+          validation data. Then you repeat the split of the data and the training-evaluation many times and average the
+          results. At the end you choose the number of hidden neurons with the best average error.
+
+    \item \textbf{N-fold cross validation}: the data is split in $n$ subsets (called \textit{folds}) of
+          about equal size. The relative frequency of the output values in the folds represent as well as possible the
+          relative frequencies of these values in the data set as a whole (\textbf{stratification}). Out of these
+          $n$ data subsets, $n$ pairs of training and validation data set are formed by using $1$ fold as a validation
+          and $n-1$ folds for training.
+\end{itemize}
+
+randomly the data in two subsets for training and validation (\textbf{cross validation}) and we can repeat this splitting in different
+phases and at the end we can compare the. or we can split the data set in N-folds (\textbf{N-folds validation})
+and then use the various $n$ subsets for training and $n-1$ subsets for validation, in this way we can use
+most of the example for training instead of validation.
+
+The \textbf{stopping criterion} is also very important, we stop the training when the validation
+error is sufficient low.
 
 
 \end{document}
