@@ -1640,5 +1640,259 @@ most of the example for training instead of validation.
 The \textbf{stopping criterion} is also very important, we stop the training when the validation
 error is sufficient low.
 
+\subsubsection{Sensitivity analysis}
+Sensitivity of the NN to the various parameters that we have, the variations that we may have to the
+various parameters influences the behavior of our NN. We want understand how muc hthe learning applied to the NN
+is really independent from the behavior of the NN.
 
+This is important to understand how much is generalizable the behavior of our NN.
+
+This is a problem for MLP, when we perform the learning (supervised or unsupervised), basically we have a
+data set presented to the NN and then the learning algorithm adjust the parameters in ordered to find the
+desired behavior of the NN.
+
+In our hands we have an algorithm, but we don't have an understanding of the why the parameter
+are configured in this way. We are trying to give an explanation of why a NN is configured in a specific way,
+this is actually field of research (we still don't have a rational idea).
+
+For the sensitivity analysis which is part of this understanding, we want to answer this question: \textit{How much
+    the output of each neuron is changing if we change the data set for training}
+(still describing the desired behavior)\textit{?}
+So essentially, which inputs the output(s) react(s) most sensitively, it hints about which inputs aren't needed
+and may be discarded.
+
+The approach consists in determine the change of ourput relative to the change of input:
+$$\forall u\in U_{in}:
+    s(u)=\frac{1}{|L_{fixed}|} \sum_{l\in L_{fixed}} \sum_{v\in U_{out}} \frac{\partial out_v^{(l)}}{\partial ext_u^{(l)}}$$
+
+\subsection{Deep learning}
+A modern approach to MLP called \textbf{Deep learning}, with MLP we can approximate any continuos integrable
+function, but we have in general a pretty large hidden layer. First problem, \textit{what we can do to
+    simplify the structure?} The second problem, with MLP we have to know the characteristic of the data which are
+relevant to pick the important data to configure the NN.
+
+It has been experimented that adding $1$ or $2$ more layers helps to have a concise NN but with
+the same characteristic of a MLP with a large number of neurons in the hidden layers.
+
+The deep learning network is basically a MLP, but with a difference: What we want to do it consists
+in not having any type of knowledge about the problem and try to force the NN to configure itself with
+a limited and small number of neurons.
+
+For example, let's consider the $n$-bit parity function, which output $1$ if the $n$-bit word is even,
+or viceversa $0$. If we want to use an MLP with only one hidden layer, which has $2^{n-1}$ neurons, the number
+of hidden neurons grows \textbf{exponentially} with the number of inputs. This because the function is a
+disjunction of  $2^{n-1}$ conjunctions.
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{images/nbit_parity.png}
+    \caption{$n$-bit parity function}
+\end{figure}
+Instead if we use \textbf{multiple} hidden layers, the \textbf{linear growth} is possible (respect to the
+input). This finding bring to the developing of \textit{deep learning}, where the \textit{"depth"} is the
+one given by the longest path which separates the input neurons from the output neurons.
+
+The rational is to allow a greater deepness of the network in change of better performance in construction
+and computation of the NN. The deep learning bring some downsides:
+\begin{itemize}
+    \item \textit{Overfitting}: the increases of neurons given from the extra hidden layers can multiply
+          the parameters in a disproportional way.
+    \item \textit{Vanishing gradient}: during the propagation of the error the gradient will get reduced
+          until the vanishing.
+\end{itemize}
+
+Some solutions to the overfitting issue:
+\begin{itemize}
+    \item \textit{Weight decay}: set a maximum limit to the values which can assume weights
+          this for preventing an adjustment too much dependent from the data set.
+    \item \textit{Sparsity constraint}: introducing some limit to the number of neurons of the
+          hidden layers, or limiting the number of the active neurons.
+    \item \textit{Dropout training}: some neurons of the hidden layers are omtitted during the
+          evolution of the network.
+\end{itemize}
+
+While the issue of the vanishing gradient is given by the fact that the activation function it's a
+logistic function, which derivative reach at max the value of $\frac{1}{4}$. As consequence of this
+the propagation of the error to a previous layer adds a value, often smaller than $1$, and in this
+way reducing the gradient.
+
+A solution consists in editing slightly the activation function in a way that will be always increasing.
+Some candidates for that are the \textit{ramp function} and the \textit{softplus function}.
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{images/ramp_softplus.png}
+    \caption{Ramp function and softplus function}
+\end{figure}
+A totally different approach consist in building the network \textit{"layer by layer"}. A much used
+technique consists in think at the NN like a stack of \textit{autoencoder}. An autoencoder is an MLP
+which maps the input inside an approximation, using an hidden layers of less dimensions. The
+hidden layer works like an \textit{encoder} by encoding the input in a internal representation
+which will be decoded to the output layer. The autoencoder, has only one layer, it doesn't suffer
+about the same limitation and can be traversed normally from the backpropagation.
+
+A problem with this approach is that if there are a lot of neurons in hidden layer as much are in
+the input layer we are going to propagate with less adjustments, and without the autoencoder
+extracting any knowledge from the data.
+
+There are three possible solutions:
+\begin{itemize}
+    \item \textit{Sparse autoencoder}: provide to use a much smaller number of neurons inside the
+          hidden layers, respect to the input layers. The autoencoder will be forced to extract from
+          the input some features instead of just propagating the data.
+
+    \item \textit{Sparse activation scheme}: in a similar way for avoiding the overfitting, we
+          decide to \textit{"shutdown"} some neurons during the computation.
+
+    \item \textit{De-noising autoencoder}: we add randomly some noise to the input.
+\end{itemize}
+
+For obtaining an MLP with multiple layers we combine differente autoencoder. Initially we start by
+training just one autoencoder. At that time you remove the decoder and you preserve only the internal layer.
+You use the data processed from this autoencoder for training the second, and so on until you
+reach a satisfiable number of layers.
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{images/autoencoder_decoder.png}
+    \caption{Autoencoder and autoencoder with the decoder removed}
+\end{figure}
+MLP constructed in this way are really efficient at recognizing with success hand written numbers. If
+we would want to use similar NN for a more broad class of applications, like, for example, the
+feature recognized by the internal layers are not located in a specific portion of the image, we would
+need to use a CNN (\textit{Convolutional Neural Network}, next topic). This architecture is inspired
+by the working of the human retina, where the neurons used for the perception has a receptive field,
+or in other words, a limited region where they can answer to stimulus.
+
+This is simulated inside the CNN by connecting the neurons of the first layer just to some neurons
+of the input. The weights are partitioned in a way that partial networks can be evaluated  from
+different prospective of the image.
+
+During the computation it will proceed by moving the receptive field on the totality of the image. As
+result you will obtain a convolution of the weight matrix with the input image.
+
+\subsection{Radial Basis Function Networks}
+This is another NN model, we have a special type of structure for the neurons and a special approach
+for information we are collecting from images (typically).
+
+I have a 3-layered feed forward network, where the activation function of the hidden layer is a \textit{
+    Radial Basis Function} (RBF).
+
+An RBF is a function which try to point out what is relevant in a very specific area of the information
+we are observing (an image), and tries to diminish what is in the surrounding area. So it will focus on
+relevant part of the image where we want to understand the contents.
+
+In this kind of NN we have a set of values for various inputs, we represent this with a vector, we have
+for example a three dimensional space, where each value represent the input. What i'm considering as input
+of the hidden layer is the difference between this vector and the weight vector, which is the distance
+between the vectors.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/rbf.png}
+    \caption{Distance between $\vec{w}$ and $\vec{in}_{u}$}
+\end{figure}
+There are different families of distances, we typical consider the \textbf{Minkowski Family}, which are
+distances defined in general by this formula:
+$$d_k(\vec{x},\vec{y})=\left(\sum_{i=1}^n |x_i-y_i|^k\right)^{\frac{1}{k}}$$
+\begin{itemize}
+    \item $k=1$: Manhattan distance.
+    \item $k=2$: Euclidean distance.
+    \item $k\rightarrow\infty$: Maximum distance.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/mknowski.png}
+    \caption{Manhattan, Euclidean and Maximum}
+\end{figure}
+
+The RBF has an activation function in the output layer which is \textbf{linear}. Differently, the
+hidden layer has an activation function which is a \textbf{radial function}. A radial function
+decreases from $0$ to $\infty$ in a monotonically way.
+
+$$f:\mathbb{R}_0^+\rightarrow[0,1]\text{ with }f(0)=1\text{ and }\lim_{x\rightarrow\infty}f(x)=0$$
+The size of the \textit{catchment region} of the function is defined by
+the \textbf{reference radius} $\sigma$, the bigger is the $\sigma$ the bigger
+is the area observed by the neuron. The various parameters and the shape of the function
+determine the width of this radius. The radial activation function are typically shaped in this way:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{images/radial_functions.png}
+    \caption{Radial activation functions}
+\end{figure}
+As example, let's apply an RBFN for simulating the boolean conjunction $x_1\land x_2$.
+When i'm around the black point, the input is $(1,1)$, what we want to do is creating a circle
+around that area where the output is $1$ (significant information to extract).
+
+Another approach could consist in considering a RBF in the opposite way, where the interesting
+data is outside the circle.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/RBFN.png}
+    \caption{RBFN for conjunction}
+\end{figure}
+Another example is with the bi-implication $x_1\longleftrightarrow x_2$:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{images/RBFN_bi.png}
+    \caption{RBFN for bi-implication}
+\end{figure}
+
+\paragraph{Function approximation}
+We have two neurons focusing on the relevant part of the domain, the rest will be $0$, and by merging
+this two information you will get the bi-implication. In general an RBFN as the same expressive
+power of an MLP, and it can be saw as an universal approximator (can approximate any Riemann integrable
+function) with a small arbitrary error.
+
+The process is the same of the other NN, the function will get approximated with a step function that
+can be computed easily by a RBF if we define that as the weighted sum of rectangular functions.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{images/scale_func.png}
+\end{figure}
+Each pulse can be represented by a neuron of a RBFN:
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{images/nn_funcapprox_rbfn.png}
+    \caption{RBFN for the approximation, using the step function}
+\end{figure}
+The approximation can be enhanced by increasing the number of points where the function is
+being evaluated. Furthermore, if instead of using the rectangular function, we
+use the Gaussian we obtain more "soft" transitions, avoiding big jumps (like for the MLP).
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{images/gaussian_rbfn.png}
+    \caption{RBFN for the approximation, using the Gaussian function}
+\end{figure}
+
+\subsection{Training RBFN}
+The principle is always the same, having in mind the \textit{minimization} of the final error,
+but the problem here is \textit{how we can decline this by taking into account the
+    specific structure of this neurons?}
+With the others ANN the initialization fase was trivial, because you just had to
+select some random values, instead with RBFN the same approach conduce to suboptimal
+results.
+
+Let's consider the special caso of \textbf{simple radial basis function network}, which is
+a partial view of the general structure of a RBFN, where each training example is associated
+with a proper radial function.
+
+We want to apply a \textbf{fixed learning task} $L_{fixed}?\{l_1,...,l_m\}$ with
+$m$ training patterns $l=(\vec{l}^{(l)},\vec{o}^{(l)})$ composed by input and desired outputs.
+
+Let's define the vector of associated weights to the neuron $v_k$, with $k=1,...,m$ (one
+for each training pattern):
+$$\forall k\in\{1,...,m\}\vec{w}_{v_k}=\vec{i}^{l_k}$$
+Assuming a Gaussian activation function, the radius $\sigma_k$ is initialized according to this heuristic:
+$$\forall k\in\{1,...,m\}:\sigma_k = \frac{d_{max}}{\sqrt{2m}}$$
+Where $d_{max}$ is the maximum distance between the input vectors. This choice allow to center the various
+Gaussians in such a way that them doesn't overlap each other, instead they will distributes in an ordered way
+respect to the input space.
+$$d_{max}=max\underset{l_j,l_k\in L_{fixed}}{d\left(\vec{l}^{(l_j)},\vec{l}^(l_k)\right)}$$
+For what concerns the weights of the output neurons, they get calculated with the following
+function:
+$$\forall u:\sum_{k=1}^{m}w_{u_k}out_{u_k}-\theta=o_u$$
+By using $\theta=0$, we will get that the previous equation will be:
+$$\textbf{A}\cdot\vec{w}_u=\vec{o}_u$$
+Where $\textbf{A}$ is the $m\times m$ matrix that got has components the various output of the neurons
+in the hidden layer. If the matrice $\textbf{A}$ has the complete rank, we can invert that and
+compute the weight vector:
+$$\vec{w}_u=\textbf{A}^{-1}\cdot\vec{o}_u$$
 \end{document}

@@ -1,9 +1,15 @@
 {
     "cSpell.words": [
         "approximators",
+        "Autoencoder",
         "backpropagation",
+        "Convolutional",
+        "Denoising",
+        "Overfitting",
         "perceptron",
         "perceptrons",
+        "RBFN",
+        "softplus",
         "squishification"
     ]
 }
