@@ -1863,36 +1863,229 @@ use the Gaussian we obtain more "soft" transitions, avoiding big jumps (like for
 \end{figure}
 
 \subsection{Training RBFN}
+We want to apply in principle a sort of backpropagation in order to perform the configuration,
+like with the FFN.
 The principle is always the same, having in mind the \textit{minimization} of the final error,
 but the problem here is \textit{how we can decline this by taking into account the
     specific structure of this neurons?}
-With the others ANN the initialization fase was trivial, because you just had to
+With the others ANN the initialization phase was trivial, because you just had to
 select some random values, instead with RBFN the same approach conduce to suboptimal
 results.
 
-Let's consider the special caso of \textbf{simple radial basis function network}, which is
+Let's consider a \textbf{simple radial basis function network}, which is
 a partial view of the general structure of a RBFN, where each training example is associated
 with a proper radial function.
 
-We want to apply a \textbf{fixed learning task} $L_{fixed}?\{l_1,...,l_m\}$ with
+We want to apply a \textbf{fixed learning task} $L_{fixed} = \{l_1,...,l_m\}$ with
 $m$ training patterns $l=(\vec{l}^{(l)},\vec{o}^{(l)})$ composed by input and desired outputs.
 
-Let's define the vector of associated weights to the neuron $v_k$, with $k=1,...,m$ (one
-for each training pattern):
+We have one hidden neuron $v_k, k=1,...,m$ for each training pattern, let's define the vector
+of associated weights to the neuron $v_k$:
 $$\forall k\in\{1,...,m\}\vec{w}_{v_k}=\vec{i}^{l_k}$$
-Assuming a Gaussian activation function, the radius $\sigma_k$ is initialized according to this heuristic:
+Let's consider the activation function of our neuron equal to the sigma specific to that
+neuron, the radius can be computed for each of the neuron by considering heuristic approach
+in which we take the distance between the various input patterns and we take the maximum
+distance computed between each pair of input vectors (patterns) in our dataset (this value
+is expressed as $d_{max}$).
+
+The radius of the neuron $\sigma_k$ will be choose heuristically if the activation
+function is Gaussian function:
 $$\forall k\in\{1,...,m\}:\sigma_k = \frac{d_{max}}{\sqrt{2m}}$$
-Where $d_{max}$ is the maximum distance between the input vectors. This choice allow to center the various
-Gaussians in such a way that them doesn't overlap each other, instead they will distributes in an ordered way
-respect to the input space.
 $$d_{max}=max\underset{l_j,l_k\in L_{fixed}}{d\left(\vec{l}^{(l_j)},\vec{l}^(l_k)\right)}$$
-For what concerns the weights of the output neurons, they get calculated with the following
-function:
-$$\forall u:\sum_{k=1}^{m}w_{u_k}out_{u_k}-\theta=o_u$$
-By using $\theta=0$, we will get that the previous equation will be:
+Where $d_{max}$ is the maximum distance between the input vectors.
+This choice allow to center the various Gaussians in such a way that them doesn't overlap each other,
+instead they will distributes in an ordered way respect to the input space.
+Basically we have a structure where we try to learn with each neuron one of the input patterns,
+one neuron trying to well understanding a specific input pattern.
+\linebreak\\\noindent I can initialize the connections from the hidden to the output
+neurons by using weights, this can be done by considering this formula:
+$$\forall u:\sum_{k=1}^{m}w_{{u_v}_m} out_{v_m}^{(l)}-\theta_u=o_u^{(l)}$$
+which is the weighted summation of the output of the hidden layer and considering the threshold
+of the output, which has to be equal to the \textbf{desired output}. We know the desired output,
+we have the threshold and the current output generate by the hidden layer, so the last thing we
+need is the weights, this can be obtained by multiplying the interconnections weight by the
+matrix $A$ of the output of the hidden layer (by using $\theta=0$):
 $$\textbf{A}\cdot\vec{w}_u=\vec{o}_u$$
-Where $\textbf{A}$ is the $m\times m$ matrix that got has components the various output of the neurons
-in the hidden layer. If the matrice $\textbf{A}$ has the complete rank, we can invert that and
+Where $\textbf{A}$ is the $m\times m$ matrix that has for components the various output of the
+neurons in the hidden layer. If the matrix $\textbf{A}$ has the complete rank, we can invert that and
 compute the weight vector:
 $$\vec{w}_u=\textbf{A}^{-1}\cdot\vec{o}_u$$
+This method guarantee a perfect approximation. This means that is not necessary training
+a simple radial basis function network. In general, if we don't want to have for each pattern a neuron,
+we will have to select $k$ subsets from the dataset and find, for each subset, a representative che assoceremo
+to a neuron in the hidden layer.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.4]{images/example_biimp_rbfn.png}
+    \caption{Example of the computing the weight vector in the bi-implication problem}
+\end{figure}
+if we look graphically, for each of the hidden layer we have aRBFN shaped as a Gaussian,
+which will correspond at each example that the neurons will learn. We will have only
+two of this Gaussian in the final computation, we will generate an output that will
+have to be different from $0$. This is a RBFN centered in the relevant example that
+we want to learn.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.4]{images/rbfn_gauss.png}
+    \caption{RBFN function centered in the examples}
+\end{figure}
+
+This is not the general case, if we take a structure like this and we want to create
+a RBFN having in mind that for each the pattens we have to contribute we need to put a neuron
+with RBFN as activation function, this implies that if we have many examples that we want to learn
+we are going to have an incredibile big structure for our network, and this is not smart.
+
+If we are considering the general radial basis function structure in which we don't want to have a neuron with $x$
+RBFN network centered on a specific example to learn, we need to try to limit the number of neurons
+we need to understand which are the neurons which are relevant and understand where to place it.
+Basically we need to select among the $m$ patterns that we want to learn a subset of $k$ patterns
+adn then we need to put the neuron centered on this example, then we need to figure out how to build
+the other outputs by combining this limited number of examples that we learn.
+
+If we want to use this kind of approach we basically need to understand were to place the center,
+but we need also to understand how large will be the radius in order to be sure that
+after placing the Gaussians we are able to recreate the examples for which we don't use the
+Gaussian.
+
+What i can do is splitting the domain of examples, and then for each subdomain find a representative
+point (not an example) in the subdomain, that will cover the group of the examples (not points)
+of the subset.
+
+This can be formalized in saying that we select $k$ training patterns as centers, where
+the connection weights for the hidden neurons are the training pattern, and the connection
+weights for the output neurons can be obtained by considering this matrix $A$:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{images/matrix_conn_weights_rbfn.png}
+    \caption{Matrix that expresses the connections weights for output neurons}
+\end{figure}
+Now i can apply the invert the matrix for computing the weights since system over-determined (not
+squared), but i can consider the pseudo inverse matrix:
+$$A^+=(A^T A)^{-1} A^T$$
+Now we can apply the actual computation for our vector $\vec{w}$ of the weights, given by:
+$$\vec{w}_u = A^+\vec{o}_u$$
+
+So now, \textit{how we can choose the center for creating the configuration for our RBFN?} As
+for the simple case we can take all points we just need to determine the radius for one single
+radius and the output weights (considering that we want to use a better structure, which is
+practicable).\\Options of radial basis function centers:
+\begin{itemize}
+    \item All data points as centers, the simple case where only radius
+          and output weights need to be determined. The output values
+          ca be achieved exactly, computing the weights is unfeasible.
+    \item Random subset, this is fast, only radius and output weights need to be
+          determined. The performance depends on the choice of data points.
+    \item Clustering, c-means clustering (the centroid point representative for the
+          examples in the subset).
+\end{itemize}
+
+\subsubsection{C-means clustering}
+This is one of the best options for choosing the RBFN centers:
+
+\begin{enumerate}
+    \item Considering a number of $c$ clusters to be found (input).
+    \item Initialize the cluster centers \textbf{randomly}.
+    \item Assign initially the data points (the examples) to the nearest center (or \textit{centroid}).
+    \item Adjusting the position of the center considering the position of the assigned data points (mean
+          vectors of the assigned data points, this is called \textbf{cluster center update}).
+    \item Repeat the step $3$ and $4$ until clusters do not move anymore (converge).
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{images/c-means.png}
+    \caption{Step $1$ with $c=3$, Step $2$ randomly choosing the centroids}
+\end{figure}
+Then by using the \textbf{Delaunay Triangulation} of the centroids, which leads
+to the \textbf{Voronoi Diagram} by taking the line orthogonal to each one of the three
+edges. This will result in a tessellation of the domain of the function, basically
+each tassel of the domain is a cluster.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{images/c-means1.png}
+    \caption{Delunay Trianglulation (left) and Voronoi Diagram (right)}
+\end{figure}
+After that i'm going to search for the new centroid of each cluster, where the sum of the
+distances is minimal, after finding this element i will consider it as the new center.
+Then i will apply again the same partition (Delunay-Voronoi) as before.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{images/c-means2.png}
+    \caption{Centroid update}
+\end{figure}
+
+Basically what we can do is to apply some rules for updating the weights that are similar
+to the backpropagation in the MLP; basically you have just to adjust the weights from the hidden to the output neuron
+we just need to compute the gradient:
+
+and then we need to find the direction of the maximum slope for the gradient and we need to
+compute the increase of the decrease in order to go in the d
+
+
+For the hidden layer we need to place the centers, we need to not only find the interconnection
+weights for the centers but also the size of the radius which allow to combine together
+the contribution of the various neurons in the hidden layer for generating the desired output
+with the requested minimum error.
+
+
+
+We have palced the neurons. nwo we need to understand how big the radius is big for the neuron.
+The gradient of the error with respect to the radius :
+
+Updat raule for enlarge or reduce radius:
+
+special case of Gaussian activation function:
+
+\subsection{Learning Vector Quantization}
+\textit{What happen if we don't have examples with a desired output (only the examples)?}\\Basically,
+until now we saw the fixed-learning task, now we want to see what happens with a free-learning task.
+
+Now i'm going for searching outputs that will be similar to the given input.
+
+We still consider the Delaunay and Voronoi approaches.
+The problem is that what we want to do is a suitable quantization of the domain in which
+we have our examples in order to understand the group of the examples which are similar.
+In the previous example we had given a number of clusters, now we want to find the clusters
+in a given dataset.
+
+Let's considered the input examples (or data points) as empty circles, and the cluster centers
+(or points) by the full circles.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/vector_quant.png}
+    \caption{Vector quantization}
+\end{figure}
+The \textbf{Learning Vector Quantization Network} (LVQ/LVQN), is a FFNN with 2-layers that performs this clustering
+of the examples by similarity, basically from an abstract point of view we see the LVQ as a radial
+function in which the hidden layer and output layer are collapsed in a single layer.
+
+The network input function of each output neuron is the distance between the input vector and the
+weight vector. The definition of the distance is the same, we are considering the Mynkowski family
+and the euclidean distance for represent the behavior of our function,
+
+The output activation function of each neuron is not a simple function of the activation of the
+neuron: it considers the activation of \textbf{all} output neurons.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{images/act_lvqnn.png}
+\end{figure}
+We don't just look locally, for example with $4$ neurons we will look tothe value of the activation
+in the activation function of each neuron and we compare the activation value of each on of them. The
+biggest activation value will lead to an output $1$ otherwise $0$ (when the activation is smaller). We
+have one neuron winning over all the other, basically we have a connection between all neurons in the
+output layer such that each of them is looking to what the other neurons are doing (the activation),
+this will allow the confrontation.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{images/lvqq_neur_confront.png}
+\end{figure}
+
+In the LVQN we can use the same radial functions that are use for any RBFN. 
+
+
 \end{document}

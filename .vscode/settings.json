@@ -5,6 +5,8 @@
         "backpropagation",
         "Convolutional",
         "Denoising",
+        "FFNN",
+        "Gaussians",
         "Overfitting",
         "perceptron",
         "perceptrons",
