@@ -2073,19 +2073,275 @@ neuron: it considers the activation of \textbf{all} output neurons.
     \centering
     \includegraphics[scale=0.4]{images/act_lvqnn.png}
 \end{figure}
-We don't just look locally, for example with $4$ neurons we will look tothe value of the activation
+We don't just look locally, for example with $4$ neurons we will look to the value of the activation
 in the activation function of each neuron and we compare the activation value of each on of them. The
 biggest activation value will lead to an output $1$ otherwise $0$ (when the activation is smaller). We
 have one neuron winning over all the other, basically we have a connection between all neurons in the
 output layer such that each of them is looking to what the other neurons are doing (the activation),
 this will allow the confrontation.
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.6]{images/lvqq_neur_confront.png}
 \end{figure}
 
-In the LVQN we can use the same radial functions that are use for any RBFN. 
+In the LVQN we can use the same radial functions that are use for any RBFN.
+
+\textit{How can we perform the configuration ?}
+Basically for each training pattern we look to the \textit{reference vector} which is
+we find the closest reference vector.
+
+
+I may have basically two strategy that i can consider in order to perform the adjustment of the
+weights:
+\begin{itemize}
+    \item \textbf{Attraction rule}, when the data point and the reference vector have same
+          class:
+          $$\vec{r}^{(new)}=\vec{r}^{(old)}+\eta(\vec{x}-\vec{r}^{(old)})$$
+    \item \textbf{Repulsione rule}, when the data point and the reference vector have different
+          class:
+          $$\vec{r}^{(new)}=\vec{r}^{(old)}-\eta(\vec{x}-\vec{r}^{(old)})$$
+\end{itemize}
+where $x$ is the input, $r$ is the reference vector for the winner neuron, and $\eta$ is the learning
+rate. Until now we meant the learning rate as fixed during the learning, by the way the are some
+situations were the constant learning rate can bring some problems.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/adapt_rulesa.png}
+    \caption{Adaptation rules applied on the reference vector}
+\end{figure}
+In the case of the attraction rule we move the reference vector $\eta d$ towards $x$
+which is the same class of the reference vector. Or in the right diagram where
+we are moving the reference far from the reference $x$ so that that the element
+moves to another class.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/onlk_batch_adap.png}
+    \caption{Adaptation rules in case of online and batch learning}
+\end{figure}
+In the case of the online training we have a step each time according to the various
+pattern i'm presenting, in the batch training i apply the various
+connection for the group of examples belonging to the same pattern and perform the update at the end
+of the entire batch (the solution of the position of the centers is smoother
+since i am putting together more then one example).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/time_dep_lm.png}
+    \caption{Fixed learning rate to time dependent learning rate}
+    \label{fig:tdln}
+\end{figure}
+The problem i have with this kind of techniques, is that if i consider a fixed learning rate,
+which is a coefficient which tells me how much i want to change the position by taking
+into account the similarity.
+
+I may enter in a oscillation (left diagram), in this case
+what we can do is to dynamically change the learning rate consists by decreasing it
+as it grows iterations (called \textbf{time dependent learning rate}, \ref{fig:tdln} on right).
+\linebreak\\There are some applications in which i may have some more information
+about the data tha i have, \textbf{classified data}, i may have some more information
+related to the class to which an example belong and even
+if i'm not using the supervised learning i can take advantage of this information
+so that i can update not only the reference vector but i can consider updating also
+some other reference vector the once which are the nearest the reference vector
+that i'm considering.
+
+The problem is that this may move the classes very far one from the other,
+one option to balance this is to consider the \textit{window rule}: a reference vector weill become adapted
+only if the point $p$ is near the border of the classification, the hyper-surface which separates
+the contiguous regions of the two classes. The notion of closeness is formalized as :
+$$min\left(\frac{d(\vec{p},\vec{r}_)}{d(\vec{x},\vec{r}_k)},\frac{d(\vec{x},\vec{r}_k)}{d(\vec{x},\vec{r}_j)}\right) > \theta
+    \text{ where } \theta=\frac{1-\xi}{1+\xi}$$
+where $\xi$ is a parameter specified from the user, which describes the "amplitude" of the window
+around the border of the classifications. If we assume that the data are randomly chosen from
+a random set of normal distributions, we could use a \textit{soft} approach, in opposite to a "crisp"
+division typical of the clustering like the \textit{c-means}. Basically we don't have a RB function
+which is rather sharp but i'm considering a smooth border between the classes induced by
+sufficiently large RBF. In this cases i can considering the classing by a mixture og
+Gaussian which are representing the various classe, with a softer border between
+the various classes.
+
+In order to do this i have to consider that each element is not interbelonging
+to one class or another, each element of my data set as a probability of belonging to one or the other class.
+This is due to the fact that i have a gaussian shape of the radial basis function,
+In this case what i will do is essentially to evaluate the probability for each example to
+belong ot each of the classes introduced in my system. Formal definition:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{images/formal_prob_func.png}
+    \caption{Probability function}
+\end{figure}
+If i take the various examples of my dataset i have a set of clusters in my dataset with the parameter that defines
+the cluster, and for each element of the dataset i want to understand the prbability of belonging to
+one class respect to another.
+
+Mathematically this is very complex to be optimized, and as a consequence we try to perform an approximation introducing
+in an explicit way the position of the various Gaussians with additional random variables which are difficult to
+compute it in a exact way, we compute a maximum expected value for that, and we try to get the
+maximum of the likelihood.
+
+Basically what we need to do to perform the maximization of the likelihood, we work in two passes since we have the centers,
+and the distribution of our variables, what we can do basically we optimize the initial group
+of centers of the clusters and after this we can compute the maximum likelihood on the data we have.
+The what we do we do maximization.
+\begin{enumerate}
+    \item Computing the center
+    \item Computing the normal distribution
+\end{enumerate}
+The final result will be an approximate value of the density function, of belonging to each
+specified class for each data that we have in the data set. We will have a softer definition of
+the border but this will bring a much more complex analysis.
+
+\subsection{Self-organizing maps}
+Sometimes are called also \textit{Kohonen maps}, introduce from the Prof. Kohonen. It is a two-layer
+FFNN similar to the VQLN, instead of having in the output layer all the other output neurons, the
+self-organizing map has local connections only among neighboring hidden/output neurons.
+
+We do not have the winner take all over the entire set of output neurons but we work local, this is applied
+on the neighbor of each neuron. The network input function is the radial function,as before, the
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/som_examp.png}
+    \caption{Example of neighbor connections for each neuron}
+\end{figure}
+By the way in SOM the neighbor are defined in a bi-dimensional space:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{images/som_bi.png}
+    \caption{Neurons expressed as squared or hexagonal grid}
+\end{figure}
+the black ones are representing the neurons, where the surrounding square (or hexagon)
+of a neuron is the neighbor. The grey lines represents the regions assigned to a neuron.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/topology_sop.png}
+    \caption{The topology is preserved}
+\end{figure}
+basically in this kind of structure we want to analyze the data and we want to have a winner
+for each data, but what we want also is to to preserve the neighborhood, so the topology
+of the structure.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/neigh_asoc_topo.png}
+    \caption{The neuron space (2D grid) and the input space (3D grid)}
+\end{figure}
+
+Basically what we want to do in this kinf of netwok is how we associate the elemnt of the dataset with the neuron
+in my grid preserving thesimilarity and the concepti of neighbouring saw before. This is how we can upadate
+parameter of our netwerkl, and enforcing hte parametee ofthwinning neuron :
+$$\vec{r}_u^{(new)} = \vec{r}_u^{(old)} + \eta(t) f_{nb} (d_{\text{neurons}} (u,u_*), \Rho (t)) (\vec{x}-\vec{r}_u^{(old)})$$
+ùin time i will reduce the learning radius , so i can focus the capacity of learning a sspecific pattern
+this will allor me to create a much stronger partitioning in classes by similarity.
+Considering a neighbouring function with is smooth, i may consider a smooth border and an example may excide more t***
+
+The training will work by placing the elements randomly and adjust the interconnection by asdjusting the winning neuron***
+
+Example a grid 10 by 10
+random associations of hte netwoek, each step will associate with the similar wxample.
+another example,
+the problem is always the dasme the initial configuration is poort and the nn can't flatten the configuration
+of the grid. Maybe the neighbour radius is too small or le the learning rate is too small.
+
+
+Basically starting from the original 3D we are able to flat in a bidimensional one. This can be used for reduce the bidimensionality
+of the dataset
+
+\subsection{Hopfield Networks}
+hopfield network is a NN with a loop in the graph. We have not seen in practice
+what happens with a loop that feed back the information.
+
+Essentially what we have is asingle layer of neurons for which we have the inputs that are
+giving the incoming data to them, they are oprating in such a way
+that the output of the neuron are feeding the other nuerons in the structure.
+
+This means that we ahve a single layer of neurons that still have an output arc, they
+can't only send data for feedback.
+Basically this creates a kind of memory, what id generated in a previous step is reused for the
+subserquent step (by the way this isthe motivation for introducing this kind of network).
+
+The relevance of the otuput arc is thesame of the feedback arc. the network in put function is
+only the weighted usmmation of the output of all the other neurons.
+
+The we will generate the network neuron of the value, this is the input value of the activation
+function, the actiovation function that we are using is aessentially
+the step function.
+
+The output function for this neuron is the identity function. If we want ina concise way represent all
+the connections we can use a matrix for collect all the weights. The diagonals is composed by 0
+because this means that we don't have any contribution to the next neuron. The matrix is simmetric
+so that the interconnection id passed correctly
+
+simple example
+In this example we have 1 as interconnection weight, we see the matrix.
+the problem that we have is when we are updating the neuron ? According to how we perform
+the update the hopfield could converge or not. The computations can oscillates in the case
+of synchronous update...**+
+
+If we apply the update in an asynchronous way the situation is different, the values are chagned one at time
+ass consequence we donìt havee the cylic behavior of before. The only problem is that the steady case will
+be different, we are sure if we use the asyunchronous approach that we reach a sterady state in the end but the value
+of thesteady state will depend from the order of execution of the computation.
+
+Let's consider a more complex network, if we atake 4 or 5 neurons will be more complex. Here is a still
+readable garaph describing the connections bt growing the number of neurons it will be easily unreadable.
+There is a simpliefied versione of the graph which erxploits the characteristic of the netwoek.
+Every neuron is an output neuron, when a steady configuratin is reache is the final output of the neuron
+every neuron is an output neuron aswell.
+since the matrix of the weights is symmetric, we don't have ti create
+two arcs between the neuron $i$ and $j$ the sam***
+
+In orderer to undestand how the computation evolves and how we reach the final stready state we have
+to introduce the state graph. It will give the values of the activation and
+transition inside the hopfield network. each nod in the graph represent a configuration that we
+have foreach neuron.+ is active and - is not active.
+If we start from thisstate, if we apply the opperation for one of the three neurons what is happeniing
+is atthe the arc going out of the ***
+
+
+convergence therem
+It actually possible to prove the convergence theroem wihch tekìll us that if i a ctive the hopfield netwrok
+in a sequential asynchronous way a steady state is reached in a finite numnber of steps.
+Itis possible to prove also that his maximum number is given by n multyplied by $2^n$ steps.
+
+basically to prove this we can realy on the facti the we can associate to the bahciouir of the network
+an enrgy which can be defined in this way (not actual physical energy), but if you look
+to the shape of the function is the typical structure of an energy function:
+***
+It isimportant to point out that the order of acativation of neurons
+doesn't matter we will reach a steady state.
+
+A steady state is reached when no output is changin, if a neuron is changing theoutput the previous state of the graph can't
+be reached. To go back to the previous state we need to increase the energy. Any physical system
+tries to reduce the total energy iun the system. The second problem that forbid the fact of
+comeing back to the previous state is due to the fact that this implies that we may need
+tochange two outputs to go back as consequence even if is not the complete parallele of the
+neuron ,that we are not following strictly the sequential activation.
+
+To have a betteerunderstandi of the enregy reasoning we cxan place the node of the state graphs, here is
+possible to see if we compute that form of energy**
+not necessary the state graph need to be symmetric, here is lan example of another network,
+
+
+When we arereaching a steady state we ahve a memory of what we are recording, this is what the
+hopfield allows us to do. we ca conifgure the newtwo such that the steady state can represent some
+informatino that we want to retrieve. if we want to have some specific information that we want to store we
+have to **
+with a single stirng of bits is possible to show that to achieve this configuration
+(E is the identity) if we use the wight matrix we are able to present the pattern p
+and recognize it.
+what we can state is that if we ahave the apattern and we want to know if this pattern is one
+of the considered important
+
+this type of network can do even more, in particular if we predsent a pattern that is not ientycal to the
+orginal patter, the network can restruct the original pattern (reaching the state of the original
+pattern). Why this ? if we have number that we awant to recogniize, and there is some noise
+during the connection, we can understand what kind of number is that by similarity.
+
+Solving optimizations problems. we takethe function htatweewant to optimize in our oìproblem
+***
+\subsection{Boltzman machines}
+
+
 
 
 \end{document}
