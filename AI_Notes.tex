@@ -3,6 +3,7 @@
 \usepackage[OT1]{fontenc}
 \usepackage{mathpazo}
 \usepackage[english]{babel}
+\usepackage{amsmath,amsfonts,amssymb}
 
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -10,6 +11,8 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{hyperref}
+\usepackage{chngcntr}
+\counterwithin{figure}{section}
 \hypersetup{
     colorlinks,
     citecolor=black,
@@ -2229,7 +2232,7 @@ of the structure.
 Basically what we want to do in this kinf of netwok is how we associate the elemnt of the dataset with the neuron
 in my grid preserving thesimilarity and the concepti of neighbouring saw before. This is how we can upadate
 parameter of our netwerkl, and enforcing hte parametee ofthwinning neuron :
-$$\vec{r}_u^{(new)} = \vec{r}_u^{(old)} + \eta(t) f_{nb} (d_{\text{neurons}} (u,u_*), \Rho (t)) (\vec{x}-\vec{r}_u^{(old)})$$
+$$\vec{r}_u^{(new)} = \vec{r}_u^{(old)} + \eta(t) f_{nb} (d_{\text{neurons}} (u,u_*), \rho (t)) (\vec{x}-\vec{r}_u^{(old)})$$
 ùin time i will reduce the learning radius , so i can focus the capacity of learning a sspecific pattern
 this will allor me to create a much stronger partitioning in classes by similarity.
 Considering a neighbouring function with is smooth, i may consider a smooth border and an example may excide more t***
@@ -2340,6 +2343,195 @@ during the connection, we can understand what kind of number is that by similari
 Solving optimizations problems. we takethe function htatweewant to optimize in our oìproblem
 ***
 \subsection{Boltzman machines}
+Le macchine di Boltzmann sono un modello di network che sono in relazione stretta con gli
+Hopfield networks.
+Alcune variazioni speciali di questo modello hanno ottenuto un interesse rilevante
+recentemente (specialmente nel Deep Learning). Una macchina di Boltzmann standard differisce
+da un Hopfield Network principalmente nel come gli stati dei neuroni vengono aggiornati (
+e per il fatto che può contenere neuroni nascosti)..
+
+Come per le reti Hopfield per la risoluzione di problemi di ottimizzazione si affidano ad
+una \textbf{funzione energetica} che assegna un valore numerico ad ogni stato del network. Con
+l'aiuto di questa funzione engergetica viene definita una distribuzione probabilistica su gli
+stati del network che è basata sulla \textbf{distribuzione di Boltazmann}:
+$$P(\textbf{s})=\frac{1}{c}e^{-\frac{E(\textbf{s})}{kT}}$$
+dove il vettore il vettore $\textbf{s}$ descrive lo stato del sistema, $c$ è la costante di
+normalizzazione, $E$ è la funzione che restituisce l'energia di uno stato $s$, $T$ è la temperatura
+termodinamica del sistema e $k$ è la costante di Boltzmann.
+
+Per le macchine di Boltzmann il prodotto $kT$ è spesso sostituito solo da $T$, così combinando
+la temperatura e la costante di Boltzmann in un singolo parametro. Inoltre, lo stato $s$ consiste
+nel vettore $\textbf{act}$ delle attivazioni dei singoli neuroni.
+$$E(\textbf{act})=-\frac{1}{2}\textbf{act}^\intercal \textbf{W} \textbf{act}+\theta^T \textbf{act}$$
+dove $W$ è la matrice dei pesi connessi e $\theta$ il vettore contenente i valori delle soglie (o threshold).
+
+Ora guardiamo il singolo neurone $u$ e elaboriamo il cambio energetico che viene portato da
+questo neurone durante il suo cambiamento di stato. Consideriamo la differenza assoluta in energia
+tra $act_u=0$ e $act_u=1$ (mentre tutti gli altri neuroni mantengono la loro attivazione):
+$$\Delta E_u=E_{act_u}=1-E_{act_u}=0=\sum_{v\in U-\{u\}}w_{uv}act_v-\theta_u$$
+scrivere l'energia in termini di distribuzione di Boltzmann restituisce:
+$$P(act_u=1)=\frac{1}{1+e^{-\frac{\Delta E_u}{kT}}}$$
+
+cio è, la probabilità di un neurone di essere attivo in una funzione logistica della differenza
+energetica tra stato attivo ed inattivo. Visto che la differenza energetica è strettamente connessa
+al network in input del neurone:
+$$\Delta E_u=\sum_{v\in U-\{u\}}w_{uv}act_v-\theta_u=net_u-\theta_u$$
+questa formula suggeristiche una procedura con aggiornamento stocastico per il network.
+
+La procedura di aggiornamento sviluppa come segue:
+\begin{itemize}
+    \item Un neurone $u$ di una data macchina di Boltzmann viene scelto e calcola
+          la sua differenza energetica $\Delta E_u$ (attraverso la funzione logistica) e
+          con questo la sua probabilità di attivazione.
+    \item Questo aggiornamento viene ripetuto tante volte per ogni neurone scelto
+          casualmente fino alla convergenza del sistema. La convergenza verso uno stato sstabile
+          è garantita dal fatto che latemperatura del sistema non cresce nel tempo, ma diminuisce.
+          Ad un certo punto si raggiungerà uno stato stabile, anche detto \textbf{equilibrio termico} (
+          thermal equilibrium) del sistemam che rappresenterò un minimo (possibilmente locale)
+          della funzione.
+\end{itemize}
+Questa procedura si chiama \textbf{Markov-Chain Monte Carlo}.
+
+Bisogna notare che una BM potrà calcolare in modo efficace una distribuzione di probabilità se
+gli esempi forniti sono compatibili con una distribuzione di Boltzmann. Per mitigare questa
+restrizione si dividono i neurono di una BM tra neuroni \textit{visibili}, ovvero quelli
+in grado di ricevere i segnali in input, e neuroni \textit{nascosti}, la cui attivazione
+non dipende diretatment dal dataset permettendo un adattamento più flessibile ai pattern
+di allenamento.
+
+\subsubsection{Allenamento}
+L'obiettivo di apprendimento è quello di adattare i pesi ed i threshold in modo che la
+distribuzione implicita nel dataset sia approssiamta dalla distribuzione rappresentata dai
+neuroni visibili di una BM.
+
+Questo è possibile scegliendo una misura che descriva la differenza tra le due distribuzioni
+ed utilizzeremo la tecnica del \textit{gradient descent} per minimizzarla. Una delle misure più
+utilizzate in questo campo è quella di Kullback-Leibler sulla divergenza dell'informazione:
+$$KL(p1,p2)= \sum_{\omega\in\Omega}p1(\omega)\ln\frac{p1(\omega)}{p2(\omega)}$$
+dove $p1$ si riferisce alla distribuzione del data set e $p2$ a quella della macchina di Boltzmann.
+Ogni passo di apprendimento si divide in due fasi:
+\begin{itemize}
+    \item \textit{Positive phase}: nella quale i neuroni visibili vengono fissati rispetto ad un
+          dato di input scelto randomicamente e i neuroni nascosti vengono aggiornati fino
+          al raggiungimento di un equilibrio termico.
+    \item \textit{Negative phase}: tutte le unità vengono aggiornate fino al raggiungimento di
+          uno stato stabile.
+\end{itemize}
+
+Sia $p_u^+$ la probabilità che un neurone $u$ sia attivato nella postive phase, e sia $p_u^-$
+la probabliità che venga attivato nella fase negativa. Sia anche $p_{uv}^+$ la probabilità
+che entrambi i neuroni vengano attivati simultaneamente nella positive phase, e viceversa,
+$p_{uv}^-$ nella fase negativa. Possiamo definire la regola di aggiornamento dei pesi
+e delle threshold come:
+$$\Delta w_{uv}=\frac{1}{\eta}(p_{uv}^+ - p_{uv}^-)\text{ e }\Delta\theta_u =-\frac{1}{\eta}(p_u^+ - p_u^-)$$
+Intuitivamente se lo stesso neurono viene sempre attivato ogniqualvolta viene presentato lo stesso
+input allora il suo threshold dovrà essere ridotto. Allo stesso modo, se due neuroni vengono
+spesso attivati assieme allora il peso che corrisponde alla loro connessione verrà aumentato.
+
+\subsection{Restricted Boltzman Machines}
+A special variant of BM was introduced by Harmonium, but nowdas is generally referred to as
+\textbf{restricted Boltzmann machine}. The restriction consists in revoking the condition that the
+graph underlying the network must be a fully connected graph. Rather one uses a biparthite
+graph, in which the vertices are split in two, namely the visible and the hidden neurons.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/boltzmann.png}
+\end{figure}
+
+One of the advantages of having a network where there are no connections between neurons of
+the same group is given by the fact that the process of learning can be accomplished repeating
+this three steps:
+\begin{enumerate}
+    \item Phase I: the input units are fixed respect to a selected random pattern
+          and the hidden are updated in parallel retrieving the so called \textit{positive gradient}.
+    \item Phase II: obtaining a preprocessed input in the first phase, you invert the parts
+          and you fix the hidden neurons and update the visible neurons, retrieving the \textit{negative
+              gradient}.
+    \item Phase III: update of the weights and thresholds using the difference between the
+          positive and negative gradient.
+\end{enumerate}
+
+The RBM have also been used to build deep networks similar to stacked auto-encoders for
+the MLP.
+
+\subsection{Recurrent Networks}
+Both HM and BM are examples of recurrent network (RNN) with a very costrained architecture. However.
+let's analyze what is an RNN without any kind of restriction. As we already know an RNN is an
+NN with cycles among neurons (on individual neurons or involving groups of neurons).
+
+The output in this kind of network is yield only if is reached a stable state during the
+computation.
+
+The configuration of this network can be obtained in two ways:
+\begin{itemize}
+    \item by construction if the structure of the computation is known.
+    \item by extendingthe error backpropagation algorithm in time to deal with recursion
+          to output stability for each input pattern.
+\end{itemize}
+
+RNN can be used to represent differential equations, like:
+$$x^{(n)}=f(t,x,x',x'',...,x^{(n-1)})$$
+which is equivalent to a system of differential equations:
+\[
+    \begin{cases}
+        x'=y_1           \\
+        y'_1= y_2        \\
+        ...              \\
+        y'_{n-2}=y_{n-1} \\
+        y'_{n-1}=f(t,x,y_1,y_2,...,y_{n-1})
+    \end{cases}
+\]
+using the recursive representation of the equations:
+$$    x(t_i)=x(t-1)+\Delta y_1(t_i -1)$$
+$$    y_1(t_i)=y_1(t-1)+\Delta y_2(t_i -1)$$
+$$   ...$$
+$$y_2(t_i)=y_2(t-1)+\Delta y_{i-3}(t_i -1)$$
+$$y_1(t_i)=y_1(t-1)+ f(t_{i-1}, x(t_{i-1}), y_1(t_{i-1}),..., y_{n-1}(t_i -1))$$
+we can represent differential equation using RNN (or viceversa).
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/RNN_diff_eq.png}
+\end{figure}
+we can use the derivative of the function at the previous time slice for computing the
+follwoing value. This allow to transform the equation in a RNN, creating for each
+variable a node inside the graph and associating to the connections the value of the differential
+(like in the image above).
+
+It is possible to generalize this approach with functions with more than one argument thanks
+to the \textbf{vectorial neural network} (VNN). Which are RNN composed by multiple
+recurrent sub-networks. It can be used to compute vectorial differential equantions.
+The backpropagation is not directly aplliable since loops propagates errors in a cyclic manner.
+The recurrent network must be \textbf{unfolded in time} between two training patterns, this
+any time the RNN traverse a cycle and the add a copy of traversed neurons as additional layer.
+
+At this time it will bel possible to apply the backpropagation like for the FFN.
+You compute the adjustments of the weights by backpropagation on hte unfolded network, and
+combine the adjustments of the same weight to generate the value for the recurrent network.
+
+By the way, for calculating the updates of weights and thresholds will be necesdary combine the
+necessary adjustment computer respect to the added neurons.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
