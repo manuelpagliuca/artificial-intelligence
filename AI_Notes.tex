@@ -2511,14 +2511,336 @@ combine the adjustments of the same weight to generate the value for the recurre
 By the way, for calculating the updates of weights and thresholds will be necesdary combine the
 necessary adjustment computer respect to the added neurons.
 
+\section{Fuzzy Systems}
+\subsection{Motivation}
+Humans as imperfect creatures uses imprecise linguistic terms (fat, small, big, tall, etc..).
+All the complex human reasoning are based on that terms, the classical mathematics can't manage
+these terms.
+Classical logic manages \textit{true} and \textit{false} to each logical proposition or statement.
+When we describe such formal model, we use a terminolgy which has much more stringent rules than natural
+language.
+
+We want to introduce these terms in the computer science field, but how? let's
+talk about \textbf{fuzzy logic}.
+
+But first let's introduce some concepts.
+\subsection{Imprecision and uncertainity}
+Any notion is said to be \textbf{imprecise} when its meaning is not fixed, where the value
+take places between the conditions \textit{fully}. The \textit{gradualness} is also called
+\textit{fuzziness}.
+
+A \textbf{proposition} is imprecise if it contains gradual predicates, such proposition
+may be true to a certain degree (\textit{partial truth}). An example of this in the
+natural language : \textit{very, rather, almost not, etc...}
+
+\subsubsection{Sorites Paradox}
+This is an example of \textbf{imprecision}, if a sand dune is small, adding one grain of
+sand to it leaves it small, a sand dune with a single grain is small, hence all
+sand dunes are small.
+
+The paradox comes from treatment of "small", \textit{when the dune is not anymore a
+    dune?}
+
+Formal statement:
+\begin{itemize}
+    \item Statement $A(n):$ \textit{$n$ grainds of sand are a sand dune}.
+    \item $d_n=T(A(n))$ denote "degree of acceptance" for $A(n)$.
+    \item Then $0=d_0\leq d_1 \leq ... \leq d_n \leq ... \leq 1$ can
+          be seen as truth values of a many valued logic.
+\end{itemize}
+
+\subsubsection{Uncertainity}
+This term refers to situations involving imperfect or unknown information. If we
+consider the notion "bald", a man without hair on his head is considered bald.
+
+Usually a man is not completely bald, has some hair, where to set baldness/not baldness
+threshold?
+
+The \textbf{fuzzy set theory} does not assume any threshold.
+
+\subsubsection{Difference between imprecision and uncertianity}
+The \textbf{imprecision}, referes to "imprecisely"
+defined concepts neglect of details computing with words (\textit{"today the
+    weather is fine"}). Instead the \textbf{uncertainity}, refers to the probability/possibility
+about unknown or imperfect information (\textit{"this car was probably made in Germany"}).
+
+\subsection{Principle of incompatibility}
+As the complexity of a system increases, our ability to make precise and yet significant
+statements about its behavior diminishes until a threshold is reached beyond which precision
+and significance become almost mutually exclusive characteristics.
+
+Fuzzy sets and fuzzy logic are used as mechanism for abstraction of unnecessary or too
+complex details.
+
+Some fields of fuzzy systems:
+\begin{itemize}
+    \item Control Engineering
+    \item Approximate Reasoning
+    \item Data Analysis
+    \item Image Analysis
+\end{itemize}
+Advatanges brought from the using of fuzzy systems
+\begin{itemize}
+    \item Use of imprecise or uncertain information.
+    \item Use of expert knowledge.
+    \item Robust nonlinear control.
+    \item Time to market.
+    \item Marketing aspects.
+\end{itemize}
+
+\subsection{Fuzzy sets}
+A \textbf{fuzzy subset} or \textbf{fuzzy set} $\mu$ of a set $X$ (the universe of
+discourse) is a mapping $\mu : X\rightarrow [0,1]$, which assigns to each element $x\in X$
+a \textit{degree of membership} $\mu(x)$ to the fuzzy (sub)set $\mu$ itself.
+
+This set of all fuzzy subsets (or sets) of $X$ is denoted with $\mathcal{F}(X)$.
 
 
+\subsubsection{Membership functions}
+The degree of membership is equal to $1$ when the element $x$ fully respect the property
+that i want to describe with the fuzzy set.
+$$\mu_m(u)_=1$$
+The degree of membership is equal to $0$ when it expressess absolutely non-membership.
+$$\mu_m(u)=0$$
+Sets can be viewed as special cas of fuzzy sets where only full membership and absolute
+non-membership are allowed, this sets are called \textbf{crisp sets} or \textbf{boolean sets}.
+The membership degree between $0 < \mu_M <1$ represent the \textbf{partial membership}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/young.png}
+\end{figure}
+The membership function attached to a given linguistic description (such as "young") depends
+on the context. For example, a young retired person is certainly older than a young student.
+Even idea of young studend depends on the user.
 
+The membership degrees are fixed only by convention, the unit interval as range of membership
+grades is arbitrary. Natural for modeling membership grades of fuzzy sets of real numbers.
 
+There is no precise threshold between young and not young, the fuzzy sets are a natural
+interface between linguistic and numerical representations.
+\subsubsection{Linguistic variables and values}
+The \textbf{linguistic variables} represent attributes in fuzzy systems, and they assume
+\textbf{linguistic values}. Linguistic values usually partition the possible values of the
+linguistic variables subjectively.
 
+All linguistic values have a meaning, not a precise numerical value.
 
+An example of linguistic values:
+\begin{itemize}
+    \item Living area of a flat (linguistic variable)
+    \item Tiny, small, medium, large, huge (linguistic values)
+\end{itemize}
+Every $x\in A$ has $\mu(x)\in [0,1]$ to each value.
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.4]{images/ling_val.png}
+\end{figure}
+\subsubsection{Semantics of fuzzy systems}
+Fuzzy systems are relevant in $3$ types of information-driven
+tasks:
+\begin{enumerate}
+    \item classification and data analysis
+    \item decision-making problems
+    \item approximate reasoning
+\end{enumerate}
+These tasks exploit three semantics of membership grades:
+\begin{enumerate}
+    \item similarity
+    \item preference
+    \item possibility
+\end{enumerate}
+\paragraph{Degree of similarity}\mbox{}\\
+$\mu(u)$ is the degree of proximity of $u$ from prototype elements of $u$. Proximity between
+pieces of information is modelled.
 
+This view is used in:
+\begin{itemize}
+    \item pattern classification
+    \item cluster analysis
+    \item regression
+\end{itemize}
+In fuzzy control, similarity degrees are measured between current situation and prototypical
+ones.
+\paragraph{Degree of preference}\mbox{}\\
+The $\mu$ function represents both:
+\begin{itemize}
+    \item set of more or less preferred objects.
+    \item value of a decision variable $X$
+\end{itemize}
+The image $\mu(u)$ represents both:
+\begin{itemize}
+    \item intensity of preference in favor of object $\mu$.
+    \item feasibility of selecting $u$ as value of $X$.
+\end{itemize}
 
+Fuzzy sets represent criteria or flexible constraints, this view is ues in \textit{fuzzy optimization}
+(especially in fuzzy linear programming) and in \textit{decision analysis} (decision theory).
+
+The typical applications are in:
+\begin{itemize}
+    \item engineering design
+    \item scheduling problems
+\end{itemize}
+
+\paragraph{Degree of possibility}\mbox{}\\
+The $\mu(u)$ can be viewed as the \textit{degree of possibility} that the element $u$
+is the value of the parameter $X$, and it is used for quantifying the epistemologic status of
+an agent.
+
+The objective is to distinguish what the agent consider "surprising" from what is "typical".
+
+Supports values are mutually exclusive and membership degrees rank these values by their
+possibility. This view is used in \textit{expert systems} and \textit{artificial intelligence}.
+
+\subsubsection{Definition of a set}
+By a set we mean every collection made into a whole of definite, distinct objects of our intuition
+or of our thought.
+Properties:
+\begin{itemize}
+    \item $x\neq\{x\}$
+    \item If $x\in X$ and $X\in Y$, then $X\notin Y$
+    \item The set of all subsets of $X$ is denoted as $2^X$
+    \item $\emptyset$ is the empty set
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.3]{images/ext_fuzzy-set.png}
+\end{figure}
+A fuzzy set $\mu$ of $X\neq\emptyset$ is a function from the reference set $X$
+to the unit interval, $X\rightarrow[0,1]$. $\mathcal{F}(X)$ represents the set of all fuzzy sets
+of $X$, $\mathcal{F}(X)^{def}=\{\mu|\mu:X\rightarrow[0,1]\}$.
+\paragraph{Vertical representiation}\mbox{}\\
+Fuzzy sets are described by their membership function and assigning degree of membership $\mu(x)$
+to each element $x\in X$.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/verti-repr.png}
+\end{figure}
+
+\paragraph{Horizontal representation}\mbox{}\\
+For all membership degrees belonging to chosen subset of $[0,1]$, human experts lists elements
+of $X$ that fulfull vague concept of fuzzy set with degree $\geq\alpha$.
+
+That is the horizontal representation of fuzzy sets by their $\alpha$-cuts. Let's give the
+formal definition:\newline\\ Let $\mu\in\mathcal{X}$ and $\in[0,1]$, then the sets
+$$[\mu]_\alpha =\{x\in X|\mu(x) \geq\alpha\},[\mu]_\alpha=\{x\in X|\mu(x)>\alpha\}$$
+are called \textbf{$\alpha$-cut} and \textbf{strict $\alpha$-cut}.
+
+For example, let's consider the $\mu$ be a triangular function on $\mathbb{R}$.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/triangular-horiz-repr.png}
+\end{figure}
+The $\alpha$-cut can be constructed in the following steps:
+\begin{enumerate}
+    \item Draw an horizontal line parallel to $x$-axis through point $(0,\alpha)$.
+    \item Project this section onto $x$-axis
+          \[
+              [\mu]_\alpha =
+              \begin{cases}
+                  [\alpha + \alpha (m-\alpha),b-\alpha(b-m)] & \text{if } 0<\alpha\leq 1 \\
+                  \mathbb{R}                                 & \text{otherwise}
+              \end{cases}
+          \]
+\end{enumerate}
+Properties of \textbf{$\alpha$-cuts}:
+\begin{itemize}
+    \item Any fuzzy set can be described by specifying it's $\alpha$-cuts.
+          $$\mu\in\mathcal{F}(X), \alpha\in[0,1] \text{ and }\beta\in[0,1]$$
+          $$[\mu]_0=X$$
+          $$\alpha < \beta\implies [\mu]_\alpha \supseteq[\mu]_\beta$$
+          $$\cap_{\alpha:\alpha < \beta} [\mu]_\alpha = [\mu]_\beta$$
+    \item \textbf{Representation theorem}
+          $$\mu\in\mathcal{F}(X)$$
+          $$[\mu]_0=sup_{\alpha\in[0,1]} \left\{ min\left(\alpha,\mathcal{X}_{[\mu]_\alpha (x)}\right)\right\}$$
+          \[
+              \text{where } \mathcal{X}_{[\mu]_\alpha}(x)=
+              \begin{cases}
+                  1, & \text{if }x\in [\mu]_\alpha \\
+                  0, & \text{otherwise}
+              \end{cases}
+          \]
+          Fuzzy sets can be obtained as upper envelope of its $\alpha$-cuts, simply draw the
+          $\alpha$-cuts parallel to horizontal axis in height of $\alpha$.
+
+          In applications it is recommended to select finite subset $L\subseteq [0,1]$ of relevant degrees of
+          membership. They must be semantically distinguishable, fix level of fuzzy sets to characterize only
+          for these levels.
+
+          This representation of fuzzy sets is used in computers. For example, let's suppose $X=[0,15]$,
+          an expert choose $L=\{0,0.25,0.5,0.75,1\}$ and  $\alpha$-cuts:
+          \begin{itemize}
+              \item $A_0 =[0,15]$
+              \item $A_{0.25} =[3,15]$
+              \item $A_{0.5} =[4,6]\cup [7,15]$
+              \item $A_{0.75} =[4.5,5.5]\cup [7,15]$
+              \item $A_1 =\{5\}\cup [7,15]$
+          \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/alpha-cuts-repr0.png}
+\end{figure}
+We can see that $\mu_A$ is obtained as upper envelope of the family $A$ of sets:
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/alpha-cuts-repr1.png}
+\end{figure}
+As said the horizontal representation is easier on the computers, this
+because their are usually stored as chain of singly linked lists (similar
+to the skip-list data structure), for each level $\alpha\neq 0$. This data structure is appropriate
+for arithmetic operators.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/linked.png}
+\end{figure}
+
+\subsubsection{Support and Core}
+The \textbf{support} $S(\mu)$ of a fuzzy set $\mu\in\mathcal{F}(X)$ is the crisp set that contains all elements
+of $X$ that have nonzero membership.
+$$S(\mu)=[\mu]_{\underline{0}}=\{x\in X|\mu(x)>0\}$$
+The \textbf{core} of $C(\mu)$ of a fuzzy set $\mu\in\mathcal{F}(x)$ is the crisp set that contains
+all the elements of $X$ that have membership of one.
+$$C(\mu)=[\mu]_1=\{x\in X|\mu(x)=1\}$$
+
+\subsubsection{Height of a fuzzy set}
+The height $h(\mu)$ of a fuzzy set $\mu\in\mathcal{F}(X)$ is the largest/highest membership grade obtained
+by any element in that set.
+$$h(\mu)=\underset{x\in X}{sup}\{\mu(x)\}$$
+A duzzy set $\mu$ is called \textbf{normal} if and only if $h(\mu)=1$, it is called \textbf{subnormal},
+if and only if $h(\mu)<1$.
+
+\subsubsection{Convex fuzzy sets}
+Let $X$ be a vector space, a fuzzy set $\mu\in\mathcal{F}(X)$ is called \textbf{fuzzy convex}
+if its $\alpha$-cuts are convex for all $\alpha\in (0,1]$. The membership function of a convex fuzzy
+set is not a convex function.
+
+The classical definition, the membership functions are actually concave.
+
+\subsubsection{Fuzz numbers}
+A fuzzy set $\mu$ is a fuzzy number if and only if $\mu$ is normal and $[\mu]_\alpha$ is bounded, close,
+and convex $\forall\alpha\in (0,1]$.
+For example, the term \textit{approximately} $x_0$ is described by a parametrized class of membership
+functions.
+\[
+    \begin{cases}
+        [1,2]          & \text{if }\alpha\geq 0.5 \\
+        [0.5+\alpha,2] & \text{if } 0>\alpha<0.5  \\
+        \mathbb{R}     & \text{if }\alpha =0
+    \end{cases}
+\]
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/fuzzy-number.png}
+\end{figure}
+Upper semi-continuos functions are often convenient in applications. In manu applications the class
+of the functions and their exact parameters havea limited influence on the results. In other applications
+more precise membership degrees are needed.
+
+\subsection{Fuzzy logics}
 
 
 
