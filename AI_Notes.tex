@@ -2841,18 +2841,147 @@ of the functions and their exact parameters havea limited influence on the resul
 more precise membership degrees are needed.
 
 \subsection{Fuzzy logics}
+An importanrt result of classical logic says that exixst and isomorphism between the propositional
+logic and the theory of finite sets (on a infinite set of variables).
 
+Both this systems can be shown isomorph to finite boolean algebra.
+\subsubsection{Set operators}
+Set operators are defined by using traditional logics operators, let $X$ be the universal set:
+$$A\cap B=\{x\in X| x\in A \land x\in B\}$$
+$$A\cup B=\{x\in X| x\in A \lor x\in B\}$$
+$$A^c = \{x\in X|x \notin A\} = \{x\in X|\lnot (x\in A)\}$$
+$$A\subseteq B\text{ if and only if } (x\in A)\rightarrow(x\in B) \text{ for every } x\in X$$
 
+\subsubsection{Aristotelian logic}
+Aristotelian logic can be seen as formal approach to human reasoning. It's still used today in AI for
+knowledge representation and reasoning about knowledge.
 
+\subsubsection{Classical logic}
+Classical logic deals with propositions (either true or false). The propositional logic handles combinations
+of logical variables. The key idea is to express $n$-ary logic functions with logic primitives.
 
+A set of logic primitives is complete if any logic function can be composed by a finite number of these
+primitives.
+$$\land,\lor,\lnot,NOR,NAND,|$$
 
+\subsubsection{Inference rules}
+When a variable represented by a logical formula is true for all possible \textit{truth values}
+it is called \textbf{tautology}. Instead, when it is false for all possible truth values it is
+called \textbf{contradiction}.
 
+Various forms of tautologies exist to perform deductive inference, and are called inference rules:
+$$(a\land (a\rightarrow b))\rightarrow b\text{ (modus ponens)}$$
+$$(\lnot b \land (a\rightarrow b))\rightarrow \lnot a\text{ (modus tollens)}$$
+$$((a\rightarrow b)\land (b\rightarrow c))\rightarrow (a\rightarrow c)\text{ hypothetical syllogism}$$
 
+\subsubsection{Boolean algebra}
+The propositional logic based on finite set of logic variables is isomorphic to \textbf{finite
+    set theory}. Both of these systems are isomorphic to a finite Boolean algebra.
 
+A Boolean algebra on a set $B$ is defined as quadruple $\mathcal{B}=(B,+,.,\overline{x})$, where
+$B$ has at least two elemens 0 and 1, $+$ and $.$ are binary operators on $B$, and $\overline{x}$
+is a unary operator on $B$ for the wihch the following porperties hold:
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.35]{images/bool-prop.png}
+\end{figure}
 
+Every theorem in one theory has a counterpart in each other theory.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.35]{images/bool-counter.png}
+\end{figure}
+\begin{itemize}
+    \item The principle of \textbf{bivalence}: every proposition is either true or false.
+    \item The principle of \textbf{valence}: every proposition has a truth value.
+\end{itemize}
+\subsubsection{$n$-valued logics}
+Various $n$-valued logics were developed. Usually truth values are assigned by rational number in
+$[0,1]$. The key idea is to uniformly divide $[0,1]$ into $n$ truth values.
 
+The definition: the set $T_n$ of truth values of an $n$-valued logic is defined as
+$$T_n=\left\{0=\frac{0}{n-1},\frac{1}{n-1},...,\frac{n-1}{n-1},\frac{n-1}{n-1}=1\right\}$$
+This values can be interpreted as degree of truth.
+\paragraph{The primitives in $n$-valued logics}\mbox{}\\
+Generalization of Lukasiewicz three-valued logic. It uses truth values in $T_n$ and define primitives as follow:
+$$\lnot a = 1-a$$
+$$a\land b =min(a,b)$$
+$$a\lor b =max(a,b)$$
+$$a\rightarrow b = min(1,1+b-a)$$
+$$a\longleftrightarrow b= 1-|a-b|$$
+
+This $n$-valued logic is denoted by $L_n$, the sequence $(L_2,...,L_\infty)$ contains the
+classical two-valued logic $L_2$ and an infinite-valued logic $L_\infty$. The infinite-valued
+logic $L_1$ is the logic with all real numbers in $[0,1]$.
+
+\subsubsection{Fuzzy set theory}
+\textit{What does a fuzzy set represent?} A logic with values in $[0,1]$, consider fuzzy
+proposition $A$ on $\mathbb{R}$, fuzzy logic offers means to construct such
+
+$A$ is defined by membership function $\mu_A$, truth values $\forall x \in\mathbb{R}$, let
+$x\in\mathbb{R}$ be a subject/observation, and $\mu_A(x)$ is the degree of truth that $x$
+is $A$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/membership-func-fuzzy.png}
+    \caption{Membership function $\mu_A$}
+\end{figure}
+\paragraph{Standard fuzzy set operators}\mbox{}\\
+We defione the following algebraic operations on $\mathcal{F}(X)$
+$$(\mu\land\mu')=^{def} min\{\mu(x),\mu'(x)\}\text{ intersection ("AND")}$$
+$$(\mu\lor\mu')=^{def} max\{\mu(x),\mu'(x)\} \text{ union("OR")}$$
+$$\lnot\mu =^{def} 1-\mu(x)\text{ complement("NOT")}$$
+$\mu$ is subset of $\mu'$ if and only if $\mu\leq\mu'$
+
+Theorem: $(\mathcal{F}(X),\land,\lor,\lnot)$ is a complete distributive lattice but no Boolean
+algebra.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/fuzzy-exa.png}
+    \caption{Various set operations based on the previous fuzzy definitions}
+\end{figure}
+\paragraph{Fuzzy set complement/negation}\mbox{}\\
+Let $X$ be a given set and $\mu\n\mathcal{F}(X)$, then the complement $\overline{\mu}$ can be
+defined pointwide by $\overline{\mu}(x):=~(\mu(x))$ where $~:[0,1]\rightarrow [0,1]$
+satisfies the following conditions:
+$$~(0)=1,~(1)=0$$
+and for $$x,y\in [0,1],x\leq y\implies ~x\geq ~y$$ (where ~ is non-increasing).
+
+A negation is called \textbf{strict} if it is also stricltly decreasing and continuos. A strict
+negation is said to be \textbf{strong} if it is involutive, too.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/neg-families.png}
+    \caption{Families of negations}
+\end{figure}
+
+\paragraph{Fuzzy set intersection and union}\mbox{}\\
+Let $A,B$ be fuzzy subsets of $X$, $A,B\in\mathcal{F}(X)$. Their intersection and union can be
+defined pointwise using
+$$(A\cup B)(x) = \top(A(x),B(x))\text{ where }\top:[0,1]^2\rightarrow [0,1]$$
+$$(A\cap B)(x) = \bot(A(x),B(x))\text{ where }\bot:[0,1]^2\rightarrow [0,1]$$
+
+\noindent$\top$ is a triangular norm called \textit{t-norm} $\Longleftrightarrow\top$ which satisfies
+the following conditions:
+\begin{enumerate}
+    \item $\top (x,1)=x$
+    \item $\top(x,y)=\top(y,x)$
+    \item $\top(x,\top(y,z))=\top(\top(x,y),z)$
+    \item $x\leq z\implies \top(x,y)\leq\top(x,z)$
+\end{enumerate}
+
+\noindent $\bot$ is a triangular conorm called \textit{t-conorm}$\Longleftrightarrow\bot$ which
+satisfies $C1-C4$.
+\begin{enumerate}
+    \item $\bot(x,0)=x$
+    \item $\bot(x,y)=\bot(y,x)$
+    \item $\bot(x,\bot(y,z))=\bot(\bot(x,y),z)$
+    \item $x\leq z \implies\bot(x,y)\leq\bot(x,z)$
+\end{enumerate}
 
 
 
