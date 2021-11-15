@@ -2940,11 +2940,12 @@ Theorem: $(\mathcal{F}(X),\land,\lor,\lnot)$ is a complete distributive lattice 
 algebra.
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.5]{images/fuzzy-exa.png}
+    \includegraphics[scale=0.3]{images/fuzzy-exa.png}
     \caption{Various set operations based on the previous fuzzy definitions}
 \end{figure}
+
 \paragraph{Fuzzy set complement/negation}\mbox{}\\
-Let $X$ be a given set and $\mu\n\mathcal{F}(X)$, then the complement $\overline{\mu}$ can be
+Let $X$ be a given set and $\mu\in\mathcal{F}(X)$, then the complement $\overline{\mu}$ can be
 defined pointwide by $\overline{\mu}(x):=~(\mu(x))$ where $~:[0,1]\rightarrow [0,1]$
 satisfies the following conditions:
 $$~(0)=1,~(1)=0$$
@@ -2955,7 +2956,7 @@ negation is said to be \textbf{strong} if it is involutive, too.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.5]{images/neg-families.png}
+    \includegraphics[scale=0.45]{images/neg-families.png}
     \caption{Families of negations}
 \end{figure}
 
@@ -2982,6 +2983,207 @@ satisfies $C1-C4$.
     \item $\bot(x,\bot(y,z))=\bot(\bot(x,y),z)$
     \item $x\leq z \implies\bot(x,y)\leq\bot(x,z)$
 \end{enumerate}
+
+\paragraph{Minimum and maximum}\mbox{}\\
+The definitions of intersection and union we give in the paragraph "Stanard fuzzy operations"
+in terms of max and min they satisfy this properties. It is possible also to prove that the
+operation of minimum is the greatest t-norm and the maximum the smallest t-conorm (they
+can be easily processed numerically).
+
+\paragraph{Product and probabilistic sum}\mbox{}\\
+Also, could be given other definitions of disjunctions and conjunctions, for example
+in terms of products and probabilistic sum:
+$$\top_{prod}(x,y)=x\cdot y$$
+$$\bot_{sum}(x,y)=x+y-x\cdot y$$
+or, following Łukasiewicz:
+$$\top_{Luk}(x,y)=max\{0,x+y-1\}$$
+$$\bot_{Luk}(x,y)=min\{1,x+y\}$$
+
+\paragraph{Nilpotent minimum and maximum}\mbox{}\\
+\[
+    \top_{min_0}(x,y)=
+    \begin{cases}
+        min(x,y) & \text{if } x+y>1 \\
+        0        & \text{otherwise}
+    \end{cases}
+\]
+\[
+    \bot_{max_1}(x,y)=
+    \begin{cases}
+        max(x,y) & \text{if }x+y<1  \\
+        1        & \text{otherwise}
+    \end{cases}
+\]
+
+\paragraph{Drastic product and sum}\mbox{}\\
+\[
+    \top_{-1}(x.y)=
+    \begin{cases}
+        min(x,y) & \text{if } max(x+y)=1 \\
+        0        & \text{otherwise}
+    \end{cases}
+\]
+\[
+    \bot_{-1}(x,y)=
+    \begin{cases}
+        max(x,y) & \text{if } min(x+y)=0 \\
+        0        & \text{otherwise}
+    \end{cases}
+\]
+$\top_{-1}$ is the weakest t-norm, $\bot_{-1}$ is the strongest t-conorm.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4]{images/fuzzy_interesectiosnb.png}
+    \caption{Examples of fuzzy intersections}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{images/fuzzy_unions.png}
+    \caption{Examples of fuzzy unions}
+\end{figure}
+
+\subsubsection{Fuzzy implications}
+A fuzzy set is contaned in another fuzzy set if all the eleements of the first are contained
+in the second. By exploiting the isomorphism between the logic and set operators, we will be
+able to define the concept of subset by starting from the concept of implication:
+$$I(a,b)=\lnot a\lor b, \forall a,b \in \{0,1\}$$
+In fuzzy logic, disjunction and negation are t-conorm and fuzzy complement, respectively, thus:
+$$I(a,b)=\bot(\sim a,b), \forall a,b\in \{0,1\}$$
+Another way in classical logic:
+$$I(a,b)=max\{x\in\{0,1\}|a\lnot x\leq b\}, \forall a,b\in\{0,1\}$$
+in fuzzy logic, conjunction represent t-norm, thus:
+$$I(a,b)=sup\{x\in[0,1]|\top (a,x)\leq b\}, \forall a,b\in\{0,1\}$$
+
+
+\paragraph{$S$-implications}\mbox{}\\
+The implications bases on $I(a,b)=\bot(\sim a,b)$ are called $S$-Implications. The symbol
+$S$ is often used to denote the t-conorms.
+
+\paragraph{$R$-implications}\mbox{}\\
+The implications based on $I(a,b)=sup\{x\in[0,1]|\top (a,x)\leq b\}$ are called $R$-implication.
+The symbol $R$ represents close connection to residuated semigroup.
+
+\paragraph{$QL$-implications}\mbox{}\\
+Implications based on $\bot(\sim a,\top(a,b))$ are called $QL$-implications, where $QL$ stands
+for quantum logic.
+
+\paragraph{Conclusion about fuzzy logic implications}\mbox{}\\
+All $I$ come from generalizations of the classical implication. They collapse to the classical
+implication when truth values are 0 or 1.
+
+\textit{Which fuzzy implication should be use for
+    calculating the fuzzy relation $R$?} Since the meaning of $I$ is not unique, we must resolve this
+question. Hence meaningful criteria are needed.
+
+\subsection{Theory of Fuzzy Logic}
+\subsubsection{The extension principle}
+How we extend a function $\phi:X^n\rightarrow Y$ in a fuzzy context in such a way that $\hat{\phi}$
+has as domain a tuple of a fuzzy set and as codomain a fuzzy set? A particular case is the
+one given by the evaluation of the propositions.
+
+Let $\mathcal{P}$ be set of imprecise statements that can be combined by the operators "and" and "or":
+$$truth:\mathcal{P}\rightarrow[0,1]$$
+$$truth(a)=0 \text{ means that is definitely false}$$
+$$truth(a)=1\text{ means that is definitely false}$$
+Combination of two statements $a,b\in\mathcal{P}$:
+$$truth(a \text{ and } b)=min\{truth(a),truth(b)\}$$
+$$truth(a \text{ or } b)=max\{truth(a),truth(b)\}$$
+
+it is possible also to consider the infinite conjunctions and disjunctions (statements $a_i,i \in I$):
+$$truth(\forall i\in I:a_i)=inf\{truth(a_i)|i\in I\}$$
+$$truth(\exists i\in I:a_i)=sup\{truth(a_i)|i\in I\}$$
+This concept helps to extend $\phi:X^n \rightarrow Y$ to $\hat{\phi}:\mathcal{F}(X)^n \rightarrow\mathcal{F}(Y)$.
+
+Another example for extending the additions is given by the real sum between sets:
+$$+:2^{\mathbb{R}}\times 2^{\mathbb{R}}\implies 2^{\mathbb{R}}$$
+$$(A,B)\rightarrow A+B=\{ y | \exists a,b(y=a+b) \land (a\in A)\land (b\in B)\}$$
+The extension to fuzzy set will be defined for $\mu_1$ and $\mu_2$ as:
+$$+:\mathcal{F}(\mathbb{R})\times\mathcal{F}(\mathbb{R})\rightarrow \mathcal{F}(\mathbb{R}),(\mu_1,\mu_2)\rightarrow \mu_1 \oplus\mu_2$$
+$$truth(y\in \mu_1\oplus\mu_2) =$$
+$$=\underset{a,b}{sup}\{truth(y=a+b) \land truth(a\in mu_1)\land truth(b\in \mu_2)\}=$$
+$$=\underset{a,b:y=a+b}{sup}\{min(\mu_1(a),\mu_2(b))\}$$
+
+In general, a function $\phi:X^n\rightarrow Y$ can be extended to $\hat{\phi}:[2^X]^n\rightarrow 2^Y$
+on classic sets in this manner:
+$$\hat{\phi}(A_1,...,A_n)=\{y\in Y|\exists (x_1,...,x_n)\in A_1\times ... \times A_n:
+    \phi(x_1,...,x_n)=y\}$$
+Based on this definitoin we can generalize to the fuzzy sets on a domain $X$:
+$$\hat{\phi}(A_1,...,A_n)=sup\{min\{\mu_1(x_1),...,\mu_n(x_n)\} | (x_1,...,x_n)\in X^n \land \phi(x_1,...,x_n)=y\}$$
+assuming that $sup \emptyset=0$
+
+\subsubsection{Some relevant fuzzy sets}
+There are various types of fuzzy sets, in our case we give particular relevance to the one
+defined on $\mathbb{R}$. This because a fuzzy set on reals got a quantified meaning and can be
+used for represents fuzzy variables. This variables plays a really important role in lot of
+applications: fuzzy control, approximated reasoning, optimizations,...
+Some class of $\mathcal{F}(\mathbb{R})$ that are often referred in literature are the follwing:
+\begin{itemize}
+    \item \textbf{Normal fuzzy set}:
+          $$\mathcal{F}_N(\mathbb{R})=^{def} \{\mu\in\mathcal{F}(\mathbb{R})|\exists x\in\mathbb{R}:\mu(x)=1 \}$$
+    \item \textbf{Upper semi-continuos fuzzy set}:
+          $$\mathcal{F}_C(\mathbb{R})=^{def} \{\mu\in\mathcal{F}_N(\mathbb{R})| \forall\alpha\in (0,1]:[\mu]_\alpha \text{ is compact}\}$$
+    \item \textbf{Fuzzy interval}:
+          $$\mathcal{F}_I(\mathbb{R})=^{def}\left\{\mu\in\mathcal{F}_N(\mathbb{R})|\forall a,b,c \in\mathbb{R}:c\in [a,b]\implies \mu(c)\geq min\{\mu(a),\mu(b)\}\right\}$$
+
+\end{itemize}
+
+
+\subsubsection{Quantitative fuzzy variables}
+Particular interest is held from the fuzzy interval also called \textit{fuzzy numbers} because they allow
+to define quantitative fuzzy variables. This variables takle as value the fuzzy numbers. When the
+quantity of the fuzzy variables represent linguistic concepts (small, big, \dots) we are talking
+about \textit{linguistic variables}. Each linguistic variable is defined by a quintuple $(v, T,X,g,m)$,
+where:
+\begin{itemize}
+    \item $v$ is the name of the variable.
+    \item $T$ is the set of linguistisc terms of $v$.
+    \item $X\subseteq\mathbb{R}$ is the base variable.
+    \item $g$ is the syntactic rule, also called grammar (used for generating linguistic terms).
+    \item $m$ is the semantic rule, which assigns meaning $m(t)$to every $t\in T$, in essence:
+          $$m:T\rightarrow\mathcal{F}(X)$$
+\end{itemize}
+For representing this kind of variables we will need to extend the set and arithmetic operations
+used for numbers.
+
+\subsubsection{Set Representations of a fuzzy set}
+A family $(A_\alpha)_{\alpha\in (0,1)}$ of sets is called set representation of $\mu\in\mathcal{F}_N(\mathbb{R})$ if:
+\begin{itemize}
+    \item $0<\alpha<\beta<1\implies A_\alpha\subseteq A_\beta\subseteq\mathbb{R}$
+    \item $\mu(t)=sup\{\alpha\in [0,1]|t\in A_\alpha\}$
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
