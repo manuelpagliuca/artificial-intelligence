@@ -3148,21 +3148,221 @@ For representing this kind of variables we will need to extend the set and arith
 used for numbers.
 
 \subsubsection{Set Representations of a fuzzy set}
+\paragraph{Definition}\mbox{}\\
 A family $(A_\alpha)_{\alpha\in (0,1)}$ of sets is called set representation of $\mu\in\mathcal{F}_N(\mathbb{R})$ if:
 \begin{itemize}
     \item $0<\alpha<\beta<1\implies A_\alpha\subseteq A_\beta\subseteq\mathbb{R}$
     \item $\mu(t)=sup\{\alpha\in [0,1]|t\in A_\alpha\}$
 \end{itemize}
+This will assure that a representation for sets is a loyal image of the fuzzy set that represents.
+\paragraph{Theorem}\mbox{}\\
+Let $\mu\in\mathcal{F}_N(\mathbb{R})$, the family $(A_\alpha)_{\alpha\in (0,1)}$ of sets is a set
+representation of $\mu$ if and only if
+$$[\mu]_{\underline{\alpha}} = \{t\in\mathbb{R}|\mu(t) > \alpha \}\subseteq A_\alpha \subseteq \{t\in\mathbb{R}|\mu (t) \geq \alpha\}=[\mu]_\alpha$$
+is valid $\forall \alpha\in (0,1)$.
+
+If $\mu_1,...,\mu_n$ are normal fuzzy sets on $\mathbb{R}$ and $\phi:\mathbb{R}^n\rightarrow\mathbb{R}$
+a function $\hat{\phi}$ la sua estensione fuzzy. Then the following holds:
+$$\forall\alpha\in [0,1) : [\hat{\phi}(\mu_1,...,\mu_n)]_{\underline{\alpha}}=\phi([\mu_1]_{\underline{\alpha}},...,[\mu_n]_{\underline{\alpha}})$$
+$$\forall\alpha\in [0,1) : [\hat{\phi}(\mu_1,...,\mu_n)]_{\underline{\alpha}}\subseteq\phi([\mu_1]_{\underline{\alpha}},...,[\mu_n]_{\underline{\alpha}})$$
+if $(A_\alpha)_{\alpha\in (0,1)}$ is a set representation of $\mu_i$ for $1\leq i\leq n$, then
+$\left(\phi((A_1)_\alpha,...,(A_n)_\alpha)\right)_{\alpha\in (0,1)}$ is a set representation of
+$\hat{\phi}(\mu_1,...,\mu_n)$.
+
+\subsubsection{Fuzzy Relations}
+A \textbf{crisp relation} represents presence or absence of association, interaction or interconnection
+between elements of $\geq$ 2 sets. This concept can be generalized to various degrees or strengths
+of association or interaction between elements.
+
+A \textbf{fuzzy relation} generalizes these degrees to membership grades. So, a crips relation is a
+restricted case of a fuzzy relation.
+
+\paragraph{Definition of Relation}\mbox{}\\
+A relation among crisp sets $X_1,...,X_n$ is a subset of $X_1\times ...\times X_n$ denoted as
+$R(X_1,...,X_n)$ or $R(X_i|1\leq i\leq n)$. So the relation $R\subseteq X_1,...,X_n$ is a set too.
+
+The basic concept of sets can be also applied to relations: containment, subset, union, intersection, complement.
+Each crisp relation can be defined by its characteristic function:
+\[
+    R(x_1,...,x_n)=
+    \begin{cases}
+        1, & \text{if and only if }(x_1,...,x_n)\in R \\
+        0, & \text{otherwise}
+    \end{cases}
+\]
+The membership of $(X_1,...,X_n)$ in $R$ means that the elements of the tuple are related to each other.
+A relation can be written as a set of ordered tuples, this $R(X_1,...,X_n)$ represents $n$-dimensional
+membership array $R=[r_{i_1},\dots,r_{i_n}]$. Each element $i_1$ of $R$ corresponds to exactly one
+member of $X_1$. Each element of $i_2$ of $R$ corresponds to exactly one member of $X_2$, and so on.
+
+If $(x_1,...,x_n)\in X_1\times\dots\times X_n$ corresponds to $r_{i_1},\dots,r_{i_{n}}\in R$ then:
+\[
+    r_{i_1},\dots,r_{i_{n}}=
+    \begin{cases}
+        1, & \text{if and only if }(x_1,\dots,x_n)\in R \\
+        0, & \text{otherwise}
+    \end{cases}
+\]
+The characteristic function of a crisp relation can be generalized to allow tuples to have degrees of
+membership. Simlar to the generalization of the characteristic function of a crisp set. A fuzzy relation
+is a fuzzy set defined on tuples $(x_1,\dots,x_n)$ that may have varying degrees of membership within
+the relation.
+
+The membership grade indicates the strength of the rpesent relation between lements of the tuple. The
+fuzzy relation can also be represented by an $n$-dimensional membership array.
+
+\paragraph{Subsequences}\mbox{}\\
+Consider the Cartesian product of all sets in the famiily
+$$\mathcal{X}=\{X_i|i\in\mathbb{N}_n =\{1,2,...,n\}\}$$
+for each sequence (n-tuple)
+$$x=(x_1,...,x_n)\in\times_{i\in\mathbb{N}_n}X_i$$
+and each subsequence (r-tuple, $r\leq n$)
+$$y=(y_1,...,y_r)\in\times_{j\in J}X_j,\;J\subseteq\mathbb{N}_n\text{ and }|J|=r$$
+
+$y$ is called subsequence of $x$ if and only if $y_j=x_j,\forall j\in J$. The symbol $y\prec x$ denotes
+that $y$ is subsequence (precedes) of $x$.
+
+\paragraph{Projection}\mbox{}\\
+Given a relation $R(x_1,...,x_n)$. Let $[R\downarrow\mathcal{Y}]$ denote the prohection of $R$ on $\mathcal{Y}$.
+It sidregards all sets in $X$ except those in the family
+$$\mathcal{Y}=\{X_j|j\in J\subseteq\mathbb{N}_n\}$$
+Then $[R\downarrow\mathcal{Y}]$ is a fuzzy relation whose membership function is define on the Cartesian
+product of the sets in:
+$$\mathcal{Y}[R\downarrow\mathcal{Y}](y)=\underset{x\succ y}{max }R(x)$$
+Under special circumstances, this projection can be generalized by replacing the max operator by another
+$t$-conorm.
+
+\paragraph{Cylindric extension}\mbox{}\\
+Let $\mathcal{X}$ and $\mathcal{Y}$ denote the same families of sets as used for projection. Let
+$R$ be a relation define on Cartesiona product of sets in family $\mathcal{Y}$.
+
+Let $[R\uparrow\mathcal{X}\setminus\mathcal{Y}]$ denote the cylindric extension of $R$ into sets
+$X_1,(i\in\mathbb{N}_n)$ which are $\mathcal{X}$ but not in $\mathcal{Y}$. For each $x$ with
+$x\succ y$
+$$[R\uparrow\mathcal{X}\setminus\mathcal{Y}](x)= R(y)$$
+
+The cylindric extension:
+\begin{itemize}
+    \item produces tlargest fuzzy relation that is compatible with projection.
+    \item is the least specific of all relations compatible with projection.
+    \item guarantees that no information not included in projection is used to determine extended relation.
+\end{itemize}
+
+\paragraph{Cylindric closure}\mbox{}\\
+Relations that can be reconstructed from one of their projections by cylindric extension exist. However,
+they are rather rare and not is more common that relation can be exactly recosntructed from several
+of its projections or by taking set intersection of their cylindric extensions.
+
+The resulting relation is usually called \textbf{cylindric closure}. Le the set of projections
+$\{P_i|i\in I\}$ of a relation on $\mathcal{X}$ be given, then the cylindric closure $cyl\{P_i\}$
+is defined for each $x\in\mathcal{X}$ as
+$$cyl\{P_i\}(x)=\underset{min}{i\in I}[P_i\uparrow\mathcal{X}\setminus\mathcal{Y}_i](x)$$
+where $\mathcal{Y}_i$ denotes teh gamily of sets on which $P_i$ is defined.
+
+\subsection{Fuzzy binary relations}
+Binary relations are significant among $n$-dimensional relations. They are generalized mathematical functions.
+On the contrary to functions from $X$ to $Y$, binary relations $R(X,Y)$ may assign to each element of $X$
+two or more elements of $Y$.
+
+some basic operations on functions, e.g. inverse and composition, are applicable to binary relations as well.
+\paragraph{Domain}\mbox{}\\
+Given a fuzzy binary relation $R(X,Y)$, it's domain $dom\;R$ is the fuzzy set on $X$ whose
+membership function is defined for each $x\in X$ as
+$$dom\;R(x)=\underset{y\in Y}{max}\{R(x,y)\}$$
+in essence each $x\in X$ belongs to the domain of $R$ to a degree equal to the strength of its
+strongest relation to any $y\in Y$.
+
+\paragraph{Range and Height}\mbox{}\\
+The range $ran$ of $R(X,Y)$ is a fuzzy binary relation on $Y$ whose membershiè function is
+defined for each $y\in Y$ as
+$$ran\;R(y)=\underset{x\in X}{max}\{R(x,y)\}$$
+
+The height $h$ of $R(x,y)$ is a number defined by
+$$h(R)=\underset{y\in Y}{max}\underset{x\in X}{max}\{R(x,y)\}$$
+$h(R)$ is the largest membership grade obtained by any pair $(x,y)\in R$.
+
+\paragraph{Representation and Inverse}\mbox{}\\
+Consider the membership matrix
+$$R=[r_{xy}]\text{with }r_{xy}=R(X,Y)$$
+It's inverse $R^{-1}(Y,X)$ of $R(X,Y)$ is a relation on $Y\times X$ defined by
+$$R^{-1}(y,x)=R(x,y),\forall x\in X,\forall y\in Y$$
+Then $R^{-1}=[r_{xy}^{-1}]$ representing $R^{-1}(y,x)$ is the transpose of $R$ for $R(X,Y)$
+$$(R^{-1})^{-1}=R,\forall R$$
+
+\paragraph{Standard composition}\mbox{}\\
+Consider the binary relations $P(X,Y)$, $Q(Y,Z)$ with common set $Y$. The standard composition
+of $P$ and $Q$ is defined as
+$$(x,z)\in P\circ Q\Leftrightarrow\exists y\in Y:\{(x,y)\in P\land (y,z)\in Q\}$$
+in the fuzzy case this is generalized by
+$$[P\circ Q](x,z)=\underset{y \in Y}{sup}\{min\{P(x,y),Q(x,y)\},\forall x\in X, \forall z\in Z\}$$
+If $Y$ is finite, sup operator is replaced by max, then the standard composition is also called max-min
+composition.
+
+\paragraph{Inverse of standard composition}\mbox{}\\
+$$[P(X,Y)\circ Q(Y,Z)]^{-1}=Q^{-1}(Z,Y)\circ P^{-1}(Y,X)$$
+Note that the standard composition is not commutative.
+
+\paragraph{Relational Join}\mbox{}\\
+Relational Join yields triples (whereas composition returned pairs). For $P(X,Y)$ and
+$Q(Y,Z)$, the relational join $P\star Q$ is defined by
+$$[P\star Q](x,y,z)=min\{P(x,y),Q(y,z)\}, \forall x \in X, \forall y \in Y,\forall z\in Z$$
+
+\subsubsection{Binary relations on a single stet}
+It is also possible to define crisp or fuzzy binary relations among elements of a single set $X$.
+Such a binary relation can be denoted by $R(X,X)$ or $R(X^2)$ which is a subset of $X\times X=X^2$.
+
+These relations are often referred to as directed graphs, which is also a representation of them:
+\begin{itemize}
+    \item Each element of $X$ is represented as node.
+    \item Directed connections between nodes indicate pairs of $x\in X$ for which the grade
+          of the membership is nonzero.
+    \item Each connection is labeled by its actual membership grade of the corresponding pair
+          in $R$.
+\end{itemize}
+
+\subsubsection{Properties of Crisp Relations}
+A crisp relation $R(X,X)$ is called:
+\begin{itemize}
+    \item \textit{reflexive} if and only if $\forall x\in X: (x,x)\in R$
+    \item \textit{symmetric} if and only if $\forall x,y\in X:(x,y)\in R\Leftrightarrow (y,x)\in R$
+    \item \textit{transitive} if and only if $(x,z)\in R$ whenever both
+          $(x,y)\in R$ and $(y,z)\in R$ for at least one $y\in X$.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/RULES_CRISP.png}
+\end{figure}
+All these properties are preserved under inversoin of the relation.
+
+\subsubsection{Properties of fuzzy relations}
+The previous properties can be extended for fuzzy relations, by defining them in terms of the
+membership function of the relation. A fuzzy relation $R(X,X)$ is called:
+\begin{itemize}
+    \item \textit{reflexive} if and only if $\forall x\in X:R(x,x)=1$
+    \item \textit{symmetric} if and only if $\forall x,y\in X:R(x,y)=R(y,x)$
+    \item \textit{transitive} if it satisfies $R(x,z)\geq\underset{y\in Y}{max}\;min\{R(x,y),R(y,z)\},\forall (x,z)\in X^2$
+\end{itemize}
+
+Note that a fuzzy binary relation that is reflexive, symmetric and transitive is called \textit{fuzzy equivalence
+    relation}.
 
 
+\subsection{Fuzzy controller}
+An application of particular success of fuzzy system
+in industry are the so called \textit{fuzzy controller}. They are a
+special kind of non-linear table-based control method.
+The concept behind this is the one to define non-linear transitions between different states
+of the system without specifying a system of differential equation for each variable.
+So it is possible to define non-linear transition function withotu specifyng each entry individually.
+The goals is to define a certain bebehaviour.
 
-
-
-
-
-
-
-
+\subsubsection{Table-based Control}
+Control systems all share a time-dependent \textbf{output variable}:
+\begin{itemize}
+    \item Revolutions per minute
+    \item Room temperature
+\end{itemize}
 
 
 
