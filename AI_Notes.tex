@@ -12,6 +12,10 @@
 \usepackage{float}
 \usepackage{hyperref}
 \usepackage{chngcntr}
+
+\usepackage{caption}
+\usepackage{subcaption}
+
 \counterwithin{figure}{section}
 \hypersetup{
     colorlinks,
@@ -3347,7 +3351,6 @@ membership function of the relation. A fuzzy relation $R(X,X)$ is called:
 Note that a fuzzy binary relation that is reflexive, symmetric and transitive is called \textit{fuzzy equivalence
     relation}.
 
-
 \subsection{Fuzzy controller}
 An application of particular success of fuzzy system
 in industry are the so called \textit{fuzzy controller}. They are a
@@ -3363,6 +3366,330 @@ Control systems all share a time-dependent \textbf{output variable}:
     \item Revolutions per minute
     \item Room temperature
 \end{itemize}
+The output is controlled by \textbf{control variable}
+\begin{itemize}
+    \item Adjustment of current
+    \item Thermostat
+\end{itemize}
+Also the \textit{disturbance variables} influences the output
+\begin{itemize}
+    \item Load of elevator,$\dots$
+    \item Outside temperature or sunshine through a window, $\dots$
+\end{itemize}
+The computation of actual value incorporates both control variable measurements of current
+output variable $\xi$ and change of output variable $\Delta\xi=\frac{d\xi}{dt}$
+
+If $\xi$ is given in finite time intervals, then set $\Delta\xi (t_{n+1})=\xi (t_{n+1})-\xi(t_n)$
+in this case measurement of $\Delta\xi$ are not necessary.
+
+\paragraph{Notation}\mbox{}\\
+\begin{itemize}
+    \item The input variables $\xi_1,\dots,\xi_n$
+    \item The control variable $\eta$
+    \item The measurements used to determine actual value of $\eta$
+    \item $\eta$ may specify change of $\eta$
+    \item $\xi_i, 1\leq i\leq n$ is value of $X_i,\eta\in Y$
+    \item Contro function $\varphi$
+\end{itemize}
+$$\varphi: X_1\times\dots\times X_n\rightarrow Y$$
+$$(x_1,\dots,x_n)\rightarrow y$$
+
+\subsubsection{Problems of classical approach}
+\begin{itemize}
+    \item Often very difficult or even impossibile to specify accurate mathematical model.
+    \item Description with differential equations is very complex.
+    \item Profound physical knowledge is needed.
+    \item Exact solution can be very difficult.
+    \item It should be possible to contro a process without a physical-mathematical model.
+\end{itemize}
+
+\subsubsection{Fuzzy approach}
+\begin{itemize}
+    \item Simulate behavior of human who knows how to control.
+    \item That is a \textit{knowledge-based} analysis.
+    \item Directly ask expert to perform analysis.
+    \item Then expert specifies knowledge as \textit{linguistic rules}.
+\end{itemize}
+
+\paragraph{1 - Fuzzy partitioning}\mbox{}\\
+\begin{itemize}
+    \item Determine linguistic terms $X_1,\dots,X_n$ and $Y$ is partitioned into fuzzy sets.
+    \item Define $p1$ distinct fuzzy sets $\mu_1^{(1)},\dots,\mu_{p1}^{(1)}\in\mathcal{F}(X_1)$
+          on set $X_1$
+    \item Associate linguistic term with each set.
+    \item Set $X_1$ corresponds to interval $[a,b]$ of real line, then
+          $\mu_1^{(1)},\dots,\mu_{p1}^{(1)}\in\mathcal{F}(X_1)$ are triangular functions
+          $$\mu_{x_{0,\epsilon}}:[a,b]\rightarrow [0,1]$$
+          $$x\rightarrow 1-min\{\epsilon \cdot |x-x_0|, 1\}$$
+          if $a<x_1<\dots <x_{p1}<b$, only $\mu_2^{(1)},\dots,\mu_{p_1-1}^{(1)}$ are triangulare
+    \item Boundaries are treated differently
+          \begin{itemize}
+              \item left fuzzy set:
+                    \begin{figure}[H]
+                        \centering
+                        \includegraphics[scale=0.5]{images/left-fuzzy-side.png}
+                    \end{figure}
+              \item right fuzzy set:
+                    \begin{figure}[H]
+                        \centering
+                        \includegraphics[scale=0.5]{images/right-fuzzy-side.png}
+                    \end{figure}
+          \end{itemize}
+\end{itemize}
+
+\subsubsection{Fuzzy relation}
+Consider only crisp sets. Solving a control problem means specifying control function
+$$\varphi : X\rightarrow Y$$
+where $\varphi$ corresponds to relation
+$$R_{\varphi}=\{(x,\varphi(x))|x\in X\}\subseteq X\times Y$$
+for measured input $x\in X$, the control value
+$$\{\varphi(x)\}=\{x\}\circ R_\varphi$$
+
+\subsubsection{Fuzzy control rules}
+\textbf{If} temperature is very high \textbf{and} pressure is slightly low, \textbf{then}
+heat change should be slightly negative.
+
+\textbf{If} rate of descent = positive big \textbf{and} airspeed = negative big
+\textbf{and} glide slope = positive big, \textbf{then} rpm change = postive big \textbf{and}
+elevator angle change = insignificant change.
+
+\subsubsection{Approximate reasoning with fuzzy rules}
+Given $r$ \textbf{if-then} rules and the fact "$X$ is $M$", we can conclude that "$Y$ is $N$". This kind
+of reasoning is typically used in fuzzy controllers.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/schema-2.png}
+\end{figure}
+
+\subsubsection{Architecture of a fuzzy controller}
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.5]{images/fuzzy-controller.png}
+\end{figure}
+\begin{itemize}
+    \item \textbf{Fuzzification interface}: which receives the current input value (and
+          eventually maps it to a suitable domain).
+    \item \textbf{Knowledge base}: consists of data base and rule base. Data base contains
+          infomration about boundaries, possible domain trasnformations, and fuzzy sets with corresponding linguistic
+          terms. The rule base contains linguistic control rules.
+    \item \textbf{Decision logic}: which represents the processing unit. It computers the output
+          from measured input according to knowledge base.
+    \item \textbf{Defuzzification interface}: which represents also the processing unit. It determines
+          the crisp output value, and eventually maps it back to appropriate domain (boolean) which are sent as
+          signals to the control of the system.
+\end{itemize}
+
+\subsubsection{Defuzzification}
+The mapping of the internal fuzzy signals of the controller to boolean signals which are useful
+to control the system can be executed in different ways. The most common methods are:
+\begin{enumerate}
+    \item Max Criterion Method (MCM)
+    \item Mean of Maxima (MOM)
+    \item Center of Gravity (COG)
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \hfill
+    \begin{subfigure}[b]{0.4\textwidth}
+        \centering
+        \includegraphics[scale=0.3]{images/crisp-rules.png}
+        \caption{Rules with crips values}
+        \label{fig:crisp}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.4\textwidth}
+        \centering
+        \includegraphics[scale=0.3]{images/fuzzy-rules.png}
+        \caption{Rules with fuzzy values}
+        \label{fig:fuz-val}
+    \end{subfigure}
+    \hfill
+\end{figure}
+
+The MCM choices an arbitrary value $y\in Y$ for which it reaches the maximum value of membership.
+This means that it can be applied to any kind of fuzzy set and to arbitrary $Y$ domain. By the
+way, it could be hard to aim the element for which the membership function be maximized. Also,
+the choice of random values make the behaviour of the controller no deterministic and
+this can bring to discontinuous actions. The MOM take $Y$ as interva and computes the
+set $Y_{MAX}$ such that the output in that points is the maximum. The output value will be computed
+as the average on $Y_{MAX}$. Like in the previous case, this technique can bring to discontinuos
+actions. The COG, as the MOM, take $Y$ as interval and returns as output the center of that area.
+Usually it has a regular behavior, even if the computation is expensive and can bring to
+counterintuitive results.
+
+\subsubsection{Mamdani controller}
+The first model of fuzzy controller was the so called \textit{Mamdani controller},
+it was developed in the 1975 from Mamdani and Assilian. This controller is based on a
+series of rules like "if $X$ is $M_n$ then $Y$ is $N_m$" where $M_n$ and $N_m$ are
+intervals that represents linguistic terms. Even if this rules are in the \textit{if-then}
+form, they shouldn't be interpreted as logic implications, but as partial definition
+of a function. Collectively the rules can be represented in the space like the union
+$S$ of the various intervals:
+$$S=\cup M_i\times N_i$$
+The rules can asumme \textit{crisp values} like in the figure \ref{fig:crisp}, or
+fuzzy values like in the figure \ref{fig:fuz-val}. In both cases, given an input $x_0$
+the output will be computed as the composition of the singleton of $x_0$ and the
+union of the intervals of $S$, $\{x_0\}\circ S$. This output will be a fuzzy set
+which represents only a vague and imprecise description of the desired output. For
+determine the true output value, the preliminary output has to be defuzzificated.
+
+For doing this in the Mamdani controller we use the COG method, which allows to find a
+compromise respect to the single output values of the rules.
+
+\subsubsection{Takagi-Sugeno controller}
+This controller can be viewed as a variant end evolution of the \textit{Mamdani controller}.
+In the same way the input values are described from the fuzzy sets. By the way, the
+consecutive of a rule won't be a fuzzy set but a function that got has values the
+input variables (usually a linear function)
+$$R:\text{if } x_1 \text{ is } \mu_1 \text{ and } x_n \text{ is }\mu_n,\text{ then }y=f(x_1,\dots,x_n)$$
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/takegi-sugeno.png}
+    \caption{Projection of the output respect to the union of the intervals}
+\end{figure}
+The idea is that the function is a good function for controlling the described region from the
+previous rules. For mantaining the readability of the model constructed, occurs avoid
+overlapping between the various regions described previously from the rules. Since the output
+computed is already crisp, there is no need for defuzzification.
+
+\subsubsection{Similarity-baseed reasoning (controller)}
+There is a last type of controller which uses the concept of similarity relationship (which
+is the analogous of the fuzzy sets for the equivalence relationships).
+
+A function $E:X^2\rightarrow[0,1]$ is defined as similarity relationship respect to a T-norm
+if and only if it satisfies the following conditions:
+\begin{enumerate}
+    \item $E(x,x)=1$
+    \item $E(x,y)=E(y,x)$
+    \item $\top (E(x,y),E(y,z))=E(x,z)$
+\end{enumerate}
+This kind of relationships are used for translating the informations data from the experts, in
+such a way that the various tuple span all the possible behaviours of the system. From the
+similarity classes we can extract the rules which are equals to the ones of \textit{Mamdani controller}.
+
+\subsection{Fuzzy data analysis}
+There are two ways for talking about \textit{fuzzy data analysis}. One refers the application of
+of fuzzy easoning techniques to crisp data (this takes the name of \textbf{fuzzy clustering}). Another,
+instead, concerns the analysis of data presented under the shape of fuzzy set (we will talk
+about \textbf{random set} and \textbf{random fuzzy variables}).
+
+\subsubsection{Fuzzy clustering}
+The \textit{fuzzy clustering} is an unsupervised learning procedure which allow to
+divide the dataset in a way that:
+\begin{itemize}
+    \item objects of the same cluster are the most possible similar
+    \item objects from different cluster are the most possibile non-similar between them.
+    The simmilarity relationship is misured in terms of distance function, less is the
+    distance, greater is the probability that 2 elements are from the same cluster.
+ \item in the case of the \textit{hard c-means} algorithm:
+    \begin{enumerate}
+        \item choice a number $c$ of clusters.
+        \item distribute in a random way the centers.
+        \item proceeds with the assignment of the nearest points to the centroids
+        of the respective clusters.
+        \item pass to update the position of the centers through the computation
+        of the center of gravity.
+        \item repeat the process until the convergence of the position.
+    \end{enumerate}
+The cluster partition is optimal when the sum of the distances between the centers and
+the elements is minimum. A problem with this approach is that the algorithm could
+get stacked to the local minimum. For avoiding this porlbem usually are operated
+various iterations and then select the best.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/equidistant.png}
+    \caption{Symmetric dataset}
+    \label{fig:symds}
+\end{figure}
+A different problem is the one given by the fact that the partition is crisp. Whenever
+exists an element that is equidistant from two centers like in the figure \ref{fig:symds},
+the assignment to one of the two clusters is puraly arbitrary and doesn't reflects
+the information given by the data.
+
+The \textit{fuzzy clustering} gives a solution to this problem, introducing a concept
+of membership which is non-binary but conitnuos in $\in[0,1]$, this offers the possibility
+of express the membership of a point to more than one cluster. The results is a partition
+of the data set to a fuzzy set. We can represent this partition through a matrix which
+assigns to each component $u_{ij}$ the membership grade of the point $x_j$ to
+the fuzzy set $\Gamma_i$, in symbols $\mu_{ij}=\mu\Gamma_i(x_j)$. There exists two
+type of fuzzy clustering: the \textbf{probabilistic} and the \textbf{possibilistic}. The
+differences plays respect to the imposed conditions of the membership function, in the
+probabilistic case:
+\begin{enumerate}
+    \item $\sum_{j=1}^n u_{ij}>0, \forall i\in\{1,\dots,c\}$
+    \item $\sum_{i=1}^c u_{ij}=1, \forall j\in\{1,\dots,n\}$
+\end{enumerate}
+The firs conditions indicate that can't exists empty clusters, instead the second
+means that the membership is worn out from the fuzzy sets that constitues the partition.
+In the possiblitisc case we mantain only the first assumpion, and we let go the second.
+
+The possiblitisc interpretation is preferable when you have to manage data full of
+noises or outliers data.
+
+\subsubsection{Issues with fuzzy clustering}
+\textit{How can we know if the partition of the cluster executed by
+our algorithm reflects the implicit informations of the data? What is the
+correct number of cluster for a dataset?} In the case we got a limited number of
+dimensions, we can represent visually the dataset and having an intuition of
+how many centers and in which positions locate them. By the way, in general,
+this is not the case.
+
+Some criteria to research are: a clear separation between clusters, a minimum
+volume between clusters and the maximum number of points focussed near the centroid
+of the cluster. In literature are proposed various measured of this kind:
+\begin{enumerate}
+    \item \textbf{Partition coefficient}: $PC=\frac{1}{n}\sum_{i=1}^c\sum_{j=1}^n u^2_{ij}$
+    \item \textbf{Average partition density}: $APD=\frac{1}{c}\sum_{i=1}^c \frac{\sum_{j\in Y_i} u_{ij}}{\sqrt{|\sum_i|}}$
+    \item \textbf{Partition entropy}: $PE=\sum_{i=1}^c\sum_{j=1}^n u_{ij}\log u_{ij}$
+\end{enumerate}
+
+\subsubsection{Variants}
+The measure of distance more intuitive is the Euclidean, but this one has the inconvenient
+to allow only spherical clusters. Some variants are proposed for relaxing the constraints.
+In the algorithm of \textit{Gustafson-Kessel} the Euclidean distance is substituted with the
+\textit{Mahalanobis} distance define respect to the cluster $\Gamma_i$ as:
+$$d^2(x_j,C_j)=(x_j-c_i)^\top\sum_i^{-1}(x_j-c_i)$$
+where $\sum_i$ is the covariant matrix of the cluster $i$. This algorithm is favorable
+in the clustering
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{itemize}
+
+
+
+
+
+
+
 
 
 
