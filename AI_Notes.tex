@@ -3581,18 +3581,19 @@ divide the dataset in a way that:
 \begin{itemize}
     \item objects of the same cluster are the most possible similar
     \item objects from different cluster are the most possibile non-similar between them.
-    The simmilarity relationship is misured in terms of distance function, less is the
-    distance, greater is the probability that 2 elements are from the same cluster.
- \item in the case of the \textit{hard c-means} algorithm:
-    \begin{enumerate}
-        \item choice a number $c$ of clusters.
-        \item distribute in a random way the centers.
-        \item proceeds with the assignment of the nearest points to the centroids
-        of the respective clusters.
-        \item pass to update the position of the centers through the computation
-        of the center of gravity.
-        \item repeat the process until the convergence of the position.
-    \end{enumerate}
+          The simmilarity relationship is misured in terms of distance function, less is the
+          distance, greater is the probability that 2 elements are from the same cluster.
+\end{itemize}
+in the case of the \textit{hard c-means} algorithm:
+\begin{enumerate}
+    \item choice a number $c$ of clusters.
+    \item distribute in a random way the centers.
+    \item proceeds with the assignment of the nearest points to the centroids
+          of the respective clusters.
+    \item pass to update the position of the centers through the computation
+          of the center of gravity.
+    \item repeat the process until the convergence of the position.
+\end{enumerate}
 The cluster partition is optimal when the sum of the distances between the centers and
 the elements is minimum. A problem with this approach is that the algorithm could
 get stacked to the local minimum. For avoiding this porlbem usually are operated
@@ -3631,8 +3632,8 @@ noises or outliers data.
 
 \subsubsection{Issues with fuzzy clustering}
 \textit{How can we know if the partition of the cluster executed by
-our algorithm reflects the implicit informations of the data? What is the
-correct number of cluster for a dataset?} In the case we got a limited number of
+    our algorithm reflects the implicit informations of the data? What is the
+    correct number of cluster for a dataset?} In the case we got a limited number of
 dimensions, we can represent visually the dataset and having an intuition of
 how many centers and in which positions locate them. By the way, in general,
 this is not the case.
@@ -3653,67 +3654,135 @@ In the algorithm of \textit{Gustafson-Kessel} the Euclidean distance is substitu
 \textit{Mahalanobis} distance define respect to the cluster $\Gamma_i$ as:
 $$d^2(x_j,C_j)=(x_j-c_i)^\top\sum_i^{-1}(x_j-c_i)$$
 where $\sum_i$ is the covariant matrix of the cluster $i$. This algorithm is favorable
-in the clustering
+in the clustering, used both for the automatic generaiton of fuzzy rules tha for the controllers.
 
+The dimension of the various clusters can change respect to the determinant of the matrix.
+\begin{itemize}
+    \item in general the Gustafson-Kessel algorith extracts more information that the standard
+          algorithm, but it is also more sensible to a correct initialization (trade-off).
+    \item it could be useful to decide on a good initialization to preliminary
+          proceed with some iterations of the standard algorithm.
+    \item since it is present the inverse of a matrix this algorithm is computationally
+          more intensive, and harder to apply on big dataset than the standard one. Restrict the domain
+          to clusters that are distributed along a parabole line respect to the axis reduce the computational
+          cost.
+\end{itemize}
+Another approach consist in allow the non-convex clusters. The \textbf{shell clusterin} algorithms
+manage to do that, and they are particularly usefull for image recognition and analysis.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/fuzzy_clust_alg.png}
+    \caption{Some fuzzy shell clustering algorithms}
+\end{figure}
+Another possible approach is the \textbf{kernel-based clustering}, which is useful in the case we
+are managing non-vector data (like sequences, graphs, trees,\dots). This method is based on a map:
+$$\phi:\mathcal{X}\rightarrow\mathbb{H}$$
+where $\mathbb{H}$ is the Hilbert space and $\mathcal{X}$ is the input space. In this way the data are not
+directly used, but only through their dot product (their existence is guaranteed since they
+are inside the Hilbert space). It is defined the kernel function $k$ such that:
+$$k:\mathcal{X}\times\mathcal{X}\rightarrow\mathbb{R},\forall x,x'\in\mathcal{X}:\langle\phi(x),\phi(x')\rangle = k(x,x')$$
+there is no need to know $\phi$ explicitely. Unlike other algorithms (other
+fuzzy shell clustering), the kernel methods doesn't extract prototypes
+from data for single clusters, but it computes the similarity relationship between the various inputs $\in\mathcal{X}$.
 
+The centers $c_i^\phi\in\mathbb{H}$ are linear combinations of transformed data:
+$$c_i^\phi=\sum_{r=1}^n a_{ir}\phi(x_r)$$
+Some disvantages are given by the difficulty of an adequate choice of the kernel fuction and of
+parameters, and the missing of an explicit representation of the single clusters.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\paragraph{Noise clustering}\mbox{}\\
+Last type algorithms are the \textit{noise clustering} algorithms. They adds to $c$ clusters
+one noise cluster.
+Which represents the group of all nosy data points or outliers, which
+are not associable to any other cluster.
+\begin{itemize}
+    \item it has not explicitly associated to any
+          prototype.
+    \item It is directly associated to sitance between implicit prototype and data.
 \end{itemize}
 
+The center of the $c$ cluster is choice in such a way to have constant
+distance $\delta$ between all the data points of the dataset.
+\begin{itemize}
+    \item all points have same probability of belonging to noise cluster. During the optimization
+          phase the probability is adapted.
+\end{itemize}
 
+\subsubsection{Random sets}
+Untill now we have applied fuzzy techniques to crisp data, now we want to extend this
+techniques in such a way to comprehend fuzzy descriptions. For doing this we have to introduce
+the concept of \textit{random set}.
+Standard statistical data analysis is based on random variables $X:\rightarrow U$
+A measureable mapping from a probability space to a set $U$ ($U=\mathbb{R}$). A random set
+is the generalization of this idea, in the sense that the value of the function won't be anymore
+an element of the set $U$, but a subset of $U$. Given a function $\Gamma :\Omega\rightarrow 2^U$,
+some useful concepts to define are the one of \textbf{upper and loweer probability} (expressed as $P^*(A)$)
+which represent the proportion of elements that the image touches in a certain subsets of $U$.
+$$P^*(A)=P\left(\{\omega\in\Omega|\Gamma(\omega)\cap A\neq\emptyset\right)$$
 
+\paragraph{Example}\mbox{}\\
+\begin{itemize}
+    \item $U=\{English, German, Franch, Spanish\}$
+    \item $\Omega$ empolyees of a working group
+    \item $\Gamma:\Omega\rightarrow 2^U$ collections of language that $\omega$ can speak
+\end{itemize}
 
+The other definition to explain is the one of \textit{lower bound of probability}:
+$$P_*(A)=P\left(\{\omega\in\Omega|\Gamma(\omega)\subseteq A\text{ and }\Gamma(\omega)\neq\emptyset\right)$$
 
+With these two instruments we can analyze data described in a fuzzy way. We can associate, for each
+element of the map a probability $E(\Gamma)$, in such a way that:
+$$E(\Gamma)=\{E(X)|X(\omega)\in\Gamma(\omega)\text{ where }X\text{ is a random variable such that }E(X),\forall\omega\in\Omega\}$$
 
+We can generalize the approach allowing to the $\Gamma$ function to map the input in a fuzzy set.
 
+\subsection{Neuro-Fuzzy Systems}
+Contrary to the NN, the fuzzy systems manages the high-level reasoning, they do not adapt to the new
+environment, they use the linguistic informations relative to the domain and they are not based on
+data.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/nnvsfuzzy.png}
+\end{figure}
+The fuzzy NN combines the parallel computation and the learning capacity of NN with the
+high-level representation of fuzzy systems. This allow to have a better interpretation of the internal
+state of the NN during the computation. There are two modes in which fuzzy systems and neural networks
+can collaborate:
+\begin{itemize}
+    \item \textit{cooperative model}: the two systems works independently. The NN generate some parameters
+          (offline) and then optimize (online) for the fuzzy controller.
+    \item \textit{hybrid model}: fuzzy sets and fuzzy rules are mapped inside a NN. The two data
+          structures are integrated and there is no overhead due to comunication. Both offline and online
+          learning are available.
+\end{itemize}
+In the hybrid mode, the fuzzy sets that are antecedents to the fuzzy rules, can be modeled both as weight
+between neurons that as activation function of the neurons. In the first case, the neuron of the first
+layer represent the rule, in the second the neuron of the first layer represents the rule.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/nnfzconnactiv.png}
+\end{figure}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\subsubsection{The algorithm}
+A set of fuzzy rules can be converted in a neural network following this procedure:
+\begin{enumerate}
+    \item For each input variable $x_i$ we create a neuron in the input layer.
+    \item For each ouput variable $y_i$ we create a neuron in the output layer.
+    \item For each fuzzy set $\mu_i^j$ we create a neuron in the first hidden layer
+    and we connect to the corresponding input neuron $x_i$.
+    \item For each fuzzy rule $R_i$ we create a neuron in the second hidden layer
+    and we specify a T-norm for calculating the antecedent of the rule.
+    \item Connect each neuron to the neurons that represent the fuzzy sets of antecedents
+    relative of the corresponding rule.
+    \item Now the algorithm diverges in bae at which kind of controller you want to use:
+    \begin{itemize}
+        \item Mamdani-Assilian controller, it connects each "rule-neuron" to the corresponding
+        output neuron respect to the fuzzy rule domain. As connection weight we can chose
+        the fuzzy set of the corresponding fuzzy rule.
+        \item Takegi-Sugeno-Kang controller, for each "rule-neuron" we create a twin that
+        computes the output function corresponding to the fuzzy rule and then you connect
+        all the input neurons.
+    \end{itemize}
+\end{enumerate}
+The network constructed in this way can be trained with the back-propagation.
 \end{document}
