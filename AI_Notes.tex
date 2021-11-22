@@ -3769,20 +3769,112 @@ A set of fuzzy rules can be converted in a neural network following this procedu
     \item For each input variable $x_i$ we create a neuron in the input layer.
     \item For each ouput variable $y_i$ we create a neuron in the output layer.
     \item For each fuzzy set $\mu_i^j$ we create a neuron in the first hidden layer
-    and we connect to the corresponding input neuron $x_i$.
+          and we connect to the corresponding input neuron $x_i$.
     \item For each fuzzy rule $R_i$ we create a neuron in the second hidden layer
-    and we specify a T-norm for calculating the antecedent of the rule.
+          and we specify a T-norm for calculating the antecedent of the rule.
     \item Connect each neuron to the neurons that represent the fuzzy sets of antecedents
-    relative of the corresponding rule.
+          relative of the corresponding rule.
     \item Now the algorithm diverges in bae at which kind of controller you want to use:
-    \begin{itemize}
-        \item Mamdani-Assilian controller, it connects each "rule-neuron" to the corresponding
-        output neuron respect to the fuzzy rule domain. As connection weight we can chose
-        the fuzzy set of the corresponding fuzzy rule.
-        \item Takegi-Sugeno-Kang controller, for each "rule-neuron" we create a twin that
-        computes the output function corresponding to the fuzzy rule and then you connect
-        all the input neurons.
-    \end{itemize}
+          \begin{itemize}
+              \item Mamdani-Assilian controller, it connects each "rule-neuron" to the corresponding
+                    output neuron respect to the fuzzy rule domain. As connection weight we can chose
+                    the fuzzy set of the corresponding fuzzy rule.
+              \item Takegi-Sugeno-Kang controller, for each "rule-neuron" we create a twin that
+                    computes the output function corresponding to the fuzzy rule and then you connect
+                    all the input neurons.
+          \end{itemize}
 \end{enumerate}
 The network constructed in this way can be trained with the back-propagation.
+
+
+\section{Evolutionary Computing}
+An \textbf{optimization problem} can be described from a triple $\Omega,f,\succ$ where $\Omega$
+is the search space, $f$ is an evaluation function of form $f:\Omega\rightarrow\mathbb{R}$ and
+$\succ$ a comparison relationship $\in\{<,>\}$
+The set of \textbf{global optima} $\mathcal{H}\subseteq\Omega$ is defined as:
+$$\mathcal{H}=\{x\in\Omega|\forall x'\in\Omega : f(x)\succeq f(X')\}$$
+Given an optimization problem, we want to find and element $x\in\Omega$ which optimized
+the function $f$ in the whole search space. In literature are present various way
+for solving optimization problems:
+\begin{itemize}
+    \item Anayltic solutions: efficient but rarely applicable.
+    \item Brute-forcing (exhausting exploration): very inefficient, so only usable in small search spaces.
+    \item Random search: always usable, but mostly inefficient.
+    \item Guided search: similar elements in $\Omega$ have similar function values.
+\end{itemize}
+
+\subsection{Motivation}
+The Evolutionary Algorithms (EA) are grounded on theory of biological evolution. The fundamental
+principles are the following:
+\begin{itemize}
+    \item Beneficial traits resulting from random variation are favored by natural selection.
+    \item Better chances of procreation and multiply of individuals with beneficial traits.
+\end{itemize}
+Eveolution theory explains diversity and complexity of species and allows unifaction of all different
+disciplines in biology.
+
+\subsubsection{Principles of organismic evolution}
+The following are the principles upon which EA are based:
+\begin{itemize}
+    \item \textbf{Diversity}: All forms of life differ from each other (even from the same species). Different genetic material
+          means \textbf{diversity of species}. The currently existing life forms are a tiny fraction of
+          all theoretically possible ones.
+    \item \textbf{Variation}: New \textbf{variants} are continuosly created by mutation and genetic recombination (which is sexual reproduction).
+    \item \textbf{Inheritance}: Variations are \textbf{heritable} as long as entering the germ line, also they are passed to the next
+          generation.
+    \item \textbf{Speciation}: Genetically diverge of individuals and populations.
+    \item \textbf{Birth surplus}: More offspring that can ever become mature enough to procreate
+          themselves.
+    \item \textbf{Adaptation/Natural selection/Riproduzione differenziale}: On average, ereditary
+          variations of the survivors of a population increses the adaptation to the local environment.
+    \item \textbf{Randomness}: Variations are triggered/initiated or caused by random.
+    \item \textbf{Gradualism}: Variations happen in comparatively small steps.
+    \item \textbf{Evolution}: Adaptation to environment (species evolve in the course of time). The
+          theory of evolution opposes crationism.
+    \item \textbf{Discrete Genetic Units}: The store of genetic information in discrete units. Not
+          continuosly blend of hereditary traits (otherwise disappeare of differences).
+    \item \textbf{Opportunism}: Processes of evolution work exclusively on what is present, the
+          better/optimal solutions are not found if intermediary stages exhibit certain fitness handicaps.
+    \item \textbf{Evolution-strategic Principles}: Not only organisms are optimized, but also the
+          mechanisms of evolution: reproduction and mortality rates, life spans, vulnerability to mutations, \dots
+    \item \textbf{Ecological Niches}: Competitive species can tolerate each other if they occupy different
+          ecological niches (the biospheres). Biological diversity of species is possible in spite of competition
+          and natural selection.
+    \item \textbf{Irreversibility}: The course of evolution is irreversible and unrepeatable.
+    \item \textbf{Unpredictability}: The course of evolution is neither determined, nor programmed, not predictable.
+    \item \textbf{Increasin complexity}: Biological evolution is increasingly more complex.
+\end{itemize}
+
+\subsection{Ingredients of an evolutionary algorithm}
+\begin{itemize}
+    \item \textit{Encoding} for the solution candidates (depends from the issue, there are no
+          general rules).
+    \item A method for creating an \textit{initial population}, this is commonly created
+          as simple random sequences, it depends on the chosen enconding.
+    \item An \textit{evaluation function} to evaluate the individuals. It represents the
+          environment, and often it is the function to optimize.
+    \item The \textit{selection criterias} in relation with the evaluation function,
+          in such a way that it is possible to select the individuals to procreate in the
+          successive generation.
+    \item A set of \textit{genetico operators} to modify chromosomes, the most used
+          operators are two: the \textbf{mutation} (randomly modifies the
+          chromosomes) and \textbf{crossover} (recombines the chromosome of the parents for
+          the children).
+    \item Various \textit{parameters} (population size, mutation, probability,\dots).
+    \item \textit{Termination criterion}.
+\end{itemize}
+
+\subsection{Formal definition}
+For every optimization problem: differen representations of solution candidates
+\begin{itemize}
+    \item EA separates space $\Omega$, the phenotypes, from representation of the solution
+          candidate in individual, the Genotypes $\mathcal{G}$.
+    \item Fitness function $f$ is defined on $\Omega$.
+    \item Mutation and Recombination is defined on $\mathcal{G}$.
+    \item For evaluation, the transformation of genotype represented individual in $\Omega$.
+    \item Decoding function $dec:\mathcal{G}\rightarrow\Omega$ is a transformation of
+          a genotype to the phenotype.
+\end{itemize}
+
+
 \end{document}
