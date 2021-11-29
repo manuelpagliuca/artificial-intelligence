@@ -3876,5 +3876,375 @@ For every optimization problem: differen representations of solution candidates
           a genotype to the phenotype.
 \end{itemize}
 
+\paragraph{Definiton of individual}\mbox{}\\
+An \textbf{individual} $A$ is a tuple $(A.G, A.S,A.F)$ containing
+the solution candidate ($A.G\in\mathcal{G}$), the optional additional information $A.S\in Z$
+and the quality assessment $A.F=f(dec(A.G))\in\mathbb{R}$
+
+\paragraph{The mutation operator}\mbox{}\\
+A mutation operator is defined by mapping
+$$Mut^\xi:G\times Z\rightarrow G\times Z$$
+
+\paragraph{The recombination operator}\mbox{}\\
+The recombination operator with $r\geq 2$ parents
+and $s\geq 1$ offspring ($r,s\in\mathbb{N}$) is defined by the mapping
+$$Rek^\xi:(G\times Z)^r\rightarrow(G\times Z)^s$$
+
+\paragraph{The selection operator}\mbox{}\\
+The selection operator allows to choice due to the fitness value between a population of $r$
+individuals a number $s$ of individuals that will continue the species. Let
+$P=\{A_1,\dots,A_r\}$ the population of individuals, then the selection operator will
+be defined by the mapping
+$$Sel^\xi:(\Gamma\times Z\times\mathbb{R})^r\rightarrow(\Gamma\times Z\times\mathbb{R})^s$$
+$$\langle A_i\rangle_{1\leq i\leq r}\rightarrow\langle A^{(IS^\xi (c_1,\dots,c_r)_k)}\rangle_{1\leq k\leq s}mit\;A^{(i)}=(a_i,b_i,c_i)$$
+where the selection has the shape
+$$IS^\xi:\mathbb{R}^r\rightarrow \{1,\dots,r\}^s$$
+
+Now we can define an evolutionary algorithm.
+\paragraph{Fundamental evolutionary algorithm}\mbox{}\\
+A simple EA on an \textit{optimization problem} $(\xi,f,\succ)$ is an 8-tuple
+$$(G,dec,Mut,Rek,IS_{Parents},IS_{Environment},\mu,\lambda)$$
+where
+\begin{itemize}
+    \item $\mu$ describes the amount of individuals of the parental population.
+    \item $\lambda$ defines the offspring per generation.
+\end{itemize}
+$$Rek:(\mathcal{G}\times\mathcal{Z})^k\rightarrow(\mathcal{G}\times\mathcal{Z})^{k'}$$
+$$IS_{Parents}:\mathbb{R}^\mu\rightarrow(1,\dots,\mu)^{\frac{k}{k'}\cdot\lambda}\text{ with }\frac{k}{k'}\cdot\lambda\in\mathbb{N}$$
+$$IS_{Environment}:\mathbb{R}^{\mu+\lambda}\rightarrow(1,\dots,\mu+\lambda)^\mu$$
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/gen-scheme-ea.png}
+\end{figure}
+There is an internal distinction between EA:
+\begin{itemize}
+    \item \textbf{Genetic algorithms}, where the encoding is a binary sequence.
+    \item \textbf{Evolutionary algorithms} (classical), where the encoding depends
+          from the problem, and so the genetic operators
+\end{itemize}
+
+\subsection{Meta-heuristics}
+A \textit{meta-heuristics} is an algorithmic method for finding approximated solutions for a
+combinatory optimization problem. There are definied abstract sequences of steps that can be applied
+to any problem of this kind. Each single step has to be declined in base to the specificity of the problem.
+
+The need for a meta-heuristic approach borns from the fact that some classes of problems doesn't
+have an efficient algorithmic solution. The approssimation that you will obtain respect to the
+optimal solution depends from the definition of the problem and from the implementation of the single
+steps of the meta-heuristic algorithm.
+
+\subsubsection{Local Search Methods}
+Given an optimization problem $(\Omega, f, \succ)$, we want to find an element $x\in\Omega$, which
+optimizes $f$ (max. or min.). This method searches for the local maximum around the preselected
+points $\in\Omega$ during the initialization phase.
+
+The assumption states that $f(x_1)$ and $f(x_2)$ differs for slightly similar $x_1,x_2\in\Omega$, this
+means that there are no huge jumps in $f$.
+
+The peculiarity of this evolutionary approach is that itself limits the population to just one
+individual. This has some consequences, especially for genetic operators: the recombination operator
+is not necessary anymore, we just limit to the mutation operator.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{images/local_search_method.png}
+\end{figure}
+At each step we can decide if continue to mutate the individual or to create a different one (this for
+avoiding local max/min). The idea is the one to use the \textit{gradient descent} for identfying
+the max/min point by taking a step in the gradient direction. The width of the step shouldn't be
+too little because in that case the algorithm converges to slowly, nor too big because there will
+be oscillations.
+
+\paragraph{Gradient ascent or descent}\mbox{}\\
+\begin{enumerate}
+    \item Choose a random starting point $x^{(0)}=\left(x_1^{(0)},\dots,x_n^{(0)}\right)$
+    \item Compute the gradient at the current point $x^{t}$
+          $$\nabla_x f\left(x^{(t)}\right)=\left(\frac{\partial}{\partial x_1}f\left(x^{(t)}\right),\dots,\frac{\partial}{\partial x_n}f\left(x^{(t)}\right)\right)$$
+    \item Make a small step in the direction of the gradient
+          $$x^{(t+1)}=x^{(t)}+\eta\nabla_x f\left(x^{(t)}\right)$$
+          where $\eta$ is the step width parameter, the "learning rate".
+    \item Repeat the steps 2 and 3 until some termination criterion is fulfilled.
+\end{enumerate}
+It is possible getting stuck in the local maxima
+\begin{itemize}
+    \item Due to local gradient information, maybe only local maxima is reachable.
+    \item Problem cannot be remedied in general.
+    \item Chance improvement: multiple execution with different starting points (these
+          can prevent the issues).
+\end{itemize}
+
+\paragraph{Hill Climbing}\mbox{}\\
+In the case where $f$ isn't differentiable we can try to determine the direction where $f$
+increases by evaluating random points in the vicinity of the current point:
+\begin{enumerate}
+    \item Choose a random starting points $x_0\in\Omega$
+    \item Choose a point $x'\in\Omega$ in the "vicinity" of $x_t$
+    \item \[
+              x_{t+1}=
+              \begin{cases}
+                  x'  & \text{if }f(x')> f(x_t) \\
+                  x_t & \text{otherwise}
+              \end{cases}
+          \]
+    \item Repeat steps 2 and 3 until a termination criterion is fulfilled.
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/hill_climbing.png}
+    \caption{Pseudocode of acceptance criterion in fundamental algorithm}
+\end{figure}
+
+\paragraph{Simulated annealing}\mbox{}\\
+A generalization of the precedents approaches is the so called \textit{simulated annealing}. The
+intuition behind this is that moving from the low to the high should be more probable than the
+contrary.
+
+The guiding principle:
+\begin{itemize}
+    \item Random variants of current solution are created.
+    \item Better solutions are always accepted.
+    \item Worse solutions are accepted with certain probability which depends on:
+          \begin{itemize}
+              \item quality difference between current and new solution
+              \item temperature parameter
+          \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/sim_annealing.png}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/sim_annealing_algo.png}
+    \caption{Acceptance criterion of simulated annealing}
+\end{figure}
+\begin{enumerate}
+    \item Choose a random starting point $x_0\in\Omega$
+    \item Choose a point $x'\in\Omega$ in the "vicinity" of $x_t$
+    \item Set
+          \[
+              x_{t+1}=
+              \begin{cases}
+                  x'                                                    & \text{if }f(x')\geq f(x_t) \\
+                  x'\text{ with probability }p=e^{-\frac{\delta f}{kT}} & \text{otherwise}           \\
+                  x_t\text{ with probability }1-p
+              \end{cases}
+          \]
+          With $\Delta f=f(x')-f(x_t)$ as quality reduction of the solution, with $k=\Delta f_{max}$
+          estimate of the range of quality values, and $T$ as temperature parameter.
+    \item Repeat steps 2 and 3 until a termination criterion is fulfilled.
+\end{enumerate}
+
+\paragraph{Threshold accepting}\mbox{}\\
+Very similar to simulated annealin: worse solutions are someitmes accepted, but with an upper bound
+on quality degradation.
+\begin{enumerate}
+    \item Choose a random starting point $x_0\in\Omega$
+    \item Choose a point $x'\in\Omega$ in the "vicinity" of $x_t$
+    \item Set
+          \[
+              x_{t+1}=
+              \begin{cases}
+                  x'  & \text{if }f(x')\geq f(x_t)-\theta \\
+                  x_t & \text{otherwise}
+              \end{cases}
+          \]
+          $\theta$ threshold for accpeting worse solution candidates, when $\theta=0$ is is equivalent
+          to the standard hill climbing.
+    \item Repeat steps 2 and 3 until a termination criterion is fulfilled
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/threshold-accept.png}
+\end{figure}
+
+\paragraph{Gread Deluge Algorithm}\mbox{}\\
+Very similar to simulated annealing: worse
+solutions are sometimes accepted, but absolute
+lower bound is used
+\begin{enumerate}
+    \item Choose a random starting point $x_0\in\Omega$
+    \item Choose a point $x'\in\Omega$ “in the vicinity” of $x_t$
+    \item
+          Set \[
+              x_{t+1}=
+              \begin{cases}
+                  x'  & \text{if }(x')\geq\theta_0+t\cdot\eta \\
+                  x_t & \text{otherwise}
+              \end{cases}
+          \]
+          $\theta_0$ lower bound for the quality of the candidate solutions
+          at (initial “water level”))
+    \item Repeat steps 2 and 3 until a termination criterion is fulfilled
+\end{enumerate}
+
+\paragraph{Record-to-Record travel}\mbox{}\\
+Similar to great deluge algorithm: rising water level is used, linked to the
+fitness of the best found individual
+\begin{itemize}
+    \item possible degradation:  always seen in relation to the best found individual.
+    \item only if there is an improvement: current individual is important
+    \item similar to threshold accepting: a monotonously increasing sequence of real numbers controls the selection of poor individuals
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/record2record.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/comp_algo.png}
+    \caption{Comparison of local search algorithms}
+\end{figure}
+
+\subsubsection{Tabu search}
+Local search method that considers history when creating new individual. Tabu lists
+avoid recurrence on previously considered solution candidates. They are implemented
+as FIFO queue with fixed length, where the entries are complete solution candidate. The
+mutations are not allowed to create tabu entries. If the new candidate shows up "interesting
+properties" we can do an exception to the tabu.
+
+\subsubsection{Memetic algorithms}
+This algorithms unified the pros of the \textit{population-based} (slow, but gives more information) approach with the \textit{local seach}.
+(fast, but sensitive to local minimum). The origin of the name "memes" are elements of the behavior
+which can be acquired individually. Each new individual will be optimized immediately only in few
+steps or till local optimum.
+
+This often allow to accelerate the optimization process, but the evolutive dynamic are limited in a
+critical way: the mutations risks to stucks frequently in local optima, the ricombination has a
+limited starting situation and parts of the space are perhaps unreachable.
+
+\subsubsection{Differential evolution}
+No adaptation of the step width in the set of strategies A.S, we try to use the relationships
+between individuals in the population as base for the calculation. We introduce a particular
+genetic operator \textit{DE-operator}. This operator can be saw as a combination of the
+recombination operator and the mutation operator. In the selection, instead, a descendent can
+substitute his ancestors if and only if has a better fitness value.
+
+
+\subsubsection{Scattered search}
+The idea at the base of the \textit{scatter search} algorithms is the one of having a population
+and to operate a local search around the individuals. Given the values registered from this
+reasearch, we force the evolution in base of the direction of the maxima registered.
+
+This is a purely deterministic method (different from the precedent methods).
+
+It is an iterative process with two phases:
+\begin{enumerate}
+    \item Generating of new individuals and selection of those which guarantee the most
+          possible variety.
+    \item Recombination of all "pairings" of the chosen individuals, selection of the best
+          individuals and iteration until nothing changes anymore.
+\end{enumerate}
+
+\subsubsection{Cultural algorithm}
+Instead of considering only the genetic information, we can also consider the cultural informations,
+relative to the skills learned by the previous generations. The cultural algorithms tries to take
+advantage from this generational memory in such a way that individuals are influenced from this
+last.
+There are two kinds of cultural knowledge:
+\begin{itemize}
+    \item Situational knowledge: relative to generations which are adjacent.
+    \item Normative knowledge: always relevant.
+\end{itemize}
+
+\subsection{Elements of evolutionary algorithms}
+\subsubsection{Encoding}
+The solution of our problem has to be encoded in such a way that is possible to explore
+the search space of possible solutions through this representation. There is no general recept:
+the encoding issue is specific to the problem. By the way the are some generic hints to follow:
+\begin{enumerate}
+    \item Represents the similar phenotype with similar genotypes. This assicures that
+          mutation of certain genes results in similar genotypes and that radical change allows to
+          evade local minima.
+    \item The fitness function has to return similar values for similar candidates. This prevents
+          that we choice an econdig which is too much or too little epistic (in biology an allele of
+          an epistatic genes kills the effects of all possible alleles of another gene. In the context
+          of evolutionary algorithms states the grade of interactions between the chromosomes of the genes).
+    \item The space $\Omega$ has to be close respect to genetico operators. This for obvious
+          reasons, if the search space is not closed respect to the genetic operators, a single modified
+          chromosome couldn't be decoded or interpret.
+\end{enumerate}
+
+\subsubsection{Fitness}
+Better individuals should have better chances to create offspring. So we must apply the so
+called \textbf{selective pressure}, which is the strength of preferencing good individuals:
+\begin{itemize}
+    \item Exploration of the space
+          \begin{itemize}
+              \item Deviation of the individuals over $\Omega$ as wide as possible.
+              \item Preferably big chances to find global optimum.
+              \item Smaller selective pressure.
+          \end{itemize}
+    \item Exploitation of good individuals
+          \begin{itemize}
+              \item Strive for optimum in the vicinity of good individuals.
+              \item Convergence to optimum.
+              \item Higher selective pressure.
+          \end{itemize}
+\end{itemize}
+There are two metrics for creating selective pressure:
+\begin{itemize}
+    \item \textbf{Time to takeover}: number of generations until population converges.
+    \item \textbf{Selection intensity}: the differential between average quality before and after the selection.
+\end{itemize}
+The same selection methods can change in base to the evolutive pressure. One of the most used is the
+\textit{roulette-wheel selection}. The fitness value is computed relative of each individuals by following:
+$$f_{rel}(A_i)=\frac{A_i.F}{\sum_{j=1}^{|P|}A_j.F}$$
+The probability of an individuals of being selected for the reproduction will be proportional to
+his relative fitness values. Some disvantages are:
+\begin{itemize}
+    \item the computation of the relative fitness values is expensive and hard to parallelize.
+    \item the individuals with an high fitness value could dominate the selection (no more biodiversity).
+    \item really fast to find optimal locals, but really bad in exploring the space.
+\end{itemize}
+The same fitness function can be adapted for avoiding a too fast convergence:
+\begin{itemize}
+    \item \textit{linear dynamical scaling}: reduce the relevance of the fitness function
+          subtracting the minimum of the past generations.
+    \item \textit{$\sigma$-scaling}: calculated with the formula $f_\sigma(A)=A.F-(\mu_f(t)-\beta\cdot\sigma_f(t))$,
+          where $\beta$ is a positive parameter.
+    \item \textit{time depending}: the temporal factor is used as exponent rule of selective pressure.
+    \item \textit{Boltzmann-selection}: determins the fitness non directly relative, but
+          throught the function $g(x)=exp^{\frac{f(x)}{kT}}$. $T$ è una variabile that depends from the
+          time and $k$ is the normalizzazion costant.
+\end{itemize}
+
+\subsubsection{Selection}
+There are various strategies available in literature for operating the selection of the individuals
+which will constitute the genetic pool for the successive generation:
+\begin{itemize}
+    \item \textit{Roulette-wheel selection}: it is a best known selection method, it computes the
+          relative fitness of the individuals $A^{(i)}$
+          $$f_{rel}(A_i)=\frac{A_i.F}{\sum_{j=1}^{|P|}A_j.F}$$
+
+
+    \item \textit{Rank-based selection}:
+
+    \item \textit{Tournament selection}:
+
+    \item \textit{Elitist}:
+
+    \item \textit{Crowding}: 
+\end{itemize}
+
+
+
+\subsubsection{Selection}
+
+
+
+
+
+
+\subsubsection{Genetic operators}
+
+
+
+
+
 
 \end{document}
