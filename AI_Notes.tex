@@ -4446,8 +4446,78 @@ found. Some problems with this strategy:
     \item The same statistics representation of the population can be used for different populations.
 \end{enumerate}
 
+\subsection{Theoretical fundations}
+\textit{Why evolutionary algorithms works?} We have to consider the \textbf{schemata}, which
+are binary chromosomes that are only partially specified and encode a particulare behavior.
+Then we investigate how the number of chromosomes matching a schema evolve over several generations.
+The objective is to give a rought stochastic statement that describes how a genetic algorithm
+explores the search space.
 
+\paragraph{Definition I}\mbox{}\\
+A scheme $h$ is a string of symbols of length $L$ on the alphabet $\{0,1,*\}$, $h\in\{0,1,*\}^L$. The character
+$*$ is a wild card (or "don't care symbol").
 
+\paragraph{Definition II}\mbox{}\\
+A chromosome $c\in\{0,1\}^L$ matches a schema $h$,if and only if it coincides
+with $h$ at all positions where $h$ is 0 or 1.
+
+For misuring the effects of the selection occurs computes the fitness of the chromosome that
+shares a certain schema. Usually as measure is chosen the \textit{mean relative fitness}
+of chromosome that match the schema $h$ in the population $P(t)$. The individuals that shares
+the schema in the next generation will be proportional to this value.
+
+Instead, for calculating the influence of the mutation operator we need to measure the probability,
+that the after the mutation the schema is preserved. We define the concept of \textbf{order of
+a scheme}.
+\paragraph{Definition III}\mbox{}\\
+The order of a schema $h$ is the number of zeroes and ones in $h$, that is $ord(h)=\#0+\#1=L-\#*$,
+where $\#$ is the "number of occurrences of".
+
+Now we can calculate the probability that a mutation operator preserves the schema $h$ thanks
+to the formula:
+$$(1-p_m)^{ord(h)}$$
+where the $p_m$ is the "mutation probability". In conclusion, the probaiblity that the crossover
+preserves the schema will be mesaured respect to the \textbf{defining length} (considering
+the one-point crossover).
+
+\paragraph{Definition IV}\mbox{}\\
+The defining length of a schema $h$ is the difference between the position of the last 0/1
+and the first 0/1 in $h$.
+
+\paragraph{Definition V}\mbox{}\\
+The probability that the cut point splits a chromosome in such a way that some of the fixed
+characters of a schema lie on one side of the cut and some one the other is:
+$$\frac{dl(h)}{L-1}$$
+
+Now let's define important concepts for the following:
+\paragraph{Definitino VI}\mbox{}\\
+$N(h,t)$ is the expected value of the number of chromosomes that match the schema $h$
+during the $t$-th generation.
+
+\paragraph{Definition VII}\mbox{}\\
+$N(h,t+\Delta t_s)$ is the expected value of the number of chromosomes that match the schema
+$h$ during the $t$-th generation after selection.
+
+\paragraph{Definition VIII}\mbox{}\\
+$N(h,t+\Delta t_s + \Delta t_x)$ is the expected value of the number of chromosomes that match the
+schema $h$ during the $t-$th generation after selection and crossover.
+
+\paragraph{Definition IX}\mbox{}\\
+$N(h,t+\Delta t_s+\Delta t_x+\Delta t_m)=N(h,t+1)$ is the expected value of the number of
+chromosomes that match the schema $h$ during the $t-$th generation after selection, crossover and
+mutation.
+The various $\Delta$ will depends from the probabiliities of the single operators defined.
+
+\paragraph{Schema theorem}\mbox{}\\
+It says that the schemas with a fitness score above the average, a short defining length and
+a low order, reproduces in an approximately exponential way.
+
+\paragraph{No free lunch theorem}\mbox{}\\
+The theorem says that there is no evolutionary algorithm that can be used for all the problems,
+no other algorithms is superior to the average. The "right" choice and encoding of the
+"correct" genetic operators depends from our local knowledge relative to the specific problem.
+
+\subsection{Genetic programming}\mbox{}\\
 
 
 \end{document}
