@@ -4217,31 +4217,234 @@ The same fitness function can be adapted for avoiding a too fast convergence:
 There are various strategies available in literature for operating the selection of the individuals
 which will constitute the genetic pool for the successive generation:
 \begin{itemize}
-    \item \textit{Roulette-wheel selection}: it is a best known selection method, it computes the
-          relative fitness of the individuals $A^{(i)}$
-          $$f_{rel}(A_i)=\frac{A_i.F}{\sum_{j=1}^{|P|}A_j.F}$$
+    \item \textit{Roulette-wheel selection}:
+    Selection of individuals is proportional to the fitness, but random.
+    No guarantee that "fitter" individuals are taken to the next generation, not even
+    for the best individual. the first simple solution is the discretization of the fitness range.
+    (Same approach already saw before for roulette-wheel selection).
 
 
     \item \textit{Rank-based selection}:
-
+    \begin{enumerate}
+        \item Sort individiuals in descending order according to their fitness.
+        \item Rank is assigne to each individual in the population.
+        \item Define probability distribution over Rank scale: the lower the rank
+        the lower the probability.
+        \item Roulette-Wheel selection based on the distribution.
+    \end{enumerate}
+    The advantage consist in the avoiding of the dominance issue by decoupling the fitness
+    value and selection probability, and also a regulation of the selective
+    pressure by probability distribution on rank scale. The disadvantage is given
+    by the sorting of the individuals, brings to a complexity $O(n\log n)$.
     \item \textit{Tournament selection}:
+    \begin{enumerate}
+        \item Draw $k$ individuals randomly from $P(t)$.
+        \item Individuals carry out the tournament and best individual wins:
+        tournament winner receives a descendant in the next population.
+        \item All participants of the tournament are returned to $P(t)$.
+    \end{enumerate}
+The advantage are the same of rank-based selection.
+    \item \textit{Elitist}: Only the expected value model ensures that the best individual
+    enters the next generation. The best individuals of the previous generations
+    costitute the next generation. The chosen elite is not immune from the changes
+    given by the genetic operators. The advantage is that the convergence is achieved
+    rapdily. The disadvantage is that there is the risk of remaining stucked in local optima.
 
-    \item \textit{Elitist}:
 
-    \item \textit{Crowding}: 
+    \item \textit{Crowding}: The individuals from the next generations should replace the
+    individuals that are more similar to them. The local density in $\Omega$ can't grow
+    in an undefined way. This allow a better exploration of the space.
+\end{itemize}
+
+There are some properties that can distinguish the selection methods:
+\begin{itemize}
+    \item \textbf{Static}: the probabilty of selection remains costant.
+    \item \textbf{Dynamic}: the probabilty of selection can change.
+    \item \textbf{Extinguishing}: the probabilty of selection could be 0.
+    \item \textbf{Preservative}: the probability of selection is always greater than 0.
+    \item \textbf{Pure-bred}: the individuals can have descendents only in one generation.
+    \item \textbf{Under-bred}: the individuals can have descendents in more than one generation.
+    \item \textbf{Right}: all the individuals can reproduce.
+    \item \textbf{Left}: the best individuals cannot reproduce.
+    \item \textbf{Generational}: the parents can't mutate until their descendents are created.
+    \item \textbf{On-the-fly}: the descendent substitutes the parents.
 \end{itemize}
 
 
-
-\subsubsection{Selection}
-
-
-
-
-
-
 \subsubsection{Genetic operators}
+The genetic operators are applied to a fraction of chosen individuals. There are so
+generated mutations and recombinations of already existing solutions. The genetic operators
+are so classified in base to the number of parents:
+\begin{itemize}
+    \item One-parent operators.
+    \item Two-parent operators.
+    \item Multiple-parent operators.
+\end{itemize}
+In the first class we can find the mutation operator, the one which introduce little randoms
+changes inside the genome of the solution in which it is applied. Results useful for introducing
+the biodiversity inside the solution pool and promoting the exploration of the search space.
+There are various methods for operating the mutation:
 
+\begin{itemize}
+    \item \textbf{Standard mutation}: the value of one or more genes is muted.
+    \item \textbf{Pair swap}: swap of the positions of two genes.
+    \item \textbf{Shift}: right or left shift of a group of genes.
+    \item \textbf{Arbitrary permutation}: arbitrary permutation of a group of genes.
+    \item \textbf{inversoin}: there is an inversion of the occurrences order of a group of genes.
+\end{itemize}
+Instead, an important operator in the two-parent class is the \textit{recombination} or
+\textit{crossover} operator, given two solutions it creates through a combination
+of their genetic code the solutions that will constitute the future generation. There
+are various way to operate this recombination:
+\begin{itemize}
+    \item \textit{One-point crossover}: determination of a random position inside
+    the chromosome, and then swap the two sequences on one side of the cutting line.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.5]{images/1pcrossover.png}
+    \end{figure}
+
+    \item \textit{Two-point crossover}: determining of two random cutting points,
+    exchange of the gene sequences between both cutting points.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.5]{images/2pcrossover.png}
+    \end{figure}
+    \item \textbf{N-point crossover}: this is a generalization of the previous
+    methods. Determining of $n$ random cutting points, alternating exchange/keep of
+    the gene sequences between two following cutting points.
+
+    \item \textbf{Uniform crossover}: On each gene, determine whether to exchange
+    or not (based on a certain parameter of probability).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.5]{images/ucrossover.png}
+    \end{figure}
+
+    \item \textbf{Shuffle crossover}:
+    \begin{enumerate}
+        \item Random permutation of the genes.
+        \item One-point crossover.
+        \item Unmixing the genes.
+    \end{enumerate}
+    \item \textbf{Uniform order-based crossover}: similar to the uniform crossover,
+    for each gene you choice if keeping it or change it. The spaces are filled
+    in the order of occurence.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.5]{images/uacrossover.png}
+    \end{figure}
+    \item \textbf{Edge recombination crossover}: the chromoseome is represented like
+    a graph. Each gene is a vertex with edges to the neighbours. The edges of the
+    two graphs (chromosome) are mixed. The information relative to the
+    distance is kept.
+\end{itemize}
+A case of \textit{multiple-parent} operator is the one of \textbf{diagonal crossoveer}.
+Which is similar to the $n$-point crossover, but in this case both parents are
+partecipating. Given $k$ parents, we choose $k-1$ points for the crossover and we
+procede by diagonally shifting the sequences respect the chosen points.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/dcrossover.png}
+\end{figure}
+By increasing the number of parents we obtain a optimum grade of exploration of the
+search space. Some properties which can characterize the crossover oeprators are:
+\begin{itemize}
+    \item \textbf{Positinal bias}: when the probabilty that 2 genes are inherited
+    together from the same parent depends from the relative position of the two
+    genese in the chromosome. Undesired since it can make the exact arrangement of
+    the different genes in a chromosome crucial for the
+    success or failure of an evolutionary algorithm.
+
+    \item \textbf{Distributional bias}: when the probabiilità of a certain number of
+    genes are exchanged between parents is not the same for all the possibile numbers of genes.
+    This has to be avoided because the partial solutions of different lengths have
+    different probabilities of progress to the next generation. In general, it is less
+    problematic of the positional bias.
+\end{itemize}
+For making better the performances of the solutions we have two strategies:
+\begin{itemize}
+    \item \textbf{Interpolating recombination}: Blend the traits of the parents in such
+    a way that offspring with new traits is created. This creates new alleles, focuses
+    the population on 1 main area. To explore $\Omega$ sufficiently at the beginning:
+    using a strong random and diversity-preserving mutation.
+
+    \item \textbf{Extrapolating recombination}: Try to infer information from several
+    individuals, create a prognosis in what direction one can expect fitness
+    improvements.
+\end{itemize}
+
+\subsubsection{Adaptation strategies}
+One last aspect to condier are the \textbf{adapation strategies} which answeres to the
+question: \textit{should we allow that the mutation introduce heavy modification to
+the phenotype during the optimization?} For answer this question we need a metric for
+measuring the improvement in fitness between the individual and the muted individual.
+
+\paragraph{Fitness improvement}\mbox{}\\
+The fitness improvement of an individual $A\in\mathcal{G}$ to another individual $B\in\mathcal{G}$
+is defined as:
+\[
+    Improvement(A,B)=
+    \begin{cases}
+        |B.F-A.F| & B.F\succ A.F\\
+        0 & otherwise
+    \end{cases}
+\]
+
+\paragraph{Relative expected improvement}\mbox{}\\
+The relative expected improvement of an operator Mut concerning individual $A$ can be
+defined as:
+$$relEV_{Mut,A}=E(Improvement(A,Mut^\xi(A)))$$
+
+Given this meteic it is possible to judge the performance of a particular genetic operator.
+The quality of a mutation canìt, being judge independently of the current fitness level.
+The operator is never optimal over the complete process of optimization.
+
+Exists various adaptation strategies:
+\begin{itemize}
+    \item \textit{Predefined adaptation}: the changes are defined before of the run.
+    \item \textit{Adaptive adaptation}: is defined a metric for establishing which operators
+    use during the run.
+    \item \textit{Self-adaptation}: extra informations are used on the individuals.
+\end{itemize}
+
+\subsection{Meta heuristics}
+\subsubsection{Swarm and population based optimization}
+The \textbf{swarm based optimization} and the \textbf{population based optimization}
+are two meta-heuristics used in literature for the devolpment of multi-agent intelligent
+systems, able to perform a cooperative behaviour. The concept of \textbf{swarm intelligence},
+used for describing in nature the behavior of some species like bees,ants,..., means that
+the capacity of the population of cooperating for the solution of a problem. The idea
+that single individuals can exchange informations between them without using a central
+control unit. There are various typology of this kind of heuristics:
+
+\begin{itemize}
+    \item \textbf{Particle swarm optimization}: inspired to the biological pattern
+    of food research from birds and fishes. The individuals aggregates informations,
+    creating a set of shared knowledge for the end goal to propose a single solution.
+    Each individual is a possible candidate for being the solution.
+    \item \textbf{Ant colony optimization}: inspired to the biological pattern of the ants
+    that search a way that leads to the food. The individuals exchange the informations
+    by editing the environment in such a way that the others could follow the traces.
+    Each individual is a candidate for the solution.
+\end{itemize}
+Instead, from the \textit{population based optimization} side we will find the so called
+\textit{population-based incremental learning}, where the indiivduals are generated randomly
+in accoard to a probability distribution. In reality, we don't need to conserve the memory of
+the individuals in an explicit way, it is sufficient conserve the statistics of the population.
+As recombination operator is used the \textit{uniform crossover}. For the selection,
+are chosen the individuals that improve the statistics of the population. The mutation, instead,
+is limited to a simple \textit{bit-flip}.
+
+The distinctive feature is the \textit{learning rate}, the parameter which tunes the possibility
+of movement of the individuals in the space, this changes in the time and reduces with the number
+of iteration. This allow initially a great mobility, for establishing then when an optimum is
+found. Some problems with this strategy:
+\begin{enumerate}
+    \item The algorithm can learn some accidental dependency between the chromosome of the
+    individuals and considering the single bits individually isoled from the others.
+    \item The same statistics representation of the population can be used for different populations.
+\end{enumerate}
 
 
 
