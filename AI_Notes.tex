@@ -4749,12 +4749,72 @@ The strength of the Pareto EA:
     this individual, and the distance to the $\sqrt{n}$-th individual.
 \end{itemize}
 
+\subsection{Parallel evolutionary algorithms}
+Respect to other metaheuristics the EAs often lead to optimum results, but with the price of a
+really high computation time.
+This because:
+\begin{itemize}
+    \item Large population
+    \item Large number of generations
+\end{itemize}
+It is possible to parellelize some phases of the process for making it faster:
+\begin{itemize}
+    \item The \textbf{initial population} phase, it is easy to parallelize. Attempt to prevent
+    duplicate individuals may pose obstacle to a parallel execution.
 
+    \item The \textbf{evaluation of chromosomes}, usually an individual is evaluated
+    independently of any other ones. This by computing the relative \textit{fitness} value
+    or a ranking of the individuals.
+    \item The \textbf{selection} phase, this by using the \textit{tournament selection} (best
+    suited for parallel execution, all tournaments are independent and thus can be held in parallel) or
+    \textit{roulette-wheel/rank-based} which can be parallelized after the initial step of computing
+    the relative fitness values.
 
+    \item The application of the \textbf{genetic operators} can occur in parallel. They affect only
+    one or two chromosome. Are independent of any other chromosomes.
+    \item The control of the \textbf{termination criterion}, needs a central agency that collects information
+    about the individuals.
+\end{itemize}
 
+Two architectures used in literature:
+\begin{itemize}
+    \item \textbf{Island Model}: Where the selection method causes some troubles for parallelization.
+    Each population can be seen as inhabiting an island, therefore island model, then you
+    apply some EAs on the island. This is a parallel execution byu simply processing several
+    independent populations.
+    
+    The \textbf{pure island},
+    consists in executing the same evolutionary algorithm multiple times. Results that are somewhat worse than
+    those of a single run with a larger population.
 
+    It is possible to introduce a \textit{migration} between the individuals, this happens by exchanging
+    individuals between the island populations at certain fixed points in time. Not in every generation.
+    No direct recombination of chormosomes from different islands.
 
+    For controlling the migration there are two methods:
+    \begin{itemize}
+        \item \textit{Random model}: where the pairs of islands are chosen randomly, exchange
+        some inhabitants. Any two islands can exchange individuals.
+        \item \textit{Network model}: islands are arranged into a network or graph. Individuals
+        can migrate only between islands that are connected in the graph. Alongh which of the
+        edges individuals exchange isdetermined randomly.
+    \end{itemize}
 
+    The population size of an island is increased ore decreased according to the average fitness
+    of its individuals. Usually a lower bound for the population size is set.
+
+   \item \textbf{Cellular Evolution}: Processors are arranged in a rectangular grid. The
+   selection and crossover are restricted to adhacent processors. Mutation restricted to single processors.
+   Each processor is responsible for one chromosome, during the selection the processor chooses
+   the best chromosome of the (four) processors adjacent to it. After that, during the
+   crossover operation the processor performs the crossover of the selected chromosome with its own and
+   may also mutate the chromosome.
+
+\end{itemize}
+
+\subsection{Behavioral simulation}
+
+\subsection{Learning fuzzy control}
 
 
 
