@@ -4813,13 +4813,58 @@ Two architectures used in literature:
 \end{itemize}
 
 \subsection{Behavioral simulation}
+The theoretical basis of behavioral simulation is the \textit{game theory}. It analyzes social and
+economic situations. Models and agents and theire actions as game moves in a formally specified framework.
+
+The EAs encode the moves of an agent in a chromosome. Agents interact with each other and evaluate
+their success. Agents reproduce or die due to their achieved success.
+
+\subsubsection{The prisoner's dilemma}
+This is the most studied problem of the game theory: two persons robbed a bank and were arrested. The
+available circumstantial eveidence is no sufficient for a conviction because of the bank robbery. There
+is, however, sufficient evidence fo a conviction because of a lesser criminal offense. The prosecutor
+offers both prisoners to become a key witness.
+
+\begin{itemize}
+    \item If one of them confesses to the bank robbery, he/she is exmpted from punishment.
+    \item The other prision will be punished with the full force of the law (10 years of prison).
+\end{itemize}
+
+The problem:
+\begin{itemize}
+    \item Both prisoners are offered this possibility and thus both may be tempted to confess.
+    \item Since they both pleaded guilty, they receive a mitigated sentence.
+    \item Both of them have to spend 5 years in prison.
+\end{itemize}
 
 \subsection{Learning fuzzy control}
+It is possible to optimize/generate fuzzy controls with EAs. The Mamdani-Assilian contro can be
+optimized by changin:
+\begin{itemize}
+    \item Rule base.
+    \item Fuzzy sets/fuzzy partitions.
+    \item $t$-norm or $t$-conorm.
+    \item Parameters of the defuzzificastion method.
+    \item Which input quantities to use for rules.
+\end{itemize}
 
+The possible approaches:
+\begin{enumerate}
+    \item Optimize rule base and fuzzy partitioning at the same time.
+    \item Optimize fuzzy partitioning with fixed rule base first, afterwards optimize rule base with
+    best fuzzy partitioning.
+    \item Optimize rule base for fixed fuzzy sets first, afterwards fuzzy partitioning with fixed rule
+    base.
+\end{enumerate}
 
-
-
-
+A good control system should satisfy the following criteria:
+\begin{itemize}
+    \item Find the goal state for every potential situation
+    \item Reach the goal state as fast as possible
+    \item Find the goal state with minimum effort
+\end{itemize}
+The control is used multiple times to control a test system. According to success of the rules the control
+gets credits.
 
 
 
