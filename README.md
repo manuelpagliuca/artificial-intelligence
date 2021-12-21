@@ -26,4 +26,7 @@ Please if you find some of this errors:
 - Semantic errors
 - ...
 
-Please let me know it through a [new issue](https://github.com/manuelpagliuca/artificial-intelligence/issues/new) or just do a [pull request](https://github.com/manuelpagliuca/artificial-intelligence/pulls) with the fix. Thank You ❤!
+If you find three asterisks "\*\*\*" this means that there is a missing part in the text that
+needs to be fixed. Please let me know it through a
+[new issue](https://github.com/manuelpagliuca/artificial-intelligence/issues/new) or just
+do a [pull request](https://github.com/manuelpagliuca/artificial-intelligence/pulls) with the fix. Thank You ❤!
