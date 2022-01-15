@@ -26,7 +26,10 @@
 }
 
 \title{%
-\textbf{Artificial Intelligence}\\
+\textbf{Artificial Intelligence}
+\\[1cm]
+\includegraphics[scale=0.12]{images/Logo_Università_degli_Studi_di_Milano.svg.png}~
+\\[1cm]
 \large Prof. Piuri Vincenzo\\
   University of Milan\\
   Master's Degree in Computer Science\\
@@ -4224,42 +4227,42 @@ There are various strategies available in literature for operating the selection
 which will constitute the genetic pool for the successive generation:
 \begin{itemize}
     \item \textit{Roulette-wheel selection}:
-    Selection of individuals is proportional to the fitness, but random.
-    No guarantee that "fitter" individuals are taken to the next generation, not even
-    for the best individual. the first simple solution is the discretization of the fitness range.
-    (Same approach already saw before for roulette-wheel selection).
+          Selection of individuals is proportional to the fitness, but random.
+          No guarantee that "fitter" individuals are taken to the next generation, not even
+          for the best individual. the first simple solution is the discretization of the fitness range.
+          (Same approach already saw before for roulette-wheel selection).
 
 
     \item \textit{Rank-based selection}:
-    \begin{enumerate}
-        \item Sort individiuals in descending order according to their fitness.
-        \item Rank is assigne to each individual in the population.
-        \item Define probability distribution over Rank scale: the lower the rank
-        the lower the probability.
-        \item Roulette-Wheel selection based on the distribution.
-    \end{enumerate}
-    The advantage consist in the avoiding of the dominance issue by decoupling the fitness
-    value and selection probability, and also a regulation of the selective
-    pressure by probability distribution on rank scale. The disadvantage is given
-    by the sorting of the individuals, brings to a complexity $O(n\log n)$.
+          \begin{enumerate}
+              \item Sort individiuals in descending order according to their fitness.
+              \item Rank is assigne to each individual in the population.
+              \item Define probability distribution over Rank scale: the lower the rank
+                    the lower the probability.
+              \item Roulette-Wheel selection based on the distribution.
+          \end{enumerate}
+          The advantage consist in the avoiding of the dominance issue by decoupling the fitness
+          value and selection probability, and also a regulation of the selective
+          pressure by probability distribution on rank scale. The disadvantage is given
+          by the sorting of the individuals, brings to a complexity $O(n\log n)$.
     \item \textit{Tournament selection}:
-    \begin{enumerate}
-        \item Draw $k$ individuals randomly from $P(t)$.
-        \item Individuals carry out the tournament and best individual wins:
-        tournament winner receives a descendant in the next population.
-        \item All participants of the tournament are returned to $P(t)$.
-    \end{enumerate}
-The advantage are the same of rank-based selection.
+          \begin{enumerate}
+              \item Draw $k$ individuals randomly from $P(t)$.
+              \item Individuals carry out the tournament and best individual wins:
+                    tournament winner receives a descendant in the next population.
+              \item All participants of the tournament are returned to $P(t)$.
+          \end{enumerate}
+          The advantage are the same of rank-based selection.
     \item \textit{Elitist}: Only the expected value model ensures that the best individual
-    enters the next generation. The best individuals of the previous generations
-    costitute the next generation. The chosen elite is not immune from the changes
-    given by the genetic operators. The advantage is that the convergence is achieved
-    rapdily. The disadvantage is that there is the risk of remaining stucked in local optima.
+          enters the next generation. The best individuals of the previous generations
+          costitute the next generation. The chosen elite is not immune from the changes
+          given by the genetic operators. The advantage is that the convergence is achieved
+          rapdily. The disadvantage is that there is the risk of remaining stucked in local optima.
 
 
     \item \textit{Crowding}: The individuals from the next generations should replace the
-    individuals that are more similar to them. The local density in $\Omega$ can't grow
-    in an undefined way. This allow a better exploration of the space.
+          individuals that are more similar to them. The local density in $\Omega$ can't grow
+          in an undefined way. This allow a better exploration of the space.
 \end{itemize}
 
 There are some properties that can distinguish the selection methods:
@@ -4304,46 +4307,46 @@ of their genetic code the solutions that will constitute the future generation. 
 are various way to operate this recombination:
 \begin{itemize}
     \item \textit{One-point crossover}: determination of a random position inside
-    the chromosome, and then swap the two sequences on one side of the cutting line.
-    \begin{figure}[H]
-        \centering
-        \includegraphics[scale=0.5]{images/1pcrossover.png}
-    \end{figure}
+          the chromosome, and then swap the two sequences on one side of the cutting line.
+          \begin{figure}[H]
+              \centering
+              \includegraphics[scale=0.5]{images/1pcrossover.png}
+          \end{figure}
 
     \item \textit{Two-point crossover}: determining of two random cutting points,
-    exchange of the gene sequences between both cutting points.
-    \begin{figure}[H]
-        \centering
-        \includegraphics[scale=0.5]{images/2pcrossover.png}
-    \end{figure}
+          exchange of the gene sequences between both cutting points.
+          \begin{figure}[H]
+              \centering
+              \includegraphics[scale=0.5]{images/2pcrossover.png}
+          \end{figure}
     \item \textbf{N-point crossover}: this is a generalization of the previous
-    methods. Determining of $n$ random cutting points, alternating exchange/keep of
-    the gene sequences between two following cutting points.
+          methods. Determining of $n$ random cutting points, alternating exchange/keep of
+          the gene sequences between two following cutting points.
 
     \item \textbf{Uniform crossover}: On each gene, determine whether to exchange
-    or not (based on a certain parameter of probability).
-    \begin{figure}[H]
-        \centering
-        \includegraphics[scale=0.5]{images/ucrossover.png}
-    \end{figure}
+          or not (based on a certain parameter of probability).
+          \begin{figure}[H]
+              \centering
+              \includegraphics[scale=0.5]{images/ucrossover.png}
+          \end{figure}
 
     \item \textbf{Shuffle crossover}:
-    \begin{enumerate}
-        \item Random permutation of the genes.
-        \item One-point crossover.
-        \item Unmixing the genes.
-    \end{enumerate}
+          \begin{enumerate}
+              \item Random permutation of the genes.
+              \item One-point crossover.
+              \item Unmixing the genes.
+          \end{enumerate}
     \item \textbf{Uniform order-based crossover}: similar to the uniform crossover,
-    for each gene you choice if keeping it or change it. The spaces are filled
-    in the order of occurence.
-    \begin{figure}[H]
-        \centering
-        \includegraphics[scale=0.5]{images/uacrossover.png}
-    \end{figure}
+          for each gene you choice if keeping it or change it. The spaces are filled
+          in the order of occurence.
+          \begin{figure}[H]
+              \centering
+              \includegraphics[scale=0.5]{images/uacrossover.png}
+          \end{figure}
     \item \textbf{Edge recombination crossover}: the chromoseome is represented like
-    a graph. Each gene is a vertex with edges to the neighbours. The edges of the
-    two graphs (chromosome) are mixed. The information relative to the
-    distance is kept.
+          a graph. Each gene is a vertex with edges to the neighbours. The edges of the
+          two graphs (chromosome) are mixed. The information relative to the
+          distance is kept.
 \end{itemize}
 A case of \textit{multiple-parent} operator is the one of \textbf{diagonal crossoveer}.
 Which is similar to the $n$-point crossover, but in this case both parents are
@@ -4357,33 +4360,33 @@ By increasing the number of parents we obtain a optimum grade of exploration of 
 search space. Some properties which can characterize the crossover oeprators are:
 \begin{itemize}
     \item \textbf{Positinal bias}: when the probabilty that 2 genes are inherited
-    together from the same parent depends from the relative position of the two
-    genese in the chromosome. Undesired since it can make the exact arrangement of
-    the different genes in a chromosome crucial for the
-    success or failure of an evolutionary algorithm.
+          together from the same parent depends from the relative position of the two
+          genese in the chromosome. Undesired since it can make the exact arrangement of
+          the different genes in a chromosome crucial for the
+          success or failure of an evolutionary algorithm.
 
     \item \textbf{Distributional bias}: when the probabiilità of a certain number of
-    genes are exchanged between parents is not the same for all the possibile numbers of genes.
-    This has to be avoided because the partial solutions of different lengths have
-    different probabilities of progress to the next generation. In general, it is less
-    problematic of the positional bias.
+          genes are exchanged between parents is not the same for all the possibile numbers of genes.
+          This has to be avoided because the partial solutions of different lengths have
+          different probabilities of progress to the next generation. In general, it is less
+          problematic of the positional bias.
 \end{itemize}
 For making better the performances of the solutions we have two strategies:
 \begin{itemize}
     \item \textbf{Interpolating recombination}: Blend the traits of the parents in such
-    a way that offspring with new traits is created. This creates new alleles, focuses
-    the population on 1 main area. To explore $\Omega$ sufficiently at the beginning:
-    using a strong random and diversity-preserving mutation.
+          a way that offspring with new traits is created. This creates new alleles, focuses
+          the population on 1 main area. To explore $\Omega$ sufficiently at the beginning:
+          using a strong random and diversity-preserving mutation.
 
     \item \textbf{Extrapolating recombination}: Try to infer information from several
-    individuals, create a prognosis in what direction one can expect fitness
-    improvements.
+          individuals, create a prognosis in what direction one can expect fitness
+          improvements.
 \end{itemize}
 
 \subsubsection{Adaptation strategies}
 One last aspect to condier are the \textbf{adapation strategies} which answeres to the
 question: \textit{should we allow that the mutation introduce heavy modification to
-the phenotype during the optimization?} For answer this question we need a metric for
+    the phenotype during the optimization?} For answer this question we need a metric for
 measuring the improvement in fitness between the individual and the muted individual.
 
 \paragraph{Fitness improvement}\mbox{}\\
@@ -4392,8 +4395,8 @@ is defined as:
 \[
     Improvement(A,B)=
     \begin{cases}
-        |B.F-A.F| & B.F\succ A.F\\
-        0 & otherwise
+        |B.F-A.F| & B.F\succ A.F \\
+        0         & otherwise
     \end{cases}
 \]
 
@@ -4410,7 +4413,7 @@ Exists various adaptation strategies:
 \begin{itemize}
     \item \textit{Predefined adaptation}: the changes are defined before of the run.
     \item \textit{Adaptive adaptation}: is defined a metric for establishing which operators
-    use during the run.
+          use during the run.
     \item \textit{Self-adaptation}: extra informations are used on the individuals.
 \end{itemize}
 
@@ -4426,13 +4429,13 @@ control unit. There are various typology of this kind of heuristics:
 
 \begin{itemize}
     \item \textbf{Particle swarm optimization}: inspired to the biological pattern
-    of food research from birds and fishes. The individuals aggregates informations,
-    creating a set of shared knowledge for the end goal to propose a single solution.
-    Each individual is a possible candidate for being the solution.
+          of food research from birds and fishes. The individuals aggregates informations,
+          creating a set of shared knowledge for the end goal to propose a single solution.
+          Each individual is a possible candidate for being the solution.
     \item \textbf{Ant colony optimization}: inspired to the biological pattern of the ants
-    that search a way that leads to the food. The individuals exchange the informations
-    by editing the environment in such a way that the others could follow the traces.
-    Each individual is a candidate for the solution.
+          that search a way that leads to the food. The individuals exchange the informations
+          by editing the environment in such a way that the others could follow the traces.
+          Each individual is a candidate for the solution.
 \end{itemize}
 Instead, from the \textit{population based optimization} side we will find the so called
 \textit{population-based incremental learning}, where the indiivduals are generated randomly
@@ -4448,7 +4451,7 @@ of iteration. This allow initially a great mobility, for establishing then when 
 found. Some problems with this strategy:
 \begin{enumerate}
     \item The algorithm can learn some accidental dependency between the chromosome of the
-    individuals and considering the single bits individually isoled from the others.
+          individuals and considering the single bits individually isoled from the others.
     \item The same statistics representation of the population can be used for different populations.
 \end{enumerate}
 
@@ -4474,7 +4477,7 @@ the schema in the next generation will be proportional to this value.
 
 Instead, for calculating the influence of the mutation operator we need to measure the probability,
 that the after the mutation the schema is preserved. We define the concept of \textbf{order of
-a scheme}.
+    a scheme}.
 \paragraph{Definition III}\mbox{}\\
 The order of a schema $h$ is the number of zeroes and ones in $h$, that is $ord(h)=\#0+\#1=L-\#*$,
 where $\#$ is the "number of occurrences of".
@@ -4566,13 +4569,13 @@ and \textit{maximum number of nodes}. Exists various sub-algorithms that initial
 the parse trees:
 \begin{enumerate}
     \item \textit{Grow}: the probabily of chosing an internal node or a leaf is distributed
-    in an uniform way at any level of depth. This allow to create "unbalanced" trees.
+          in an uniform way at any level of depth. This allow to create "unbalanced" trees.
 
     \item \textit{Full}: the leaves may occur only at maximum height of the tree. This allow
-    the creation of balanced trees.
+          the creation of balanced trees.
 
     \item \textit{Ramp-half-and-half}: this approach mix the other two for having a better
-    variation in the exhibited form from the syntax trees.
+          variation in the exhibited form from the syntax trees.
 \end{enumerate}
 
 \subsubsection{Genetic operators}
@@ -4596,13 +4599,13 @@ inactive and maybe outdated strips within one gene that serves no function). For
 the occurrence of this pheonomena, there are some strategies:
 \begin{itemize}
     \item \textit{Breeding recombination}: generates many children
-    using different parameters, with only the best one
-    going on into the next generation.
+          using different parameters, with only the best one
+          going on into the next generation.
     \item \textit{Intelligent recombination}:  chooses crossover points
-    selectively.
+          selectively.
     \item \textit{Continuos slight changes}:  of the evaluation function
-    can change constraints thus inactive subprograms
-    (introns) might become active again.
+          can change constraints thus inactive subprograms
+          (introns) might become active again.
 \end{itemize}
 
 \subsection{Evolutionary strategies}
@@ -4629,8 +4632,8 @@ $\lambda$ is the number of offspring individuals that were created by the evolut
 \begin{itemize}
     \item \textit{Plus-strategy}(+strategy): the selection works on both muted and not-muted individuals $\mu +\lambda$
     \item \textit{Comma-strategy}(,strategy): it generates offspring of size $\lambda>\mu$, and then chose the individuals
-    that will consitute the next generation, the best $\mu$ chromosomes. Chromosome of parent generation
-    are lost.
+          that will consitute the next generation, the best $\mu$ chromosomes. Chromosome of parent generation
+          are lost.
 \end{itemize}
 The advantage of the +strategy:
 \begin{itemize}
@@ -4640,7 +4643,7 @@ The disadvantages of the +strategy:
 \begin{itemize}
     \item Risk of getting stuck in local optima.
     \item If no improvement over further generations, temporary helpful to switch off to the
-    comma strategy to overcome local minima (increases diversity in population).
+          comma strategy to overcome local minima (increases diversity in population).
 \end{itemize}
 
 The ,strategy could be useful for creating diversity in the population.
@@ -4682,10 +4685,10 @@ The problems of this simple approach are:
 The problem of aggregation of preferences:
 \begin{itemize}
     \item The \textbf{Arrow's impossibility theorem}: there is no choice function that has all the
-    desired features. In general, it prevents the possibility of the existence of an aggregation
-    function that maximize all the single functions.
+          desired features. In general, it prevents the possibility of the existence of an aggregation
+          function that maximize all the single functions.
     \item Scaled order of preferences, finding a suitable scaling is more complex than
-    finding suitable weights.
+          finding suitable weights.
 \end{itemize}
 A solution to the Arrow's impossibility theorem is to choice a solution only if it is an
 \textit{Pareto-optimal}.
@@ -4738,13 +4741,13 @@ fitness score, the new individual similar to them will have lower fitness score)
 \begin{enumerate}
     \item Generate offsprings by applying genetic operators to the parent population.
     \item Select non-dominated individuals from parents+offsprings population: they consistutes
-    the front $F_i$ at the $i$-th iteration.
+          the front $F_i$ at the $i$-th iteration.
     \item Remove individuals in $F_i$ from current population.
     \item Repeat steps 2 and 3 until the current population is empty.
     \item Fill the new generation by taking the individuals from the fronts $F_i$, from $i=1$ forwards,
-    until the complete $F_i$ can be included.
+          until the complete $F_i$ can be included.
     \item Apply crowding by similarity to the next front and extract the missing individuals to complete the
-    new generation.
+          new generation.
 \end{enumerate}
 This algorithm lead to a poor approximation of the Pareto-Front.
 
@@ -4752,7 +4755,7 @@ The strength of the Pareto EA:
 \begin{itemize}
     \item Simple EA.
     \item Evaluation function is composed by two components: number of individuals dominating
-    this individual, and the distance to the $\sqrt{n}$-th individual.
+          this individual, and the distance to the $\sqrt{n}$-th individual.
 \end{itemize}
 
 \subsection{Parallel evolutionary algorithms}
@@ -4766,55 +4769,55 @@ This because:
 It is possible to parellelize some phases of the process for making it faster:
 \begin{itemize}
     \item The \textbf{initial population} phase, it is easy to parallelize. Attempt to prevent
-    duplicate individuals may pose obstacle to a parallel execution.
+          duplicate individuals may pose obstacle to a parallel execution.
 
     \item The \textbf{evaluation of chromosomes}, usually an individual is evaluated
-    independently of any other ones. This by computing the relative \textit{fitness} value
-    or a ranking of the individuals.
+          independently of any other ones. This by computing the relative \textit{fitness} value
+          or a ranking of the individuals.
     \item The \textbf{selection} phase, this by using the \textit{tournament selection} (best
-    suited for parallel execution, all tournaments are independent and thus can be held in parallel) or
-    \textit{roulette-wheel/rank-based} which can be parallelized after the initial step of computing
-    the relative fitness values.
+          suited for parallel execution, all tournaments are independent and thus can be held in parallel) or
+          \textit{roulette-wheel/rank-based} which can be parallelized after the initial step of computing
+          the relative fitness values.
 
     \item The application of the \textbf{genetic operators} can occur in parallel. They affect only
-    one or two chromosome. Are independent of any other chromosomes.
+          one or two chromosome. Are independent of any other chromosomes.
     \item The control of the \textbf{termination criterion}, needs a central agency that collects information
-    about the individuals.
+          about the individuals.
 \end{itemize}
 
 Two architectures used in literature:
 \begin{itemize}
     \item \textbf{Island Model}: Where the selection method causes some troubles for parallelization.
-    Each population can be seen as inhabiting an island, therefore island model, then you
-    apply some EAs on the island. This is a parallel execution byu simply processing several
-    independent populations.
-    
-    The \textbf{pure island},
-    consists in executing the same evolutionary algorithm multiple times. Results that are somewhat worse than
-    those of a single run with a larger population.
+          Each population can be seen as inhabiting an island, therefore island model, then you
+          apply some EAs on the island. This is a parallel execution byu simply processing several
+          independent populations.
 
-    It is possible to introduce a \textit{migration} between the individuals, this happens by exchanging
-    individuals between the island populations at certain fixed points in time. Not in every generation.
-    No direct recombination of chormosomes from different islands.
+          The \textbf{pure island},
+          consists in executing the same evolutionary algorithm multiple times. Results that are somewhat worse than
+          those of a single run with a larger population.
 
-    For controlling the migration there are two methods:
-    \begin{itemize}
-        \item \textit{Random model}: where the pairs of islands are chosen randomly, exchange
-        some inhabitants. Any two islands can exchange individuals.
-        \item \textit{Network model}: islands are arranged into a network or graph. Individuals
-        can migrate only between islands that are connected in the graph. Alongh which of the
-        edges individuals exchange isdetermined randomly.
-    \end{itemize}
+          It is possible to introduce a \textit{migration} between the individuals, this happens by exchanging
+          individuals between the island populations at certain fixed points in time. Not in every generation.
+          No direct recombination of chormosomes from different islands.
 
-    The population size of an island is increased ore decreased according to the average fitness
-    of its individuals. Usually a lower bound for the population size is set.
+          For controlling the migration there are two methods:
+          \begin{itemize}
+              \item \textit{Random model}: where the pairs of islands are chosen randomly, exchange
+                    some inhabitants. Any two islands can exchange individuals.
+              \item \textit{Network model}: islands are arranged into a network or graph. Individuals
+                    can migrate only between islands that are connected in the graph. Alongh which of the
+                    edges individuals exchange isdetermined randomly.
+          \end{itemize}
 
-   \item \textbf{Cellular Evolution}: Processors are arranged in a rectangular grid. The
-   selection and crossover are restricted to adhacent processors. Mutation restricted to single processors.
-   Each processor is responsible for one chromosome, during the selection the processor chooses
-   the best chromosome of the (four) processors adjacent to it. After that, during the
-   crossover operation the processor performs the crossover of the selected chromosome with its own and
-   may also mutate the chromosome.
+          The population size of an island is increased ore decreased according to the average fitness
+          of its individuals. Usually a lower bound for the population size is set.
+
+    \item \textbf{Cellular Evolution}: Processors are arranged in a rectangular grid. The
+          selection and crossover are restricted to adhacent processors. Mutation restricted to single processors.
+          Each processor is responsible for one chromosome, during the selection the processor chooses
+          the best chromosome of the (four) processors adjacent to it. After that, during the
+          crossover operation the processor performs the crossover of the selected chromosome with its own and
+          may also mutate the chromosome.
 
 \end{itemize}
 
@@ -4858,9 +4861,9 @@ The possible approaches:
 \begin{enumerate}
     \item Optimize rule base and fuzzy partitioning at the same time.
     \item Optimize fuzzy partitioning with fixed rule base first, afterwards optimize rule base with
-    best fuzzy partitioning.
+          best fuzzy partitioning.
     \item Optimize rule base for fixed fuzzy sets first, afterwards fuzzy partitioning with fixed rule
-    base.
+          base.
 \end{enumerate}
 
 A good control system should satisfy the following criteria:
