@@ -47,46 +47,42 @@
 Artificial neural networks are information processing systems, whose structure and
 operation principles are inspired by the nervous system and the brain of animals and
 humans.
-
+\newline\newline
 Artificial neural networks are studied for various reasons.
-
 \begin{itemize}
-    \item Extracting knowledge from data (\textit{phenomena, events, processes, operating environment,...}).
-    \item Understanding the phenomena that I’m observing, extracting the knowledge about that phenomena.
-    \item Automated construction of computational paradigms for problem solving.
+    \item \textbf{Extracting knowledge from data} (\textit{phenomena, events, processes, operating environment,...}).
+    \item \textbf{Understanding the phenomena} that I’m observing, extracting the knowledge about that phenomena.
+    \item \textbf{Automated construction of computational paradigms} for problem solving.
 \end{itemize}
-
-The ultimate goal is to be able to have a model which allow to describe the phenomenon
+The ultimate goal is to be able to have a \textbf{model} which allow to describe the phenomena
 that I’m observing and using this model I would like to solve the specific application problem.
-
+\newline\newline
 There is an huge variety of application, this is the reason which AI now is so popular, and we
 have so many interested and expertise in this field.
-
+\newline\newline
 The next evolution of the economy is based on availability of solution which are extracted
 from the data by analyzing the data reasoning, the only problems is that our capability
 of reasoning is limited by the fact that our brain is not able to analyze huge quantity
 of data, with automated system we can exploit this and make more comprehensive models that describe
 the process of systems we are observing and develop more accurate solutions.
-
+\newline\newline
 Basically, artificial intelligence is mimicking the nature. We want to take the data
 analyze the data make a model, and for doing this we use techniques, we want to enrich
 the analysis we are doing through sensors from environments, we can use other
 specific sets of techniques.
-
+\newline\newline
 We have the need of putting together some ideas and observation, we can define rules for reasoning, we extract the knowledge,
 but we can also build knowledge through reasoning. Basically, what we want to do is to try to replicate
 how the living beings observe and operate in the environment, how express, interacts.
-
+\newline\newline
 Not only but we want to observe how the individual evolves, population evolves, in order to understand the trend
 of the environment. In this broad variety of approaches is to define some techniques which mainly are
 in two big categories, from the point of view of intelligence :
-
 \begin{itemize}
     \item \textbf{Symbolic approach}
     \item \textbf{Sub-symbolic approach}, which are sub-symbolic techniques for analyze the environment
           and the systems.
 \end{itemize}
-
 During this course we are focusing on sub-symbolic reasoning techniques:
 \begin{itemize}
     \item \textbf{Neural networks}, which is a simulation of a living brain.
@@ -96,32 +92,32 @@ During this course we are focusing on sub-symbolic reasoning techniques:
           species so we can try to optimize the solution by using the basic concept of the natural evolution of the species.
 \end{itemize}
 
-
 \section{Neural networks}
 \subsection{Biological background}
-Basically, the aim of the artificial neural networks in \textit{mimicking} the behavior of our brain starts
+Basically, the aim of the artificial neural networks in \textbf{mimicking the behavior of our brain} starts
 from the fields of neural biology and neural physiology. What this discipline tries to do is to analyze the
 behavior of the biological neurons cells and understand how they behave for retrieving
 the information from the outer world.
-
-The neurons use sensors and special cells to connect to the external world and get information.
+\newline\newline
+The neurons use \textbf{sensors} and \textbf{special cells} to connect to the \textbf{external world} and get
+information.
 As humans or other biological species, we have five senses, taking for example the eyes, they are receptors
 which are able to see what a round us is, they are able to reconstruct the scene we got around us.
-
+\newline\newline
 Basically, with artificial neural networks we are trying to replicate what \textbf{biology} does for us, in neurobiology
 we build a model of what is happening in the neurons, this model describes how the neurons are
 interacting together to extract the knowledge, to build memory, construct reasoning, take decisions.
-
+\newline\newline
 In computer science we want to build this model in computer just for trying to do something similar, we want to mimic the
 behavior of the natural brain in order to try to replicate in an artificial environment the same operation.
-
-We are building the \textit{model} for neurons in the computer, in this way we are able to use these
-artificial models to \textit{learn} the environment and to solve practical problem (predict possible behaviors
+\newline\newline
+We are building the \textbf{model} for neurons in the computer, in this way we are able to use these
+artificial models to \textbf{learn} the environment and to solve practical problem (predict possible behaviors
 and solve optimization problem, like we do naturally). We also have some basis in other disciplines like
 physics and chemistry since we may want to use the neural networks, also for describing physical phenomena,
 not only to create reasoning in our mind but we want to create models of phenomena, this can be used for various application.
 We can create an abstract model, and instead of observing the real world we can observe how the model behave in some conditions.
-
+\newline\newline
 Neural networks and in general artificial intelligence, is a discipline of computer science and
 engineering, then we use some inspirations from other discipline but the core of the theoretical aspect
 of the foundation which defines the artificial neural networks this is an area which is been to computer science and engineering.
@@ -129,10 +125,10 @@ of the foundation which defines the artificial neural networks this is an area w
 The reasons for studying the BB (\textit{biological background}) in computer science are two:
 \begin{itemize}
     \item The \textbf{first reason} for studying the neural networks is the fact that they are a very appealing model,
-          since they work in \textbf{parallel} means that they have an intrinsically extremely high \textit{parallel process capability}.
+          since they work in \textbf{parallel} means that they have an intrinsically extremely high \textbf{parallel process capability}.
           This is why computer scientist are so attracted to this topic. Our brain in many cases find the solution immediately, this
           is fascinating, this happens because we are exploiting the parallel capability of our neural networks.
-    \item The \textbf{second reason} why we are studying this technology is the fact that there is really a huge amount of \textit{practical
+    \item The \textbf{second reason} why we are studying this technology is the fact that there is really a huge amount of \textbf{practical
               application} in broad variety of area : \textit{industrial manufactory, products medicine, finances, economy, social networks, data analysis, ...}
 \end{itemize}
 
@@ -143,77 +139,69 @@ The reasons for studying the BB (\textit{biological background}) in computer sci
     \caption{Neuron}
     \label{fig:neurone_1}
 \end{figure}
-
 The \textit{central} part of the neuron is the part, which is managing the entire cell, this core the
-nucleus is listening what is happening around the neuron,
+\textbf{nucleus} is listening what is happening around the neuron,
 when I have a \textbf{solicitation} from the external (other neurons or special cells related to the five senses).
-
+\newline\newline
 When there is sufficient stimulation coming from this cells the nucleus is solicited and at a given
 point the nucleus realizes that the solicitation is so high that he has to
 take an \textbf{action}, the action is to send a \textit{signal} around the \textit{axon} (the long extension covered in blue),
-this will lead to have a \textit{polarization} of an \textit{electric signal} which is flowing along this connection
+this will lead to have a \textbf{polarization} of an \textit{electric signal} which is flowing along this connection
 and this will reach other neurons that are connected to the end of the axon to the synapses.
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=10cm]{images/neuron2.png}
     \caption{Connection between two neurons}
     \label{fig:neurone_2}
 \end{figure}
-
-The \textbf{axon} is covered by an appropriate \textit{protein} (covered in blue) which protect the axon itself,
+\noindent The \textbf{axon} is covered by an appropriate \textbf{protein} (covered in blue) which protect the axon itself,
 and make sure that the polarization that occur on the nucleus is transmitted along the axon so that this signal is able
 to reach the synapse.
-
+\newline\newline
 Basically, what we see is that the \textbf{neuron is exciting the nucleus}, which is generating the excitation along the axon,
 then it will reach the terminal synapses.
-
-Each synapse is connected to the synapses of \textit{another} neuron, so that the signals which are generated by
+\newline\newline
+Each synapse is connected to the synapses of \textbf{another} neuron, so that the signals which are generated by
 the nucleus and sent to the axon and then to the synapsis terminal at the terminal the synapses
 are releasing some chemicals called \textbf{neurotransmitters}.
-
-These \textit{substances} are exciting the synapses of the connected neuron, bu stimulating the synapses this excitation is
+\newline\newline
+These \textit{substances} are exciting the synapses of the connected neuron, but stimulating the synapses this excitation is
 propagated from the \textbf{dendrites} to the nucleus of the other neuron, when the other cell is \textit{sufficiently excited} by
-from the amount of stimulation generated by the neurotransmitter the nucleus will generate again a new stimulation
+the amount of stimulation generated by the neurotransmitter the nucleus will generate again a new stimulation
 which is going along the axon and reach another neuron (and so on...).
-
-The axon is \textit{depolarized} if there is enough excitatory input, basically this is how the signals are propagated
-through the brain.
-
+\newline\newline
 Due to the fact that each neuron can stimulate each other neurons connected to them,
 this will create the \textbf{parallel processing} in our brain, so that each component will take care
 of analyzing each part of the information and this is a consequence to derive a part of the total computation.
 
 \subsection{Computer vs Human brain}
 When we look to the differences between a computer and the human brain what we notice,
-is that in the computer we got processors composed by many \textit{transistors}, the human brain counterpart
-the got $10^11$ \textit{neurons}, the number of the latter overcomes the number of the cores in a processor.
-
-The neurons aren’t able to process the same \textit{complex operation} of a core, but they are still so many that they
+is that in the computer we got processors composed by many \textbf{transistors}, the human brain counterpart
+the got $10^{11}$ \textbf{neurons}, the number of the latter overcomes the number of the cores in a processor.
+\newline\newline
+The neurons aren’t able to process the same \textbf{complex operation} of a core, but they are still so many that they
 can overcome the limit of the complexity of the individual operation with the fact that they are working significantly in
 parallel.
-
 \begin{figure}[H]
     \centering
-    \includegraphics[width=10cm]{images/tab_pc_vs_brain.jpg}
+    \includegraphics[scale=1.0]{images/tab_pc_vs_brain.jpg}
     \caption{PC vs Human brain}
     \label{fig:tab_pc_vs_brain}
 \end{figure}
-
-The \textbf{storage} of the neurons has an immense storage potential than any other memory capacity. The \textbf{processing speed}
+\noindent The \textbf{storage} of the neurons has an immense storage potential than any other memory capacity. The \textbf{processing speed}
 seems \textit{much higher} on the computer, but the parallel operation that you can do in parallel in the human brain in
 the end \textit{overcome} the processing speed of the hardware of a computer.
-
+\newline\newline
 Basically, what we can observe is that the biological neural networks are able to outperform significantly the processor that
 we have nowadays, there are some researches carried out which are trying to create processors which are replicating in
 hardware the operation of the biological neural networks but still the capabilities of this systems are \textit{far} from the
 capability of human brain.
-
+\newline\newline
 It may \textit{seem} in some system that they are working faster then humans, it may seem that they are running better, but actually
 what you have is that you have the ability in the computer to run the algorithms and the explore the
 possible (deterministic) moves in a fast way but needs some background knowledge
 in order to that in a very short time.
-
+\newline\newline
 Advantages of biological neural network:
 \begin{itemize}
     \item High processing speed due to massive parallelism.
@@ -230,57 +218,52 @@ Advantages of biological neural network:
 
     \item They are well suited for inductive learning (\textit{learning from examples, generalization from instances}).
 \end{itemize}
-
 What we are trying to do with artificial neural networks is to capture the parallel operation of the brain. The ability to
 extract the knowledge from the data, we want to replicate these capabilities.
-
+\newline\newline
 There are some problems due to the \textbf{ANN} (artificial neural networks), if we kill part of the architecture which
 is replicating the \textbf{BNN} (biological neural networks), the ANN is \textbf{not automated to survives}, we have to
 assure some physical redundance, this is a problem of the architecture we are using to execute the computation of the ANN.
-
+\newline\newline
 What we want to do in our model is to construct a \textit{set of abstract models of the neurons} that we call
 \textbf{artificial neurons}, and we like to connect them together to replicate the structure that we have in the
 natural brain this is why we have the ANN, a connection of neurons that is trying to mimic the behavior of the brain.
-
+\newline\newline
 The complexity of the brain is so high that is actually difficult to replicate everything in ANN,
 what we are doing is to replicate a specific function of the brain which is able to solve a specific application
 problem that we have.
-
+\pagebreak
 \subsection{Threshold Logic Units}
 This is the first \textit{abstract model} for an artificial neuron of the brain.
 A \textbf{threshold logic unit} (TLU) is a \textit{processing unit} (neuron) with several inputs.
 It can solve a very simple set of problems.
-
+\newline\newline
 We have a \textbf{core} (the neuron) with several \textit{inputs} that are reaching the neuron, and we have the
 \textit{output} which is delivered to the subsequential neurons which are connected with it.
 A TLU is a processing unit in which the output is governed by a threshold $\theta$, if it has a \textit{sufficient excitation}
 from the inputs, then the TLU became \textbf{active} (value $1$) and generates the output $y$.
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=6cm]{images/tlu.png}
     \caption{Threshold logic unit}
     \label{fig:tlu}
 \end{figure}
-
 We have $n$ inputs identified by $x_1,...,x_n$ the unit is generating only one output $y$ each input is \textbf{not}
 delivered directly to the core of the TLU, but each input is \textbf{weighted}, some are more relevant,
 and others are less relevant (exactly how we are doing when we consider the data from the external world).
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=6cm]{images/tlu_working_system.png}
     \caption{TLU conditions}
     \label{fig:tlu_conditions}
 \end{figure}
-
 This means that our problem is depending on the most important information, this is what happens in the real world.
-
+\newline\newline
 In the ANN we are replicating the relevance of the individual input, we can control how much each input is actually
 important to influence the generation of the output, to do this we use a weight $w$ for each of the input so
 that the TLU will not see exactly the input but will see a weighted input, this will allow the modulation of
 each input by giving to each of them the appropriate importance during the generation of the final output.
-
+\newline\newline
 When the TLU is solicited enough it will generate an output $y$ that will be delivered to the \textit{terminal synapse}
 to another neuron.
 \begin{itemize}
@@ -288,15 +271,12 @@ to another neuron.
           than a thresh $\theta$, we generate $1$ (the neuron is active).
     \item If the \textbf{excitation is not enough} for overcoming the threshold $\theta$, we generate $0$.
 \end{itemize}
-
 This model that tries to represent what is happening in the BNN from two scientists, also called the \textbf{McCulloch-Pitts neuron}.
 \subsubsection{Conjunction example}
 The result is equal to $1$ only when the two outputs are equal to $1$.
 There is not a standard way to select the threshold $\theta$, we have to choose that in base of the
 function that we want to implement. In this case I have to select a $\theta$ which is greater than the biggest weight.
-
 $$x_1\land x_2$$
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=10cm]{images/conj_TLU.png}
@@ -307,10 +287,10 @@ $$x_1\land x_2$$
 \subsubsection{Implication example}
 I can choose the value of the threshold in order to have the proper function, in this case applies on the same ways.
 \textit{How can I choose the interconnection weights?}
-
+\newline\newline
 The problem is that there are no general rules, I choose the weights according to the intrinsic relevance of each
 input variable.
-
+\newline\newline
 \textit{How can I do that when we have a high number of inputs?} we will see that there is a procedure for doing that.
 $$x_2\rightarrow x_1$$
 \begin{figure}[H]
@@ -325,7 +305,6 @@ In this case we can see that we have three possible inputs, we can discriminate 
 inputs in excitatory input and inhibitory input. The first tries to contributes
 to the final computation of the neuron in such a way that the results
 will be greater than the threshold, the other neuron does the opposite.
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=10cm]{images/complex_TLU.png}
@@ -338,109 +317,96 @@ The geometric interpretation is significantly helpful to derive a \textit{method
 configure the threshold and the weights starting from the data. We will consider a
 single and simple TLU, we will try to understand how we can interpret the
 behavior of the TLU in a geometrical way.
-
+\newline\newline
 You know that is possible to represent a straight line on a plane in any of
-the following forms :
+the following forms:
 \begin{figure}[H]
     \centering
     \includegraphics[width=10cm]{images/geom_interp.png}
     \caption{Different form for representing a straight line}
     \label{fig:line_repr}
 \end{figure}
-
-If i \textbf{implicit form}, where you have a weighted combination of the two variables plus a
+In the case of the \textbf{implicit form}, where you have a weighted combination of the two variables plus a
 possible threshold, a vector representation in point-direction form and normal form.
 Any of this is fine to represent a straight line in the plane, we are considering just
 two variables $x_1$ and $x_2$, and use one of the many representations.
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=9cm]{images/geom_interp_impl.png}
     \caption{Implicit form representation legend}
     \label{fig:line_impl_form_legend}
 \end{figure}
-
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=1]{images/geom1.png}
+    \includegraphics[scale=0.6]{images/geom1.png}
     \label{fig:geom_1}
 \end{figure}
-
 In the case of the \textit{explicit/implicit form} the $\vec{b}$ is the \textbf{inclination}
 (or \textit{gradient}) of the straight line in respect of the horizontal axis,
 and $c$ is the intercept of the vertical axis.
-
+\newline\newline
 If we look to the normal $\vec{n}$ we want to pick the vector which is \textit{orthogonal}
 to the straight line. The straight line is represented by all the points which starts from the
 origin and has a quantity in the direction of the normal. The vector $\vec{p}$ identifies a
 point in the example, we consider that point belonging to our straight line,
 the distance of the straight line respect to the origin $O$ is given by $|\vec{q}|$ which is
 the projection of $\vec{p}$ on straight line $g$.
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=1]{images/geom2.png}
     \label{fig:geom_2}
 \end{figure}
-
 Considering this other graphical representation it is possible to know on which side
 a points lands. If we take the vector representing $\vec{y}$ a point,
-and i compute the projection in the direction of the normal, the projection
+and I compute the projection in the direction of the normal, the projection
 of this is the vector $\vec{z}$.
-
-To understand on which side the points are, i just need to see if the vector $\vec{z}$ (which is the
-projection of our point) is shorter or longer than the point i observe on the straight line, which
+\newline\newline
+To understand on which side the points are, I just need to see if the vector $\vec{z}$ (which is the
+projection of our point) is shorter or longer than the point I observe on the straight line, which
 is pointed by $\vec{q}$. This means that all points (expressed by a vector) which have a \textbf{module}
 higher then the projected point onto the straight line ($\vec{q}$), are part of the plane above the
 straight line (they will \textit{satisfies} the solution), viceversa, they will be below the plane if the
 module will be shorter then $\vec{q}$ (they won't satisfy the condition).
-
+\newline\newline
 Basically the straight line which defines the behavior of my TLU, splits the plane in two parts (since i'm
 considering only $x_1$ and $x_2$). All the points which distance is greater then
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.8]{images/tlu_examples_interp.png}
     \caption{Solution of the \textit{conjunction} and \textit{bi-implication}}
     \label{fig:example_interp}
 \end{figure}
-
 Now Let’s go back to the two examples that we have seen before,
 starting with the conjunction, in this means that I have three points in which the output
 has to be $0$, and one point where the result is $1$. This means that if I represent the straight
-line with $x_1=3$, $x_2=3$ and the intercept equal to $4$ i will draw a line which is actually
+line with $x_1=3$, $x_2=3$ and the intercept equal to $4$ I will draw a line which is actually
 separating in a clear way the element in which the output is equal to $1$ from the values
 where the output is equal to $0$.
-\newline
-\newline
+\newline\newline
 For the case of three variables, this is more complex, we need to generalize this idea moving from
 a plane to a three-dimensional space. Think about the three axis and look at the combination of the
 dots, you need to set a plane, so you have to separate one set of inputs for which the output has
 to be equal to $1$ from the set of inputs combinations where the output is equal to $0$.
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.6]{images/three_input_sol_example.png}
     \caption{Solution of the complex TLU}
     \label{fig:example_three_sol}
 \end{figure}
-
 Basically, if you represent the plane using these information’s you will have this
 kind of plane (that looks like a hexagon) dividing the solution from the $0$ values.
-
+\newline\newline
 \textit{So how we choose the threshold and interconnection weights?} I have to look at geometrical
 distribution of the points for the combination of the input which the output must be equal to $1$
 and the one where the output must be equal to $0$, I have to take a straight line or plane and I
 need to position the divisor in a way that I clearly separate the two groups. If I can do that,
 that set of values (inputs and threshold) are the one that I need to use in my ANN.
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.6]{images/bi_implic_no_sol.png}
     \caption{The bi-implication problem}
     \label{fig:bi-impl-problem}
 \end{figure}
-
 Let’s analyze another example, the bi-implication problem, this problem results in this kind of
 distribution in the plane, as you can see it is not possible to separate these points with a
 straight line. As a consequence, we don’t have any TLU for solving this problem, even if this is
@@ -448,67 +414,66 @@ a simple problem. We have to introduce some notions for understanding the reason
 this problem.
 \subsubsection{Linear separability}
 Two set of points in the \textbf{Euclidean Space}, consider $x_1, x_2,...,x_n$ as the variable for
-the TLU, since we have n possible inputs you are analyzing a problem represented in $n$
+the TLU, since we have $n$ possible inputs you are analyzing a problem represented in $n$
 dimensional Euclidean space.
-
+\newline\newline
 If you have in this Euclidean space two set of points they are \textbf{linearly separable},
 if and only if there exists at least one point, line, plane or hyperplane, such that all
 points of the first set lie on one side and all points of the other set lie on the
 other side of this point, line, plane or hyperplane.
-
+\newline\newline
 The point sets can be separated by a linear decision function.
-
+\newline\newline
 If you are in a mono dimensional space you have one input only,
 your Euclidean Space is a line, you have one point on this straight line which is separating
 your space the line in two parts, the output is one, for the other point the output is $0$.
 If you have a plane, we have two input variables, we have to find a plane that separates
 the two sets of points.
-\subsubsection{Convex hull}
-A set of points in the Euclidean Space is called \textbf{convex} if it is non-empty and
-connected and for every pair of points in it every point on the straight-line segment
-connecting the points of the pair is also in the set.
 
-A \textbf{convex hull} of a set of points $X$ in a Euclidean Space is the smallest convex set of
+\subsubsection{Convex hull}
+In a Euclidean space a \textbf{convex set} is a set in which, for each pair of points,
+the segment that connects them is entirely contained in the set.
+\newline\newline
+A set of points $X$ is a \textbf{convex hull} in a Euclidean Space is the smallest convex set of
 points that contains $X$. Alternatively, the convex hull of a set of points $X$ is the intersection
 of all convex sets that contain $X$.
+
 \subsection{Solution of the bi-implication problem}
 Two sets of points in Euclidean Space are linearly separable if and only if their convex hulls
 are disjoint. In the bi-implication problem, the convex hulls are the diagonal line segments.
-
+\newline\newline
 They share their intersection point and this means that they are not disjoint, therefore
 the double implication is not linearly separable.
-
 \begin{figure}[H]
-    \includegraphics[scale=0.8]{images/sol_bi_implic_problem.png}
+    \includegraphics[scale=0.6]{images/sol_bi_implic_problem.png}
     \centering
     \caption{TLUs to the bi-implication problem}
 \end{figure}
+\noindent
 What we can do is putting together more neurons to try to address more complex problem where
 one neuron can’t solve. We are creating a network of TLUs, we are splitting the problem in two
 sub problems.
-
+\newline\newline
 The problem of implication can be solved with a single TLU, we create a more complex structure
 in which are able to solve the problem.
-
+\newline\newline
 Let’s see what happens geometrically, the two points $a$ and $c$, are going to be separated
 from the first two  TLUs, I set one of the TLU so that all points which are below the straight
-line represented by $g_2$ fives and output equal to $1$, and then i set a second straight line
+line represented by $g_2$ fives and output equal to $1$, and then I set a second straight line
 represented by $g_1$ where all points are all over the straight line the values are equal to $1$,
 and then I merge this information.
-
 \begin{figure}[H]
     \includegraphics[scale=0.8]{images/sol_bi_implic_problem_graph.png}
     \centering
     \caption{Solution of the bi-implication problem}
 \end{figure}
-
 I combine these information from the previous group in the third neuron so that I transform
 the representation of the information, I can merge the information of the points $a$ and $c$,
 so that both the output of the two TLU is equal to $1$ is represented by one points (in this case
 they are the same) and then I have the two other points $b$ and $d$ which are in both the parts
 above and below the line, for them the solicitation is not enough to generate an output
 equal to $1$, as a consequence I obtained a linear separability.
-
+\newline\newline
 I transformed the stripe in a semi plane with the third TLU, which identifies the linear
 separability, I don’t have that propriety only with the first TLU but also with the second,
 both TLUs allow me to partition the first space in three parts.
@@ -516,47 +481,44 @@ both TLUs allow me to partition the first space in three parts.
 \subsection{Arbitrary boolean functions}
 I can work with any arbitrary \textbf{Boolean function}; in this example I have a
 Boolean function of three variables. I have these values of the value $y$ according to the formula.
-
 \begin{figure}[H]
-    \includegraphics[scale=1.0]{images/arb_bool_funcs.png}
+    \includegraphics[scale=0.6]{images/arb_bool_funcs.png}
     \centering
     \caption{Table of values}
 \end{figure}
-
 What we can do is to build a network of TLUs that allow me to compute each of the component
 for which the output has to be $1$ and then with a conjunction unit I put together all
 the possible value with a or for merging the individual TLUs.
-
 \begin{figure}[H]
-    \includegraphics[scale=1]{images/arb_bool_funcs_graph.png}
+    \includegraphics[scale=0.8]{images/arb_bool_funcs_graph.png}
     \centering
     \caption{Network of TLUs solving the boolean function}
 \end{figure}
 
-
+\pagebreak
 \subsection{Training TLUs}
 The geometric interpretation that we have seen before about the operation of TLUs gives us the
 understanding of how we can place the various parameters for our networks in order to
 construct TLUs with $2$ and $3$ inputs.
-
+\newline\newline
 But this makes sense when we are using $2$ or $3$ input, but this is something that is not
 feasible when we are having more than three inputs, also this is not an automated method.
-
+\newline\newline
 We want an automatic method for visualizing the space and points in the space, especially when
 we have more then $3$ inputs.
-
+\newline\newline
 What we want to do is to have an automatic way which adjusts the weights and the threshold
 of the network so that I can reach the desired solution (if the two sets are linearly separable).
-
+\newline\newline
 The \textbf{automatic training} of TLUs consist in the fact that we can start from a random value
 of the weights and threshold, and then when we want to configure a TLU we need to evaluate
 the error that we are generating at the output (of the TLU) in respect to the input pattern
 that we have presented.
-
+\newline\newline
 Basically, we have chosen randomly the threshold, the TLU generates an output, we evaluate
 the error respect to the desired output, and then we try to adjust the weights and the
 threshold to reduce the error.
-
+\newline\newline
 We repeat this operation for all inputs until the error is really reduced or vanished.
 \begin{enumerate}
     \item Start with random values for weights and threshold.
@@ -579,7 +541,6 @@ Let’s represent the error for all possible weights and all possible threshold 
 for a subset that we are interested in analyzing. Let’s consider the $x=0$, in this case
 the desired output is $1$, if we take $w=2$ and we multiply it by $0$ the weighted input
 will be $0$.
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.7]{images/errors_exampl.png}
@@ -592,38 +553,35 @@ Let's see the error that we have with the various possible combinations, we see 
 for any values of the weight where the threshold is \textit{less} than zero, the \textbf{error}
 is zero. Viceversa, for any value of the weight for a $\theta$ greater or equal to zero, the
 error is one (a \textit{plateau}).
-
+\newline\newline
 Now let's consider $x=1$, we are on the central diagram, in the left triangular part
 of the domain there will be the error of $1$ defined $\forall w$.
-
+\newline\newline
 Let's try to sum the errors and see what we obtains: we get an intersection for the error
 equal to one, and also an intersection for the error equal to \textit{two} (which is strange,
 since the error in this kind of example is always $1$ since the $y$ output is binary, but there
 we are talking about a sum).
-
+\newline\newline
 The only part where the error is equal to zero is a small triangle on the bottom. The problem
 with this definition of the error is that is not suited for define an algorithm which allow
 me to find the zero error.
-
 \begin{figure}[H]
     \includegraphics[scale=0.5]{images/desc_2_of_error.png}
     \centering
     \caption{Output error modified as function of weight and threshold}
 \end{figure}
-
-What i can do is modify the description of the error and consider that for each value
-of the input i will not have just the error which is $1,0$ or $2$, but i will consider
+What I can do is modify the description of the error and consider that for each value
+of the input I will not have just the error which is $1,0$ or $2$, but I will consider
 a covering and continuos \textbf{surface area} (such that is possible to increase progressively
 the error).
-
 \begin{figure}[H]
     \includegraphics[scale=0.6]{images/desc_2_of_error_topview.png}
     \centering
     \caption{Top view output error modified as function of weight and threshold}
 \end{figure}
 
-So i can start from a random point and iteratively adapt parameters according to the direction
-corresponding to the current point, i will stop if the error vanishes.
+So I can start from a random point and iteratively adapt parameters according to the direction
+corresponding to the current point, I will stop if the error vanishes.
 
 There are two ways of training a neural network:
 \begin{itemize}
@@ -654,15 +612,15 @@ If $y\neq o$, then, in order to reduce the error, the threshold $\theta$ and the
 vector $\vec{w}=(w_1,...,w_n)$ are adapted as follow:
 $$\theta^{(new)}=\theta^{(old)}+\Delta\theta\text{, with }\Delta\theta=-\eta (o-y)$$
 $$w_i^{(new)}=w_i^{(old)}+\Delta w_i\text{, with }\Delta w_i = \eta (o-y)x_i$$
-$$\forall i \in \{1,...,n\}$$
+$$\forall I \in \{1,...,n\}$$
 
 The first equation is correction (delta) of the threshold and the second is the correction of the
 weight. The variation is given by an expression which is proportional to the difference
 between the actual and expected output (which is the error).
 
 The correction for the weight is proportional not only to the error but also to the input.
-Essentially, if i have an actual output smaller then the desired one, i take the input
-that are bigger, and i try to push them to contribute more to the excitation
+Essentially, if I have an actual output smaller then the desired one, I take the input
+that are bigger, and I try to push them to contribute more to the excitation
 of \textit{threshold logic function} so that the output will be higher and as
 consequence the error will be lower.
 
@@ -679,16 +637,16 @@ The $\eta$ controls the speed of updates, the bigger is the bigger will be the u
     \caption{Batch training with $\theta = \frac{3}{2},w=2,\eta = 1$}
 \end{figure}
 
-Basically what happens in the online training, if i start in the first move i may go here,
+Basically what happens in the online training, if I start in the first move I may go here,
 and so on, i'll move one step at the time since the amount of change is control by the
 learning rate.
 
-in this case i move in one direction, since i apply together the two errors correction,
+in this case I move in one direction, since I apply together the two errors correction,
 so i'm moving in combination of the two changes of the secondo batch, then again i'm applying
-the two changes and i move. I do less move respect to the other since  i combine the two
-correction for the expression that i shown.
+the two changes and I move. I do less move respect to the other since  I combine the two
+correction for the expression that I shown.
 
-I can try to do the same for the more complex case of the TLU, with two inputs. here i have
+I can try to do the same for the more complex case of the TLU, with two inputs. here I have
 the conjunction with the truth table describing the implementation. What i'm doing basically
 i have found the straight line that gives the satisfied and unsatisfied area for determining
 the solution.
@@ -699,7 +657,7 @@ each consisting of an input vector $\vec{x_i}\in\mathbb{R}$ and a desired
 output $o_i\in\{0,1\}$.
 
 Furthermore, let's consider $L_0=\{(\vec{x},o)\in L|o=0\}$ and
-$L_1=\{(\vec{x},o)\in L | o=1\}$. If i can show that $L_0$ and $L_1$ are
+$L_1=\{(\vec{x},o)\in L | o=1\}$. If I can show that $L_0$ and $L_1$ are
 \textbf{linearly separable}, then is possible to prove that we have a
 $\vec{w}\in\mathbb{R}^n$ and $\theta\in\mathbb{R}$ such that:
 $$\forall (\vec{x},0)\in L_0 :\vec{w}^T\vec{x} <\theta$$
@@ -1013,7 +971,7 @@ $$f:\mathbb{R}\rightarrow [0,1]\text{ with }\lim_{x\rightarrow -\infty}f(x)=0\te
 
 It has a shape that allows a minimum and a maximum value (shaped), such that the possible \textit{net status}
 of the neurons are inside the continuos domain between $0$ and $1$ of the function (squishification of the net status).
-If i have enough excitation in the network status the sigmoid function will give a positive excitation of the neuron,
+If I have enough excitation in the network status the sigmoid function will give a positive excitation of the neuron,
 viceversa, it will point out a lower value in the function.
 \begin{figure}[H]
     \includegraphics[scale=0.45]{images/sigmoid_functions.png}
@@ -1110,7 +1068,7 @@ and let's consider the points $x_1,...,x_4$ where we want to compute
 the value of the function and we want to find a method to approximate for any other value
 $x$ a value in that function.
 
-What i can do is to consider the \textbf{midpoint Riemann integration}.
+What I can do is to consider the \textbf{midpoint Riemann integration}.
 
 \begin{figure}
     \centering
@@ -1157,14 +1115,14 @@ of the function saw in figure \ref{fig:midpoint_int}.
 
 The multi-layer perceptrons can be considered an \textbf{universal
     approximators} of the Riemann integration technique, with the maximum
-desired error (i can choose the maximum error i want to get for my
+desired error (i can choose the maximum error I want to get for my
 function by choosing the number of neurons for get that accuracy).\newline\newline
 \noindent\textbf{Delta approximation approach}\newline\noindent
 We can actually simplify the error by considering a trick instead of using the
 combined excitation.
 
 I can split the domain of the function for my network in parts like before,
-then instead of defining the value of the function for each interval i just
+then instead of defining the value of the function for each interval I just
 use iteratively the $\Delta$ variation respect to the value considered.
 
 \begin{figure}[H]
@@ -1175,13 +1133,13 @@ use iteratively the $\Delta$ variation respect to the value considered.
 \end{figure}
 
 The structure of the network (figure \ref{fig:integra_delta}) will be simpler
-because i will distribute the input of the hidden neurons,
+because I will distribute the input of the hidden neurons,
 that will tel me if the value $x$ is before $x_i$ or greater than $x_i$ (i don't care where).
 
 For example, if the value is between $x_1$ and $x_2$ the first neuron
 will generate $\Delta y_1$ and this will be delivered in output.
 
-If i have a value between $x_2$ and $x_3$ i will still have $x_1$ that
+If I have a value between $x_2$ and $x_3$ I will still have $x_1$ that
 will be excited enough and will generate the \textit{contribution}
 for the output ($x_1$ and $x_2$ will be both excited, their
 contribution will be summed up and then delivered to the output).
@@ -1209,7 +1167,7 @@ dataset. What we will do is finding a straight line which deviates the lest poss
 so that minimize the error as follows:
 $$F(a,b)=\sum_{i=1}^{n}(g(x_i)-y_i)^2=\sum_{i=1}^n(a+bx_i-y_i)^2$$
 
-The necessary condition to find the minimum is given us by mathematical, if i take the
+The necessary condition to find the minimum is given us by mathematical, if I take the
 partial derivatives between the two parameters $a$ and $b$ (which are the variables
 in the formula) setting this partial derivatives of th error to $0$ it will give to
 me the condition that allow us to find the minimum (\textit{Fermat's theorem}).
@@ -1218,10 +1176,10 @@ $$\frac{dF}{da}=\sum_{i=1}^{n}2(a+bx_i-y_i)=0$$
 $$\frac{dF}{db}=\sum_{i=1}^{n}2(a+bx_i-y_i)x_i=0$$
 
 The \textit{linear algebra} tells me the solution is unique unless i'm so unlucky that
-all the values $x$ coincides, in that case i have basically one equations but
+all the values $x$ coincides, in that case I have basically one equations but
 two variable ($a$ and $b$) and as consequence infinite solutions.
 
-For example, if i need to find the regression of these points:
+For example, if I need to find the regression of these points:
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.7]{images/regression_line.png}
@@ -1231,9 +1189,9 @@ For example, if i need to find the regression of these points:
 
 \subsubsection{Polynomial regression}
 The previous method is generalizable to polynomial of arbitrary order.
-The model i have considered is not a good model, is too approximate, i can look if there
+The model I have considered is not a good model, is too approximate, I can look if there
 is instead a very simple straight line a polynomial.
-Instead of considering a polynomial of grade one, i consider a polynomial of grade $m$.
+Instead of considering a polynomial of grade one, I consider a polynomial of grade $m$.
 
 $$y=p(x)=a_0+a_1x+...+a_m x^m$$
 
@@ -1254,11 +1212,11 @@ $$\frac{dF}{da_0}=0,\frac{dF}{da_1}=0,...,\frac{dF}{da_m}=0$$
 \end{itemize}
 
 \subsubsection{Multilinear regression}
-Until now i just tried to make the approximation more accurate going in the
-direction of polynomial,\textit{what happens if i have a function in multiple variables?}
+Until now I just tried to make the approximation more accurate going in the
+direction of polynomial,\textit{what happens if I have a function in multiple variables?}
 $$z=f(x,y)=a+bx+cy$$
-If i want to do a multi-linear regression (since i'm applying linear regression to a function
-of two variables), i have just to apply what i wast doing before.
+If I want to do a multi-linear regression (since i'm applying linear regression to a function
+of two variables), I have just to apply what I wast doing before.
 
 I have to consider the error in the approximated function $f$, and the actual value given
 by the samples $z_i$ that i'm collecting (minimizing the sum of squared errors):
@@ -1273,10 +1231,10 @@ $$\frac{dF}{da}=\sum_{i=1}^n 2(a+bx_i+cy_i-z_i)x_i=0$$
 $$\frac{dF}{da}=\sum_{i=1}^n 2(a+bx_i+cy_i-z_i)y_i=0$$
 
 As already said multiple times, the linear algebra will allow me to solve
-this problem since i have three parameters $a,b,c$ and three equations.
+this problem since I have three parameters $a,b,c$ and three equations.
 
 Except the unfortunate case where all points are on a straight line, because in this case
-i have a plane that can be rotated in any direction and i have \textit{infinite solutions}.
+i have a plane that can be rotated in any direction and I have \textit{infinite solutions}.
 
 I can consider trying to approximate with a multi-linear regression a function that
 is defined on $m$ different variables, this is the generalization of what we have
@@ -1303,7 +1261,7 @@ touching the surface in the minimum.
 $$\vec{\nabla}_{\vec{a}} F(\vec{a})=\vec{\nabla}_{\vec{a}}(\textbf{X}\vec{a}-\vec{y})^T(\textbf{X}\vec{a}-\vec{y})=\vec{0}$$
 
 This comes out as set of regular equations and linear algebra will allow us to solve it as
-usual unless there is the singular case (if i have all points aligned to a single straight line
+usual unless there is the singular case (if I have all points aligned to a single straight line
 the plane which is minimizing my error is not defined).
 
 The system of normal equations:
@@ -1383,38 +1341,38 @@ $$P(C=c_2|\vec{X}=\vec{x})=1-p(\vec{x})$$
 Given a dataset of points $X={\vec{x_1},...,\vec{x_n}}$, each of which belongs to one
 of two classes $c_1$ and $c_2$.
 
-Basically i want to get a \textbf{simple description of the function} $p(\vec{x})$, if i have
-this function i can apply the \textbf{logistic description}:
+Basically I want to get a \textbf{simple description of the function} $p(\vec{x})$, if I have
+this function I can apply the \textbf{logistic description}:
 
 $$p(\vec{x})=\frac{1}{1+e^{a_0+\vec{a}\vec{x}}}=\frac{1}{1+exp(a_0+\sum_{i=1}^m a_i x_i)}$$
 
-Then i can apply the \textbf{logistic transformation} so that i can obtain the
+Then I can apply the \textbf{logistic transformation} so that I can obtain the
 \textbf{formal description} of the probability of being on one or the other class:
 
 $$\ln{\left(\frac{1-p(\vec{x})}{p(\vec{x})}\right)}=a_0+\vec{a}\vec{x}=a_0+\sum_{i=1}^m a_i x_i$$
 
 
-\textit{How can i find the specific value of the probability (and so solving the splitting of the
+\textit{How can I find the specific value of the probability (and so solving the splitting of the
     example)?}
 We can consider a specific function called \textbf{kernel} that describes
 how strongly a data point influences the probability estimate for neighboring points.
 
 
 which give us the correlation
-in the examples, given some examples how can i say that the example that i observed
+in the examples, given some examples how can I say that the example that I observed
 belongs to the group is influenced by similar examples, or belong to the other group
 which means that is similar to the examples of the other group.
 
 With a kernel we can describe the similarity of a
 group of examples, the \textbf{Gaussian function} is commonly used. A function like this
 tell me that if the picked data point is similar to the elements in the middle area, in that
-case i have a significant value of the function, the more i go far from the values
+case I have a significant value of the function, the more I go far from the values
 which are similar the less is the value of the function.
 
 $$K(\vec{x},\vec{y})=\frac{1}{(2\pi\sigma^2)}exp\left(-\frac{(\vec{x}-\vec{y})^T(\vec{x}-\vec{y})}{2\sigma^2}\right)$$
 
 
-If i want to estimate the \textbf{probability density} i will use this expression:
+If I want to estimate the \textbf{probability density} I will use this expression:
 $$\hat{f} (\vec{x}) = \frac{1}{n} \sum_{i=1}^n K(\vec{x},\vec{x}_i)$$
 The kernel estimation applied to a two-class problems:
 $$\hat{p}(\vec{x})=\frac{\sum_{i=1}^n c(\vec{x_i})K(\vec{x},\vec{x_i})}{\sum_{i=1}^n K(\vec{x},vec{x_i})}$$
@@ -1446,7 +1404,7 @@ Find the global minimum is pretty hard.
 
 But our function will be much more complicated, since we are dealing with lot of parameters (like
 the weights and the biases), let's imagine now a function with two variables where the cost
-function is graphed as a surface above the $xy$ plane. Now, for minimizing the function i should
+function is graphed as a surface above the $xy$ plane. Now, for minimizing the function I should
 ask my self, in \textit{which direction the $C(x,y)$ function decreases most quickly?}, multi-variable
 calculus has a concept of \textbf{gradient}, which is the direction of the steepest increase $\vec{\nabla} C(x,y)$,
 and more to that the \textit{length} of that vector expresses how much steep is the increase.
@@ -1592,12 +1550,12 @@ The variant aim to change the \textbf{learning rate} and the \textbf{length of t
     \item \textit{Momentum term}, at each successive step we add to the gradient a fraction of the previous
           with changed weights, so that we can have a sort of memory of how fast it changes respect to the past.
 
-    \item \textit{Self-adaptive error backpropagation}, i allow to each parameter to have a different
+    \item \textit{Self-adaptive error backpropagation}, I allow to each parameter to have a different
           learning rate, in this way we can have a grain fine control respect to the characteristic of the single parameter.
 
     \item \textit{Resilient error backpropagation}, it's a combination of the Manhattan variation with the Self-adaptive.
 
-    \item \textit{Quick propagation}, instead of using the gradient i approximate the function with a parable and i
+    \item \textit{Quick propagation}, instead of using the gradient I approximate the function with a parable and i
           jump directly to the peak of this one.
 
     \item \textit{Weight decay}, reduces the weights for avoiding to remain trapped in an already saturated region
@@ -1965,7 +1923,7 @@ but we need also to understand how large will be the radius in order to be sure 
 after placing the Gaussians we are able to recreate the examples for which we don't use the
 Gaussian.
 
-What i can do is splitting the domain of examples, and then for each subdomain find a representative
+What I can do is splitting the domain of examples, and then for each subdomain find a representative
 point (not an example) in the subdomain, that will cover the group of the examples (not points)
 of the subset.
 
@@ -1978,8 +1936,8 @@ weights for the output neurons can be obtained by considering this matrix $A$:
     \includegraphics[scale=0.4]{images/matrix_conn_weights_rbfn.png}
     \caption{Matrix that expresses the connections weights for output neurons}
 \end{figure}
-Now i can apply the invert the matrix for computing the weights since system over-determined (not
-squared), but i can consider the pseudo inverse matrix:
+Now I can apply the invert the matrix for computing the weights since system over-determined (not
+squared), but I can consider the pseudo inverse matrix:
 $$A^+=(A^T A)^{-1} A^T$$
 Now we can apply the actual computation for our vector $\vec{w}$ of the weights, given by:
 $$\vec{w}_u = A^+\vec{o}_u$$
@@ -2025,8 +1983,8 @@ each tassel of the domain is a cluster.
     \caption{Delunay Trianglulation (left) and Voronoi Diagram (right)}
 \end{figure}
 After that i'm going to search for the new centroid of each cluster, where the sum of the
-distances is minimal, after finding this element i will consider it as the new center.
-Then i will apply again the same partition (Delunay-Voronoi) as before.
+distances is minimal, after finding this element I will consider it as the new center.
+Then I will apply again the same partition (Delunay-Voronoi) as before.
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.4]{images/c-means2.png}
@@ -2107,7 +2065,7 @@ Basically for each training pattern we look to the \textit{reference vector} whi
 we find the closest reference vector.
 
 
-I may have basically two strategy that i can consider in order to perform the adjustment of the
+I may have basically two strategy that I can consider in order to perform the adjustment of the
 weights:
 \begin{itemize}
     \item \textbf{Attraction rule}, when the data point and the reference vector have same
@@ -2136,10 +2094,10 @@ moves to another class.
     \caption{Adaptation rules in case of online and batch learning}
 \end{figure}
 In the case of the online training we have a step each time according to the various
-pattern i'm presenting, in the batch training i apply the various
+pattern i'm presenting, in the batch training I apply the various
 connection for the group of examples belonging to the same pattern and perform the update at the end
 of the entire batch (the solution of the position of the centers is smoother
-since i am putting together more then one example).
+since I am putting together more then one example).
 
 \begin{figure}[H]
     \centering
@@ -2147,18 +2105,18 @@ since i am putting together more then one example).
     \caption{Fixed learning rate to time dependent learning rate}
     \label{fig:tdln}
 \end{figure}
-The problem i have with this kind of techniques, is that if i consider a fixed learning rate,
-which is a coefficient which tells me how much i want to change the position by taking
+The problem I have with this kind of techniques, is that if I consider a fixed learning rate,
+which is a coefficient which tells me how much I want to change the position by taking
 into account the similarity.
 
 I may enter in a oscillation (left diagram), in this case
 what we can do is to dynamically change the learning rate consists by decreasing it
 as it grows iterations (called \textbf{time dependent learning rate}, \ref{fig:tdln} on right).
-\linebreak\\There are some applications in which i may have some more information
-about the data tha i have, \textbf{classified data}, i may have some more information
+\linebreak\\There are some applications in which I may have some more information
+about the data tha I have, \textbf{classified data}, I may have some more information
 related to the class to which an example belong and even
-if i'm not using the supervised learning i can take advantage of this information
-so that i can update not only the reference vector but i can consider updating also
+if i'm not using the supervised learning I can take advantage of this information
+so that I can update not only the reference vector but I can consider updating also
 some other reference vector the once which are the nearest the reference vector
 that i'm considering.
 
@@ -2173,22 +2131,22 @@ around the border of the classifications. If we assume that the data are randoml
 a random set of normal distributions, we could use a \textit{soft} approach, in opposite to a "crisp"
 division typical of the clustering like the \textit{c-means}. Basically we don't have a RB function
 which is rather sharp but i'm considering a smooth border between the classes induced by
-sufficiently large RBF. In this cases i can considering the classing by a mixture og
+sufficiently large RBF. In this cases I can considering the classing by a mixture og
 Gaussian which are representing the various classe, with a softer border between
 the various classes.
 
-In order to do this i have to consider that each element is not interbelonging
+In order to do this I have to consider that each element is not interbelonging
 to one class or another, each element of my data set as a probability of belonging to one or the other class.
-This is due to the fact that i have a gaussian shape of the radial basis function,
-In this case what i will do is essentially to evaluate the probability for each example to
+This is due to the fact that I have a gaussian shape of the radial basis function,
+In this case what I will do is essentially to evaluate the probability for each example to
 belong ot each of the classes introduced in my system. Formal definition:
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.4]{images/formal_prob_func.png}
     \caption{Probability function}
 \end{figure}
-If i take the various examples of my dataset i have a set of clusters in my dataset with the parameter that defines
-the cluster, and for each element of the dataset i want to understand the prbability of belonging to
+If I take the various examples of my dataset I have a set of clusters in my dataset with the parameter that defines
+the cluster, and for each element of the dataset I want to understand the prbability of belonging to
 one class respect to another.
 
 Mathematically this is very complex to be optimized, and as a consequence we try to perform an approximation introducing
@@ -2246,9 +2204,9 @@ Basically what we want to do in this kinf of netwok is how we associate the elem
 in my grid preserving thesimilarity and the concepti of neighbouring saw before. This is how we can upadate
 parameter of our netwerkl, and enforcing hte parametee ofthwinning neuron :
 $$\vec{r}_u^{(new)} = \vec{r}_u^{(old)} + \eta(t) f_{nb} (d_{\text{neurons}} (u,u_*), \rho (t)) (\vec{x}-\vec{r}_u^{(old)})$$
-ùin time i will reduce the learning radius , so i can focus the capacity of learning a sspecific pattern
+ùin time I will reduce the learning radius , so I can focus the capacity of learning a sspecific pattern
 this will allor me to create a much stronger partitioning in classes by similarity.
-Considering a neighbouring function with is smooth, i may consider a smooth border and an example may excide more t***
+Considering a neighbouring function with is smooth, I may consider a smooth border and an example may excide more t***
 
 The training will work by placing the elements randomly and adjust the interconnection by asdjusting the winning neuron***
 
@@ -2315,7 +2273,7 @@ is atthe the arc going out of the ***
 
 
 convergence therem
-It actually possible to prove the convergence theroem wihch tekìll us that if i a ctive the hopfield netwrok
+It actually possible to prove the convergence theroem wihch tekìll us that if I a ctive the hopfield netwrok
 in a sequential asynchronous way a steady state is reached in a finite numnber of steps.
 Itis possible to prove also that his maximum number is given by n multyplied by $2^n$ steps.
 
@@ -2376,7 +2334,7 @@ Per le macchine di Boltzmann il prodotto $kT$ è spesso sostituito solo da $T$, 
 la temperatura e la costante di Boltzmann in un singolo parametro. Inoltre, lo stato $s$ consiste
 nel vettore $\textbf{act}$ delle attivazioni dei singoli neuroni.
 $$E(\textbf{act})=-\frac{1}{2}\textbf{act}^\intercal \textbf{W} \textbf{act}+\theta^T \textbf{act}$$
-dove $W$ è la matrice dei pesi connessi e $\theta$ il vettore contenente i valori delle soglie (o threshold).
+dove $W$ è la matrice dei pesi connessi e $\theta$ il vettore contenente I valori delle soglie (o threshold).
 
 Ora guardiamo il singolo neurone $u$ e elaboriamo il cambio energetico che viene portato da
 questo neurone durante il suo cambiamento di stato. Consideriamo la differenza assoluta in energia
@@ -2407,13 +2365,13 @@ Questa procedura si chiama \textbf{Markov-Chain Monte Carlo}.
 
 Bisogna notare che una BM potrà calcolare in modo efficace una distribuzione di probabilità se
 gli esempi forniti sono compatibili con una distribuzione di Boltzmann. Per mitigare questa
-restrizione si dividono i neurono di una BM tra neuroni \textit{visibili}, ovvero quelli
-in grado di ricevere i segnali in input, e neuroni \textit{nascosti}, la cui attivazione
+restrizione si dividono I neurono di una BM tra neuroni \textit{visibili}, ovvero quelli
+in grado di ricevere I segnali in input, e neuroni \textit{nascosti}, la cui attivazione
 non dipende diretatment dal dataset permettendo un adattamento più flessibile ai pattern
 di allenamento.
 
 \subsubsection{Allenamento}
-L'obiettivo di apprendimento è quello di adattare i pesi ed i threshold in modo che la
+L'obiettivo di apprendimento è quello di adattare I pesi ed I threshold in modo che la
 distribuzione implicita nel dataset sia approssiamta dalla distribuzione rappresentata dai
 neuroni visibili di una BM.
 
@@ -2424,8 +2382,8 @@ $$KL(p1,p2)= \sum_{\omega\in\Omega}p1(\omega)\ln\frac{p1(\omega)}{p2(\omega)}$$
 dove $p1$ si riferisce alla distribuzione del data set e $p2$ a quella della macchina di Boltzmann.
 Ogni passo di apprendimento si divide in due fasi:
 \begin{itemize}
-    \item \textit{Positive phase}: nella quale i neuroni visibili vengono fissati rispetto ad un
-          dato di input scelto randomicamente e i neuroni nascosti vengono aggiornati fino
+    \item \textit{Positive phase}: nella quale I neuroni visibili vengono fissati rispetto ad un
+          dato di input scelto randomicamente e I neuroni nascosti vengono aggiornati fino
           al raggiungimento di un equilibrio termico.
     \item \textit{Negative phase}: tutte le unità vengono aggiornate fino al raggiungimento di
           uno stato stabile.
@@ -2433,7 +2391,7 @@ Ogni passo di apprendimento si divide in due fasi:
 
 Sia $p_u^+$ la probabilità che un neurone $u$ sia attivato nella postive phase, e sia $p_u^-$
 la probabliità che venga attivato nella fase negativa. Sia anche $p_{uv}^+$ la probabilità
-che entrambi i neuroni vengano attivati simultaneamente nella positive phase, e viceversa,
+che entrambi I neuroni vengano attivati simultaneamente nella positive phase, e viceversa,
 $p_{uv}^-$ nella fase negativa. Possiamo definire la regola di aggiornamento dei pesi
 e delle threshold come:
 $$\Delta w_{uv}=\frac{1}{\eta}(p_{uv}^+ - p_{uv}^-)\text{ e }\Delta\theta_u =-\frac{1}{\eta}(p_u^+ - p_u^-)$$
@@ -2611,7 +2569,7 @@ This set of all fuzzy subsets (or sets) of $X$ is denoted with $\mathcal{F}(X)$.
 
 \subsubsection{Membership functions}
 The degree of membership is equal to $1$ when the element $x$ fully respect the property
-that i want to describe with the fuzzy set.
+that I want to describe with the fuzzy set.
 $$\mu_m(u)_=1$$
 The degree of membership is equal to $0$ when it expressess absolutely non-membership.
 $$\mu_m(u)=0$$
