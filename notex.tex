@@ -7,6 +7,9 @@
 
 \usepackage{amsmath}
 \usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{float}
@@ -579,10 +582,9 @@ the error).
     \centering
     \caption{Top view output error modified as function of weight and threshold}
 \end{figure}
-
 So I can start from a random point and iteratively adapt parameters according to the direction
 corresponding to the current point, I will stop if the error vanishes.
-
+\newline\newline
 There are two ways of training a neural network:
 \begin{itemize}
     \item \textbf{online learning}, we receive the learning pattern at time from the
@@ -613,49 +615,46 @@ vector $\vec{w}=(w_1,...,w_n)$ are adapted as follow:
 $$\theta^{(new)}=\theta^{(old)}+\Delta\theta\text{, with }\Delta\theta=-\eta (o-y)$$
 $$w_i^{(new)}=w_i^{(old)}+\Delta w_i\text{, with }\Delta w_i = \eta (o-y)x_i$$
 $$\forall I \in \{1,...,n\}$$
-
 The first equation is correction (delta) of the threshold and the second is the correction of the
 weight. The variation is given by an expression which is proportional to the difference
 between the actual and expected output (which is the error).
-
+\newline\newline
 The correction for the weight is proportional not only to the error but also to the input.
 Essentially, if I have an actual output smaller then the desired one, I take the input
 that are bigger, and I try to push them to contribute more to the excitation
-of \textit{threshold logic function} so that the output will be higher and as
+of \textbf{threshold logic function} so that the output will be higher and as
 consequence the error will be lower.
-
+\newline\newline
 The $\eta$ controls the speed of updates, the bigger is the bigger will be the update.
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{images/online_training.png}
     \caption{Online training with $\theta = \frac{3}{2},w=2,\eta =1$}
 \end{figure}
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{images/batch_training.png}
     \caption{Batch training with $\theta = \frac{3}{2},w=2,\eta = 1$}
 \end{figure}
-
 Basically what happens in the online training, if I start in the first move I may go here,
 and so on, i'll move one step at the time since the amount of change is control by the
 learning rate.
-
+\newline\newline
 in this case I move in one direction, since I apply together the two errors correction,
 so i'm moving in combination of the two changes of the secondo batch, then again i'm applying
 the two changes and I move. I do less move respect to the other since  I combine the two
 correction for the expression that I shown.
-
+\newline\newline
 I can try to do the same for the more complex case of the TLU, with two inputs. here I have
 the conjunction with the truth table describing the implementation. What i'm doing basically
 i have found the straight line that gives the satisfied and unsatisfied area for determining
 the solution.
 
 \subsubsection{Convergence theorem}
-If we consider a set of training patterns: $L=\{(\vec{x},o_1),...,(\vec{x}_m,o_m)\}$,
+If we consider a set of training patterns: $L=\{(\vec{x_1},o_1),...,(\vec{x}_m,o_m)\}$,
 each consisting of an input vector $\vec{x_i}\in\mathbb{R}$ and a desired
 output $o_i\in\{0,1\}$.
-
+\newline\newline
 Furthermore, let's consider $L_0=\{(\vec{x},o)\in L|o=0\}$ and
 $L_1=\{(\vec{x},o)\in L | o=1\}$. If I can show that $L_0$ and $L_1$ are
 \textbf{linearly separable}, then is possible to prove that we have a
@@ -663,38 +662,35 @@ $\vec{w}\in\mathbb{R}^n$ and $\theta\in\mathbb{R}$ such that:
 $$\forall (\vec{x},0)\in L_0 :\vec{w}^T\vec{x} <\theta$$
 $$\text{and}$$
 $$\forall (\vec{x},1)\in L_0:\vec{w}^T\vec{x}\geq\theta$$
-
 This means that is possible to divide the two sets, and then the online or batch
 training procedure is able to terminate. So if the two sets are linearly separable they
 will give us a final value in a \textbf{finite time}. The final error will e zero.
-
+\newline\newline
 The problem is that if we are not able to perform the linear separation of $L_0$ and $L_1$,
 the algorithm is \textbf{not able to terminate}. The algorithm will oscillate around and we
 will not be able to find a solution with the zero error.
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.4]{images/batch_training_example_graph.png}
     \caption{Example of online and batch training (also with summed errors)}
 \end{figure}
-
 The correction of the parameters maybe slowed down due to the fact that we have $0$ and $1$
 to the possible values for our outputs. This implies that if we have an output for our
 threshold logic function equal to $1$, we can find an adjustment and apply it.
 If we have an input which is $0$ whichever weight we have, we may not be able to compute
 a correction that in the end will reduce the final error.
-
+\newline\newline
 So when we apply an input which is one we can change the weight for finding a better value
 for the configuration, if we apply the change on an input which is zero the possible changes
 actually vanishes since we are multiplying by zero, we are not observing a variation.
-
+\newline\newline
 To avoid to waste to much time on this issue, we can change the representation of the values,
 for \textit{true} we are considering $1$ and for \textit{false} we are considering $-1$.
-
+\newline\newline
 What we can point out, is that a \textit{single} TLU, is able to point out any linearly
 separable function. We have just to apply the delta rule which is easy and fast and
 guarantee to find a solution, if one exists.
-
+\newline\newline
 The problem is given by a more complex structure, like a network of TLUs,
 in this case we cannot apply directly the delta rule, because we have no clue
 about which is the output. We need something more complex for managing that.
@@ -706,12 +702,12 @@ nodes that can elaborate the information incoming in, some arcs that
 are bringing in the network some external information, and others that extract
 the computation performed by our network (which is a structure that mimic our
 brain).
-
+\newline\newline
 The connections are the axon-synaptic connections which connect the nucleus of the
 neurons. In a general neural network this is the very abstract definition, in practice
 in order to use this kind of structure we will need to have more regular more focused
 organization of neurons connections.
-
+\newline\newline
 The set of vertices $U$ is partitioned into:
 \begin{itemize}
     \item $U_{in}$ is the set of input neurons.
@@ -722,28 +718,25 @@ The set of vertices $U$ is partitioned into:
 \end{itemize}
 
 \subsection{General structure of the neuron}
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{images/general_structure_neuron.png}
     \caption{Internal representation of a neuron}
 \end{figure}
-
 We see that we have inputs that are coming in the network and usually this inputs are
 manipulated in order to understand which is the global stimulus that the neuron
 receive from the external world.
-
+\newline\newline
 If an incoming signal from a previous neuron has relevance, we want to multiply the
 amount o signal incoming in by an appropriate constant in order to have a stronger weight
 for a subsequent processing in this neuron.
-
+\newline\newline
 In this example we associate the weight $w_{uv_1}$, which is the weight for the neuron
 $u$ respect to the incoming neuron $v_1$.
-
+\newline\newline
 These inputs are processed by three stages in which we perform specific operations, we want
 to see how much the neuron is actually solicited. For these reason we have three
 stage functions:
-
 \begin{itemize}
     \item The $f_{net}^{(u)}$, takes the input with the \textit{relative relevance} of the
           various inputs to generate the \textbf{global solicitation} for our neuron. This is a general
@@ -756,20 +749,19 @@ stage functions:
     \item The $f_{out}^{(u)}$, which takes the excitation status of the neuron and elaborate
           the final status of the neuron to deliver to the subsequent neurons.
 \end{itemize}
-
 In general we have also an external variable $ext_u$ which tell us how much the excitation
 should be increased from a stimulus coming directly from the \textit{external world}
 (not from previous neuron, from the external world).
-
+\newline\newline
 These are the various inputs that any neuron can have, we may have both the input coming
 from other neurons and the input coming from the external world, or we can have for a subset
 of neurons only the stimulus coming from the external world and no other inputs.
-
+\newline\newline
 We have input neurons coming which are weighted properly, these values are used
 with the \textit{network input function} which is generating the global excitation status
 coming from the other neurons, this one is will generate the \textit{activation status} of the neuron (how much it is
 stimulated by the external neurons).
-
+\newline\newline
 In the end we have the out function which evaluates the final status of the neuron, which
 is delivered to the other connected neuron.
 
@@ -796,22 +788,21 @@ The operation of a general ANN:
           we compute the output status of them and propagate the output to the
           neurons which are connected to this one.
 \end{enumerate}
-
 During the \textit{working phase} if the input of neurons are steady (input stimuli
 are not changing), the computation of that neuron doesn't change (every stage
 function generate the same values, FNN).
-
+\newline\newline
 This is not the case when we have a RNN, since if one of the outputs connected to
 a neuron is connected to an input will repeat the computation and this maybe change
 the output status (due to \textit{recomputation}). I always say \textit{"may"}
 since the actual change will depend specifically by the function that i'm using.
+\newline\newline
 The \textbf{recomputation} of a neuron output occurs if any of its input changes,
 we can't loop forever and not evolving. This means that the working phase continues
 until the external outputs are steady, or a maximum number of
 recomputation iterations is reached. The \textbf{temporal order} of computation
 depends by the specific NN.
-\newline
-\newline
+\newline\newline
 \noindent\textbf{Feed-forward neural network}
 \begin{enumerate}
     \item Computation proceeds from input neurons progressively toward output neurons by following
@@ -854,7 +845,6 @@ it is not possible to reach a steady state inside the RNN (\textbf{no stable sta
 The details of the configuration strictly depends from the
 structure opf the network, in general we have two categories of
 learning procedure (or training procedure):
-
 \begin{itemize}
     \item \textbf{fixed learning task}.
     \item \textbf{free learning task}
@@ -873,13 +863,12 @@ $l=(\vec{i^{(l)}}, \vec{o^{(l)}})$, each consisting of:
 that correspond to the output vector. Since the examples are composed by an input
 vector and the expected output that we want to get, this is called \textbf{supervised
     learning}.
-
+\newline\newline
 A fixed learning task is solved when for all training patterns $l\in L_{fixed}$ the
 neural network computes, from the external inputs contained in the input vector
 $\vec{i^{(l)}}$ of a training pattern $l$, the outputs contained in the
 corresponding output vector $\vec{o^{(l)}}$.
-\newline
-\newline
+\newline\newline
 \noindent\textbf{The error of a fixed learning task}
 \newline
 The error says how well a neural network solves a given fixed learning task. Essentially
@@ -890,17 +879,15 @@ In order to have a number which tell us the final quality what we need to do we 
 to consider the module of the error, what we are doing is consider the difference between
 the actual and the desired output. But in this simple difference could give us a final
 number which is not reflecting the total accuracy of the NN due to the \text{sign}.
-
+\newline\newline
 A solution to this is to use a squared value, in this way we can avoid the negative
 sign.
 \newline\newline\noindent\textbf{Free learning task}\newline
 A free learning task is the complementary approach of the fixed learning task, in
 which the desired behavior is not defined a priori by the pair of vectors for
 the input and the output.
-
 $$n\text{ input neurons }U_{in}=\{u_1,...,u_n\}$$
 $$\text{one input vector }\vec{i^{(l)}} = \left( ext_{u_1}^{(l)},...,ext_{u_1}^{(l)}\right)$$
-
 We only have a set of input vectors which are presented to the network and the
 learning algorithm will lead to an output vector which is similar to the given input.
 
@@ -909,32 +896,30 @@ In order to be sure that the learning is working properly, we have to be sure
 that one of the input is dominating the operation of the network, as consequence
 we have to do some preprocessing on the data in order to give the same relevance
 to all neurons.
-
+\newline\newline
 For each component of the input vector we need to compress the representation
 in the same range, this is called \textbf{normalization} (according to the
 average of the input value for each component, we need to be sure that
 the variance $\sigma_k$ is normalized as well).
 $$\mu_k =\frac{1}{|L|}\sum_{l\in L}ext_{u_k}^{(l)}$$
 $$\sigma_k =\sqrt{\frac{1}{|L|-1}\sum_{i\in L}\left(ext_{u_k}^{(l)}-\mu_k\right)^2}$$
-
 This is the standard normalization of the deviation $\sigma_k$, we have also another
 possibility which is called \textbf{unbiased standard deviation} (often preferred
 by statistician since is not polarized on the two direction).
-
+\newline\newline
 If we apply the normalization this is the external stimuli that we will have after
 the normalization, basically all the stimuli are recomputed with respect to the
 average value and they are normalized in dimension dividing them by the standard
 deviation.
 $$\sigma_{u_k}^{(l)(new)}=\frac{ext_{u_k}^{(l)(old)}-\mu_k}{\sigma_k}$$
-
 There is a problem that we have to seriously consider when we are looking
 to our examples, we need to have \textit{sufficiently descriptive examples},
 which have to be well distributed over the domain that i'm considering (not
 focussing only on a portion of the domain).
-
+\newline\newline
 So far we have been dealing with integer and real numbers, we want to use
 symbols for represent a group of examples that are similar together in a concise way.
-
+\newline\newline
 For doing that we need to associate a group of identifiers to a group of examples. For
 being able to represent this symbols we consider the \textbf{1-in-N encoding}, if
 we need to represent $n$ symbols we have a string of $0$ and $1$ and only one bit the one
@@ -945,30 +930,25 @@ A \textbf{multi-layer perceptrons} it is essentially a feed-forward neural netwo
 in which is present a strictly layered structure. They neurons are connected in groups,
 each groups receives the input only from the previous layer or from the external input.
 The output is delivered by the subsequent group, there are different kinds of layers:
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{images/multi-layer-percep.png}
     \caption{General structure of $r$-layered perceptron}
 \end{figure}
-
 \begin{itemize}
     \item \textbf{input layer}
     \item \textbf{hidden layer}
     \item \textbf{output layer}
 \end{itemize}
-
 Each layers is connected, in multi-layer perceptrons the neurons are strictly connected
 between layers, jump are not allowed (like in the feed-forward network).
-
+\newline\newline
 The network input function of each \textit{hidden neuron} and of each \textit{output neuron}
 is the \textbf{weighted sum} of its inputs:
 $$f_{net}^{(u)}(\vec{w_u},\vec{in_u})=\vec{w_u}\vec{in_u}=\sum_{v\in pred(u)}w_{uv}out_v$$
-
 The activation function of each hidden neuron is a so-called \textbf{sigmoid function},
 that is, a monotonically non-decreasing function with:
 $$f:\mathbb{R}\rightarrow [0,1]\text{ with }\lim_{x\rightarrow -\infty}f(x)=0\text{ and }\lim_{x\rightarrow\infty}f(x)=1$$
-
 It has a shape that allows a minimum and a maximum value (shaped), such that the possible \textit{net status}
 of the neurons are inside the continuos domain between $0$ and $1$ of the function (squishification of the net status).
 If I have enough excitation in the network status the sigmoid function will give a positive excitation of the neuron,
@@ -985,81 +965,72 @@ function is much more used since it is much easier to train (more similar to the
     \includegraphics[scale=0.5]{images/relu.png}
     \caption{ReLU function}
 \end{figure}
-
-
 The activation function of each output neuron can be a sigmoid or can be a \textbf{linear}
 function (depends on what we want to achieve). There are many types of sigmoid function for representing
 the general behavior, the most simple is the \textbf{step function}.
-
+\newline\newline
 I have a $0$ value until my network excitation reach the value $\theta$, then the output
 of excitation jump to the strongest status (the value of minimum and maximum activation are
 generally $0$ and $1$).
-
+\newline\newline
 If you prefer a smoother approach you can use the $sin$ approach were the derivative
 is progressively approaching the maximum value.
-
+\newline\newline
 A \textbf{logistic} function is a function with the same shape but that doesn't reach a saturation
 at the extremes of the range. In this way it is possible to consider the inverse
 of the function, otherwise it is not possible.
-
+\newline\newline
 We may have some problems during the learning operation when using the \textit{step function},
 since when we have $0$ we won't have any effect on the output of the neuron,
 even if we change the activation the output will be $0$. As solution it is possible to
 use \textbf{bipolar} (opposite to the unipolar, which extends only in one pole)
 sigmoid functions, which changes the ranging to $[-1,+1]$, like the \textit{hyperbolic tangent}.
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{images/hyperbolic_function.png}
     \caption{Bipolar sigmoid activation function (\textit{hyperbolic tangent})}
 \end{figure}
-
 I can describe the group of connections between two \textit{consecutive} layers of
 a multi-layer perception by using a $n\times m$ matrix. Which is the collection of the
 connection weights between the layers:
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{images/weight_matrix.png}
     \caption{Matrix describing connection weights between two layers}
 \end{figure}
-
 As a consequence the computation can be described in a very simple way,
 by using the vectors:
 $$\vec{net_{U_2}}=\textbf{W}\vec{in_{U_2}}=\textbf{W}\vec{out_{U_1}}$$
 You just take the vector of the input neurons of the second layer
 (which are the output of the preceding layer) and multiply by the
 weight in between the layers.
-
+\newline\newline
 Then you apply the sigmoid function $\sigma$ for squish the values between $[0,1]$,
 you can also use a \textbf{bias} value for each independent values by using a vector $\vec{b}$.
 The bias tells you \textit{how high} the threshold has to be in order for the neuron to fire.
 $$\sigma\left(\textbf{W}\vec{in_{(U_2)}}+\vec{b}\right)$$
 Let's consider an example with the \textbf{bi-implication}
 three-layer perceptron:
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{images/three_layer_example.png}
     \caption{Three-layer perceptron for bi-implication}
 \end{figure}
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{images/weights_three_layer_example.png}
     \caption{Weight matrices for the input and hidden layers}
 \end{figure}
-
 The only difference respect the TLUs network of bi-implication is that
 each neuron can be an input,hidden and output neuron. In this configuration
 we are dividing everything in layer of neurons, so we have to \textbf{add} a
 input layer for that (in respect to using TLU).
-
+\newline\newline
 So far we have seen boolean function, but what we want to look now is how we can extend
 the dimensions of a feed-forward network in order to consider not only
 the boolean function of the TLUs but we want to consider in a multi-layer
 perceptron any type of real number (extend the capability of describing the world).
-
+\newline\newline
 We can see that the multi-layer perceptron,
 with any input real-number can be used for function approximation.
 \newline\newline\noindent\textbf{Function approximation}\newline
@@ -1067,52 +1038,45 @@ Consider the function in the diagram, it is very simple and continuos,
 and let's consider the points $x_1,...,x_4$ where we want to compute
 the value of the function and we want to find a method to approximate for any other value
 $x$ a value in that function.
-
+\newline\newline
 What I can do is to consider the \textbf{midpoint Riemann integration}.
-
 \begin{figure}
     \centering
     \includegraphics[scale=0.5]{images/midpoint_integra.png}
     \caption{Approximating a continuos function with step functions}
     \label{fig:midpoint_int}
 \end{figure}
-
 \begin{itemize}
     \item Approximate a given function by a step function.
     \item Construct a neural network that computes the step function.
     \item Error is measured as the area between the functions.
 \end{itemize}
-
 It is possible to prove that if you take any Riemann integrable function,
-it can be approximated with arbitrary accuracy by a \textit{four-layer
-    perceptron}.
-
+it can be approximated with arbitrary accuracy by a \textit{four-layer perceptron}.
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{images/integra_perceptron.png}
     \caption{NN that computes the step function for integration}
 \end{figure}
-
 The input $x$ is taken by an input neuron, then we have the first
 layer composed by the subdivision of the domain in the points
 $x_1, x_2, x_3,x_4$.
-
 In the second hidden layer, we create one neuron for each step,
 which receives input from the two neurons in the first hidden layer that
 refer to the values $x_i$ and $x_{i+1}$ marking the border of the step.
 Only one neuron in the second layer can be active, and it will represent
 the step where the input values lies (this through the \textbf{combined
     excitation} of the neurons in the first hidden layer).
-
+\newline\newline
 The connection from the neurons of the second layer to the output
 neuron are weighted with the function values of the stair steps that
 are represented by the neurons.
-
+\newline\newline
 Since only one neuron can be active on the second hidden layer, the
 output neuron receives as input the height of the stair step , in which
 the input value lies, as result it computes the correct sampling
 of the function saw in figure \ref{fig:midpoint_int}.
-
+\newline\newline
 The multi-layer perceptrons can be considered an \textbf{universal
     approximators} of the Riemann integration technique, with the maximum
 desired error (i can choose the maximum error I want to get for my
@@ -1120,30 +1084,28 @@ function by choosing the number of neurons for get that accuracy).\newline\newli
 \noindent\textbf{Delta approximation approach}\newline\noindent
 We can actually simplify the error by considering a trick instead of using the
 combined excitation.
-
+\newline\newline
 I can split the domain of the function for my network in parts like before,
 then instead of defining the value of the function for each interval I just
 use iteratively the $\Delta$ variation respect to the value considered.
-
 \begin{figure}[H]
     \centering
     \caption{}
     \includegraphics[scale=0.5]{images/multi-delta-integra.png}
     \label{fig:integra_delta}
 \end{figure}
-
 The structure of the network (figure \ref{fig:integra_delta}) will be simpler
 because I will distribute the input of the hidden neurons,
 that will tel me if the value $x$ is before $x_i$ or greater than $x_i$ (i don't care where).
-
+\newline\newline
 For example, if the value is between $x_1$ and $x_2$ the first neuron
 will generate $\Delta y_1$ and this will be delivered in output.
-
+\newline\newline
 If I have a value between $x_2$ and $x_3$ I will still have $x_1$ that
 will be excited enough and will generate the \textit{contribution}
 for the output ($x_1$ and $x_2$ will be both excited, their
 contribution will be summed up and then delivered to the output).
-
+\newline\newline
 This will make simpler the structure of the network.
 
 \subsection{Regression}
@@ -1151,10 +1113,10 @@ Let's find a way for approximate a function without using the basic calculus app
 order to do this we have to understand the concept of \textbf{regression}.
 We saw that for training an ANN we need to minimize the error function, which is computed by
 considering the squared difference between desired output and actual output.
-
+\newline\newline
 The regression is a technique used in statistical analysis for extrapolating a straight
 line that better approximate the existing relationship inside a dataset.
-
+\newline\newline
 Formally, considering the dataset $G=\{(w_0,y_0),...,(w_n,y_n)\}$ let's imagine it exists a functional relationship
 between the input vector $w_i$ and the abscissa $y$, then the regression will help us to find
 the parameters of that function. Different kind of functions will give us different kind of regressions.
@@ -1166,19 +1128,16 @@ In general, won't be possible to find a straight line that traverse all the poin
 dataset. What we will do is finding a straight line which deviates the lest possible,
 so that minimize the error as follows:
 $$F(a,b)=\sum_{i=1}^{n}(g(x_i)-y_i)^2=\sum_{i=1}^n(a+bx_i-y_i)^2$$
-
 The necessary condition to find the minimum is given us by mathematical, if I take the
 partial derivatives between the two parameters $a$ and $b$ (which are the variables
 in the formula) setting this partial derivatives of th error to $0$ it will give to
 me the condition that allow us to find the minimum (\textit{Fermat's theorem}).
-
 $$\frac{dF}{da}=\sum_{i=1}^{n}2(a+bx_i-y_i)=0$$
 $$\frac{dF}{db}=\sum_{i=1}^{n}2(a+bx_i-y_i)x_i=0$$
-
 The \textit{linear algebra} tells me the solution is unique unless i'm so unlucky that
 all the values $x$ coincides, in that case I have basically one equations but
 two variable ($a$ and $b$) and as consequence infinite solutions.
-
+\newline\newline
 For example, if I need to find the regression of these points:
 \begin{figure}[H]
     \centering
@@ -1192,19 +1151,13 @@ The previous method is generalizable to polynomial of arbitrary order.
 The model I have considered is not a good model, is too approximate, I can look if there
 is instead a very simple straight line a polynomial.
 Instead of considering a polynomial of grade one, I consider a polynomial of grade $m$.
-
 $$y=p(x)=a_0+a_1x+...+a_m x^m$$
-
 The minimization fo the error now can be generalized in this way:
-
 $$F(a_1,...,a_n)=\sum (p(x_i)-y_i)^2=\sum(a_0+a_1x+...+a_n x^n-y_i)^2$$
-
 Like in the linear regression, the necessary conditions for the function to be
 minimized (finding the minimum), are that the partial derivatives respect to the
 parameters $a_i$ vanishes:
-
 $$\frac{dF}{da_0}=0,\frac{dF}{da_1}=0,...,\frac{dF}{da_m}=0$$
-
 \begin{itemize}
     \item This system can be solved by using the standard methods from linear algebra.
     \item The solution is unique unless the points lie extactly on a polynomial of
@@ -1217,36 +1170,28 @@ direction of polynomial,\textit{what happens if I have a function in multiple va
 $$z=f(x,y)=a+bx+cy$$
 If I want to do a multi-linear regression (since i'm applying linear regression to a function
 of two variables), I have just to apply what I wast doing before.
-
+\newline\newline
 I have to consider the error in the approximated function $f$, and the actual value given
 by the samples $z_i$ that i'm collecting (minimizing the sum of squared errors):
-
 $$F(a,b,c)=\sum_{i=1}^{n}$$
-
 What we need to do? again we need to find when the error is going to $0$, this happens when
 the partial derivatives of the parameters are $0$.
-
 $$\frac{dF}{da}=\sum_{i=1}^n 2(a+bx_i+cy_i-z_i)=0$$
 $$\frac{dF}{da}=\sum_{i=1}^n 2(a+bx_i+cy_i-z_i)x_i=0$$
 $$\frac{dF}{da}=\sum_{i=1}^n 2(a+bx_i+cy_i-z_i)y_i=0$$
-
 As already said multiple times, the linear algebra will allow me to solve
 this problem since I have three parameters $a,b,c$ and three equations.
-
+\newline\newline
 Except the unfortunate case where all points are on a straight line, because in this case
 i have a plane that can be rotated in any direction and I have \textit{infinite solutions}.
-
+\newline\newline
 I can consider trying to approximate with a multi-linear regression a function that
 is defined on $m$ different variables, this is the generalization of what we have
 seen previously (difficult to draw):
-
 $$y=f(x_1,...,x_m)=a_0+\sum_{k=1}^{m} a_k x_k$$
-
 I have to minimize the sum of squared errors (vectors for parameters and matrices to define
 the various values):
-
 $$F(\vec{a})=(\textbf{X}\vec{a}-\vec{y})^T(\textbf{X}\vec{a}-\vec{y})$$
-
 where:
 \begin{figure}[H]
     \centering
@@ -1259,16 +1204,13 @@ defined on vectors and not on the partial derivatives of functions as we seen be
 We need to look where the gradient is $0$ which will give us the \textit{hyperplane}
 touching the surface in the minimum.
 $$\vec{\nabla}_{\vec{a}} F(\vec{a})=\vec{\nabla}_{\vec{a}}(\textbf{X}\vec{a}-\vec{y})^T(\textbf{X}\vec{a}-\vec{y})=\vec{0}$$
-
 This comes out as set of regular equations and linear algebra will allow us to solve it as
 usual unless there is the singular case (if I have all points aligned to a single straight line
 the plane which is minimizing my error is not defined).
-
+\newline\newline
 The system of normal equations:
 $$\textbf{X}^T\textbf{X}\vec{a}=\textbf{X}^T\vec{y}$$
-
 which has solution unless $\textbf{X}^T\textbf{X}$ is a singular:
-
 $$\vec{a}=(\textbf{X}^T\textbf{X})^{-1}\textbf{X}^T\vec{y}$$
 
 \subsubsection{Logistic regression}
@@ -1279,20 +1221,18 @@ We can transform this in a linear equation by applying the operation of logarith
 $$\ln{y}=\ln{a}+b\cdot\ln{x}$$
 In the case of ANN we are interested in particular at the \textbf{logistic function}:
 $$y=\frac{Y}{1 + e^{a+bx}}$$
-
 If we apply the logarithm of this equation we can derive a different expression of our
 function $y$ so that the description of this function will be a \textbf{linear description}.
-
+\newline\newline
 Since lot of ANN uses as proper neuron activation function the logistic function,
 if we would find a way for applying the regression method on that we could determine
 the parameters of any network.
-
+\newline\newline
 If we would find a way for applying the method of regression om the neurons, we could
 determine the parameters of any network at two layers of only one point. The value $a$
 of the function represent the threshold of the output neuron, while the value of $b$
 represent the weight of the input. We can linearize the logistic function by applying
 the following transformations (called \textbf{logit transformation}):
-
 $$y=\frac{Y}{1+e^{a+bx}}\longleftrightarrow\frac{1}{y} = \frac{1+e^{a+bx}}{Y}
     \longleftrightarrow\frac{Y-y}{y}=e^{a+bx}\longleftrightarrow\ln{\left(\frac{Y-y}{y}\right)}=a+bx$$
 \begin{figure}[H]
@@ -1303,23 +1243,20 @@ $$y=\frac{Y}{1+e^{a+bx}}\longleftrightarrow\frac{1}{y} = \frac{1+e^{a+bx}}{Y}
 \end{figure}
 The results of the regression line in the example are:
 $$z\approx -1.3775x+4.133, y\approx\frac{6}{1+e^{-1.3775x+4.133}}$$
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{images/regression_line_2.png}
     \label{fig_regr_2}
     \caption{Plot of logistic function}
 \end{figure}
-
 How can we understand the values of this non polynomial approximation by transforming it
 applying the log transformation, so that we can perform the approximation on a
 function that appear to be linear and then transform it back on the original function.
-
+\newline\newline
 We can consider a logistic function defined on two variables, and we have this bi-dimensional
 shape defined on two arguments. we can apply the same principle that we see before, this
 can be used to solve a problem of separating two groups of examples of different classes (or
 group).
-
 $$y=\frac{1}{1+exp(4-x_1-x_2)}=\frac{1}{1+exp\left(4-(1,1)^T(x_1,x_2)\right)}$$
 \begin{figure}[H]
     \centering
@@ -1331,52 +1268,39 @@ $$y=\frac{1}{1+exp(4-x_1-x_2)}=\frac{1}{1+exp\left(4-(1,1)^T(x_1,x_2)\right)}$$
 Basically the two class problems can be solved by considering the two attributes,
 which are the name of the class ($C$ is the class of attributes) and a vector random of $m$ dimension.
 $$dom(C)={c_1,c_2}$$
-
 We consider the \textbf{probability} of belonging to the first class $c_1$
 and the probability to be in the second class $c_2$.
-
 $$P(C=c_1|\vec{X}=\vec{x})=p(\vec{x})$$
 $$P(C=c_2|\vec{X}=\vec{x})=1-p(\vec{x})$$
-
 Given a dataset of points $X={\vec{x_1},...,\vec{x_n}}$, each of which belongs to one
 of two classes $c_1$ and $c_2$.
-
+\newline\newline
 Basically I want to get a \textbf{simple description of the function} $p(\vec{x})$, if I have
 this function I can apply the \textbf{logistic description}:
-
 $$p(\vec{x})=\frac{1}{1+e^{a_0+\vec{a}\vec{x}}}=\frac{1}{1+exp(a_0+\sum_{i=1}^m a_i x_i)}$$
-
 Then I can apply the \textbf{logistic transformation} so that I can obtain the
 \textbf{formal description} of the probability of being on one or the other class:
-
 $$\ln{\left(\frac{1-p(\vec{x})}{p(\vec{x})}\right)}=a_0+\vec{a}\vec{x}=a_0+\sum_{i=1}^m a_i x_i$$
-
-
 \textit{How can I find the specific value of the probability (and so solving the splitting of the
     example)?}
 We can consider a specific function called \textbf{kernel} that describes
 how strongly a data point influences the probability estimate for neighboring points.
-
-
+\newline\newline
 which give us the correlation
 in the examples, given some examples how can I say that the example that I observed
 belongs to the group is influenced by similar examples, or belong to the other group
 which means that is similar to the examples of the other group.
-
+\newline\newline
 With a kernel we can describe the similarity of a
 group of examples, the \textbf{Gaussian function} is commonly used. A function like this
 tell me that if the picked data point is similar to the elements in the middle area, in that
 case I have a significant value of the function, the more I go far from the values
 which are similar the less is the value of the function.
-
 $$K(\vec{x},\vec{y})=\frac{1}{(2\pi\sigma^2)}exp\left(-\frac{(\vec{x}-\vec{y})^T(\vec{x}-\vec{y})}{2\sigma^2}\right)$$
-
-
 If I want to estimate the \textbf{probability density} I will use this expression:
 $$\hat{f} (\vec{x}) = \frac{1}{n} \sum_{i=1}^n K(\vec{x},\vec{x}_i)$$
 The kernel estimation applied to a two-class problems:
 $$\hat{p}(\vec{x})=\frac{\sum_{i=1}^n c(\vec{x_i})K(\vec{x},\vec{x_i})}{\sum_{i=1}^n K(\vec{x},vec{x_i})}$$
-
 If it is $$c(\vec{x})=1$$ the $x_i$ will belong to class $c_1$ if $c(\vec{x})=0$ otherwise.
 
 \subsection{Training multi-layer perceptrons}
@@ -1387,21 +1311,21 @@ and the weighted sum of this neurons expresses the strength of this connections:
 $$\sigma(w_1u_1+w_2u_2+...+w_nu_n+b)$$
 If we consider all the weights and bias initialized randomly, the MLP network will perform
 pretty terrible (he is acting randomly).
-
+\newline\newline
 What you do is defining a \textbf{cost function} that can express if the result of the NN
 is good or bad (for our objective). The greater the function is the greater is the error of the
 NN respect to desired output.
 $$e_v^{(l)}=\left(o_v^{(l)}-out_v^{(l)}\right)^2$$
 So then what you do is considering the average cost function over all the samples inside the
 NN, it is a cost value that express how good or bad the network is.
-
+\newline\newline
 We want to use this error in such a way that we can perform better during the next execution,
 let's consider a function $C(w)$ representing just one cost, if we want to find the input that
 minimize the cost of this function we just have to take the derivative $\frac{dC}{dw}(w)=0$, but
 this is not really feasible for complicate functions. You can find different \textbf{local minimum}
 of the function, so what you find isn't the best possible cost function value that you will find.
 Find the global minimum is pretty hard.
-
+\newline\newline
 But our function will be much more complicated, since we are dealing with lot of parameters (like
 the weights and the biases), let's imagine now a function with two variables where the cost
 function is graphed as a surface above the $xy$ plane. Now, for minimizing the function I should
@@ -1414,11 +1338,10 @@ The algorithm essentially will be:
     \item Small step in direction $-\vec{\nabla}C$
     \item Repeat until convergence
 \end{itemize}
-
 The negative gradient of the cost function will tell you how to change all the weights and biases
 for all the connections, to efficiently decrease the cost (no overshot). The backpropagation
 is an algorithm for computing that \textit{crazy} gradient.
-
+\newline\newline
 The gradient is a vector expressed as $n$-dimension, where $n$ depends by weights and biases,
 it is usually a giant number (impossible to visualize). The important thing, is that the
 magnitude of each component (so the value) will tell you \textbf{how sensitive} the
@@ -1430,10 +1353,9 @@ Now we have to apply this for all the values for all the weights of the network.
 we talk about \textbf{training} or the process of learning of a NN it's just about minimizing the
 cost function (or error function). More to that, the negative gradient vector will store
 the relative importance of the weights for each neurons.
-
+\newline\newline
 What we want to do is to follow the idea of the \textbf{gradient descent}, we want
 to find the \textit{local minimum} of an error function in order to find the proper set of weights.
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{images/gradienmt.png}
@@ -1441,37 +1363,32 @@ to find the \textit{local minimum} of an error function in order to find the pro
         a point $(x_0,y_0)$}
     \label{fig:err_surface}
 \end{figure}
-
 Considering this error surface (figure \ref{fig:err_surface}), if we are in the
 central point we can look to the derivatives of the error function in the two directions,
 the \textbf{gradient} $\nabla$ is the vector tangent to the surface and will tell us the direction where
 the surface is more or less increasing.
-
+\newline\newline
 If we want to find the solution for our learning we need to look for the minimum of this
 error function, so actually we need to look to the opposite direction to the gradient and we
 look to reach the minimum.
 $$e=\sum_{l\in L_{fixed}}e^{(l)} =\sum_{v\in U_{out}} e_v=\sum_{l\in L_{fixed}}\sum_{v\in U_{out}}e_v^{(l)}$$
-
 So we need to evaluate the gradient to find the direction of the decreasing value, and
 we need to go in the proper direction in order to reduce the error. In the case of the MLP
 calculate the gradient means compute the partial derivative of the error function in respect
 of the threshold and the weights taken as parameters.
-
+\newline\newline
 Given $\vec{w}_u=(-\theta,w_{u_1},...,w_{u_k})$ as the vector of weights of a single layer
 extended with the threshold, then compute the gradient as follow:
 $$\vec{\nabla}_{\vec{w}u}e=\frac{\partial e}{\partial\vec{w}_u}=\left(-\frac{\partial e}{\partial\theta_u},\frac{\partial e}{\partial w_{up1}},...,\frac{\partial e}{\partial w_{up_n}}\right)$$
-
 Since the total error $e$ is given by the sum of the individual errors in respect to all
 neurons and all training patterns $l$, we get that:
 $$\vec{\nabla}_{\vec{w}_u} e=\frac{\partial e}{\partial\vec{w}_u}\sum_{l\in L_{fixed}}e^{(l)}=\sum_{l\in L_{fixed}}\frac{\partial e^{(l)}}{\partial\vec{w}_u}$$
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{images/logistic_gradient.png}
     \caption{Logistic function as activation function}
     \label{fig:log_func_gradient}
 \end{figure}
-
 If we have a \textbf{logistic function} as $f_{(act)}$ we will have that the changes
 performed on the vector $\vec{w}_u$ will be proportional to the derivative of the $f_{(act)}$.
 More near to $0$ the value of the function will be, more precipitous will be the learning.
@@ -1503,19 +1420,17 @@ $u\in U_{(hidden)}\cup U_{(out)}$, except for the input neurons.
           in a proportional way back to previous neuron, we back propagate the error until the
           input neurons.
 \end{enumerate}
-
 We have to say that given the shape of the logistic function the error can disappear
 completely, since the gradient will approximate more the \textbf{null vector} the
 more it will be near the zero.
-
+\newline\newline
 The weight adaptation is performed by the following formula (this tells me how to perform the correction):
 $$\forall w_{up}:\delta w_{up}=\eta \delta_u out_p$$
-
 If you initialize the \textit{learning rate} $\eta$ with a too high value instead
 of descending the curve we risk to jump from a \textit{"peak"} of the function to another,
 without ever converging to the minimum. Furthermore, it is not all certain that the minimum
 reached in this way is the global minimum of the function.
-
+\newline\newline
 A solution to the problem could consist in \textit{repeating} the learning, initializing
 the system with a different configuration of weights and threshold, and then choice
 at the end which configuration result in the better minimum.
@@ -1526,20 +1441,17 @@ For example let's consider the negation $\lnot x$, there is a two-layer perceptr
     \includegraphics[scale=0.5]{images/2_per_neg.png}
     \caption{Two-layer perceptron with single input and training examples for the negation}
 \end{figure}
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.55]{images/squared_errors.png}
     \caption{Squared errors for computing the negation by using a logic activation function}
 \end{figure}
-
 From a numeric point of view, this procedure won't allow us to reach really the minimum, we will ahave some
 residual errors due to the computation of the various parameters (this will change according to the
 process we are adopting).
 
 \subsubsection{Variant of Gradient Descend}
 The variant aim to change the \textbf{learning rate} and the \textbf{length of the learning step}.
-
 \begin{itemize}
     \item \textit{Manhattan training}, taking just the sign of the gradient, very fast but you may not reach
           the optimum.
@@ -1567,7 +1479,7 @@ For a single hidden layer the following rule of thumb is popular (take as grante
 $$\text{Number of hidden neurons} = \left(\frac{\text{number of inputs}+\text{number of outputs}}{2}\right)$$
 The problem is that if we have to few neurons in the hidden layer, we will not be able to achieve a good approximation
 the function that we need to approximate. We have not enough parameters, this behavior is called \textbf{underfitting}.
-
+\newline\newline
 On the contrary, if we have very large hidden layers we have many neurons, we have many many parameters to train and this may force the
 NN to learn the examples to much, and this will focus the network on this examples only, we lose the ability of
 generalizing the desired behavior, this is called \textbf{overfitting}.
@@ -1578,7 +1490,7 @@ generalizing the desired behavior, this is called \textbf{overfitting}.
 \end{figure}
 For example, the NN learned perfectly the blue line to pass exactly in the points, but this is not what we
 want to have. Now we can't generalize the abstract view of the black line (too many parameters).
-
+\newline\newline
 \textit{What we need to do in order to understand when we have good quality for our learning?} Follow, the
 next subsection.
 \subsection{Cross validation}
@@ -1591,7 +1503,7 @@ randomly split our data sets in two parts:
 This will allow us to see (by using the validation set) if the training makes the NN overfitting the configuration or
 not, if the error that we have is still reasonable low, we have a good quality of the learning
 (we still can do good generalization), viceversa we have a bad learning quality.
-
+\newline\newline
 We can do the splitting in two ways:
 \begin{itemize}
     \item \textbf{Cross validation}: splits randomly the data in two subsets (for training and validation),
@@ -1605,12 +1517,11 @@ We can do the splitting in two ways:
           $n$ data subsets, $n$ pairs of training and validation data set are formed by using $1$ fold as a validation
           and $n-1$ folds for training.
 \end{itemize}
-
 randomly the data in two subsets for training and validation (\textbf{cross validation}) and we can repeat this splitting in different
 phases and at the end we can compare the. or we can split the data set in N-folds (\textbf{N-folds validation})
 and then use the various $n$ subsets for training and $n-1$ subsets for validation, in this way we can use
 most of the example for training instead of validation.
-
+\newline\newline
 The \textbf{stopping criterion} is also very important, we stop the training when the validation
 error is sufficient low.
 
@@ -1618,23 +1529,23 @@ error is sufficient low.
 Sensitivity of the NN to the various parameters that we have, the variations that we may have to the
 various parameters influences the behavior of our NN. We want understand how muc hthe learning applied to the NN
 is really independent from the behavior of the NN.
-
+\newline\newline
 This is important to understand how much is generalizable the behavior of our NN.
-
+\newline\newline
 This is a problem for MLP, when we perform the learning (supervised or unsupervised), basically we have a
 data set presented to the NN and then the learning algorithm adjust the parameters in ordered to find the
 desired behavior of the NN.
-
+\newline\newline
 In our hands we have an algorithm, but we don't have an understanding of the why the parameter
 are configured in this way. We are trying to give an explanation of why a NN is configured in a specific way,
 this is actually field of research (we still don't have a rational idea).
-
+\newline\newline
 For the sensitivity analysis which is part of this understanding, we want to answer this question: \textit{How much
     the output of each neuron is changing if we change the data set for training}
 (still describing the desired behavior)\textit{?}
 So essentially, which inputs the output(s) react(s) most sensitively, it hints about which inputs aren't needed
 and may be discarded.
-
+\newline\newline
 The approach consists in determine the change of ourput relative to the change of input:
 $$\forall u\in U_{in}:
     s(u)=\frac{1}{|L_{fixed}|} \sum_{l\in L_{fixed}} \sum_{v\in U_{out}} \frac{\partial out_v^{(l)}}{\partial ext_u^{(l)}}$$
@@ -1644,14 +1555,14 @@ A modern approach to MLP called \textbf{Deep learning}, with MLP we can approxim
 function, but we have in general a pretty large hidden layer. First problem, \textit{what we can do to
     simplify the structure?} The second problem, with MLP we have to know the characteristic of the data which are
 relevant to pick the important data to configure the NN.
-
+\newline\newline
 It has been experimented that adding $1$ or $2$ more layers helps to have a concise NN but with
 the same characteristic of a MLP with a large number of neurons in the hidden layers.
-
+\newline\newline
 The deep learning network is basically a MLP, but with a difference: What we want to do it consists
 in not having any type of knowledge about the problem and try to force the NN to configure itself with
 a limited and small number of neurons.
-
+\newline\newline
 For example, let's consider the $n$-bit parity function, which output $1$ if the $n$-bit word is even,
 or viceversa $0$. If we want to use an MLP with only one hidden layer, which has $2^{n-1}$ neurons, the number
 of hidden neurons grows \textbf{exponentially} with the number of inputs. This because the function is a
@@ -1664,7 +1575,7 @@ disjunction of  $2^{n-1}$ conjunctions.
 Instead if we use \textbf{multiple} hidden layers, the \textbf{linear growth} is possible (respect to the
 input). This finding bring to the developing of \textit{deep learning}, where the \textit{"depth"} is the
 one given by the longest path which separates the input neurons from the output neurons.
-
+\newline\newline
 The rational is to allow a greater deepness of the network in change of better performance in construction
 and computation of the NN. The deep learning bring some downsides:
 \begin{itemize}
@@ -1673,7 +1584,6 @@ and computation of the NN. The deep learning bring some downsides:
     \item \textit{Vanishing gradient}: during the propagation of the error the gradient will get reduced
           until the vanishing.
 \end{itemize}
-
 Some solutions to the overfitting issue:
 \begin{itemize}
     \item \textit{Weight decay}: set a maximum limit to the values which can assume weights
@@ -1683,12 +1593,11 @@ Some solutions to the overfitting issue:
     \item \textit{Dropout training}: some neurons of the hidden layers are omtitted during the
           evolution of the network.
 \end{itemize}
-
 While the issue of the vanishing gradient is given by the fact that the activation function it's a
 logistic function, which derivative reach at max the value of $\frac{1}{4}$. As consequence of this
 the propagation of the error to a previous layer adds a value, often smaller than $1$, and in this
 way reducing the gradient.
-
+\newline\newline
 A solution consists in editing slightly the activation function in a way that will be always increasing.
 Some candidates for that are the \textit{ramp function} and the \textit{softplus function}.
 \begin{figure}
@@ -1702,11 +1611,11 @@ which maps the input inside an approximation, using an hidden layers of less dim
 hidden layer works like an \textit{encoder} by encoding the input in a internal representation
 which will be decoded to the output layer. The autoencoder, has only one layer, it doesn't suffer
 about the same limitation and can be traversed normally from the backpropagation.
-
+\newline\newline
 A problem with this approach is that if there are a lot of neurons in hidden layer as much are in
 the input layer we are going to propagate with less adjustments, and without the autoencoder
 extracting any knowledge from the data.
-
+\newline\newline
 There are three possible solutions:
 \begin{itemize}
     \item \textit{Sparse autoencoder}: provide to use a much smaller number of neurons inside the
@@ -1718,7 +1627,6 @@ There are three possible solutions:
 
     \item \textit{De-noising autoencoder}: we add randomly some noise to the input.
 \end{itemize}
-
 For obtaining an MLP with multiple layers we combine differente autoencoder. Initially we start by
 training just one autoencoder. At that time you remove the decoder and you preserve only the internal layer.
 You use the data processed from this autoencoder for training the second, and so on until you
@@ -1734,25 +1642,25 @@ feature recognized by the internal layers are not located in a specific portion 
 need to use a CNN (\textit{Convolutional Neural Network}, next topic). This architecture is inspired
 by the working of the human retina, where the neurons used for the perception has a receptive field,
 or in other words, a limited region where they can answer to stimulus.
-
+\newline\newline
 This is simulated inside the CNN by connecting the neurons of the first layer just to some neurons
 of the input. The weights are partitioned in a way that partial networks can be evaluated  from
 different prospective of the image.
-
+\newline\newline
 During the computation it will proceed by moving the receptive field on the totality of the image. As
 result you will obtain a convolution of the weight matrix with the input image.
 
 \subsection{Radial Basis Function Networks}
 This is another NN model, we have a special type of structure for the neurons and a special approach
 for information we are collecting from images (typically).
-
+\newline\newline
 I have a 3-layered feed forward network, where the activation function of the hidden layer is a \textit{
     Radial Basis Function} (RBF).
-
+\newline\newline
 An RBF is a function which try to point out what is relevant in a very specific area of the information
 we are observing (an image), and tries to diminish what is in the surrounding area. So it will focus on
 relevant part of the image where we want to understand the contents.
-
+\newline\newline
 In this kind of NN we have a set of values for various inputs, we represent this with a vector, we have
 for example a three dimensional space, where each value represent the input. What i'm considering as input
 of the hidden layer is the difference between this vector and the weight vector, which is the distance
@@ -1770,13 +1678,11 @@ $$d_k(\vec{x},\vec{y})=\left(\sum_{i=1}^n |x_i-y_i|^k\right)^{\frac{1}{k}}$$
     \item $k=2$: Euclidean distance.
     \item $k\rightarrow\infty$: Maximum distance.
 \end{itemize}
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{images/mknowski.png}
     \caption{Manhattan, Euclidean and Maximum}
 \end{figure}
-
 The RBF has an activation function in the output layer which is \textbf{linear}. Differently, the
 hidden layer has an activation function which is a \textbf{radial function}. A radial function
 decreases from $0$ to $\infty$ in a monotonically way.
@@ -1794,7 +1700,7 @@ determine the width of this radius. The radial activation function are typically
 As example, let's apply an RBFN for simulating the boolean conjunction $x_1\land x_2$.
 When i'm around the black point, the input is $(1,1)$, what we want to do is creating a circle
 around that area where the output is $1$ (significant information to extract).
-
+\newline\newline
 Another approach could consist in considering a RBF in the opposite way, where the interesting
 data is outside the circle.
 \begin{figure}[H]
@@ -1814,7 +1720,7 @@ We have two neurons focusing on the relevant part of the domain, the rest will b
 this two information you will get the bi-implication. In general an RBFN as the same expressive
 power of an MLP, and it can be saw as an universal approximator (can approximate any Riemann integrable
 function) with a small arbitrary error.
-
+\newline\newline
 The process is the same of the other NN, the function will get approximated with a step function that
 can be computed easily by a RBF if we define that as the weighted sum of rectangular functions.
 \begin{figure}[H]
@@ -1845,14 +1751,14 @@ but the problem here is \textit{how we can decline this by taking into account t
 With the others ANN the initialization phase was trivial, because you just had to
 select some random values, instead with RBFN the same approach conduce to suboptimal
 results.
-
+\newline\newline
 Let's consider a \textbf{simple radial basis function network}, which is
 a partial view of the general structure of a RBFN, where each training example is associated
 with a proper radial function.
-
+\newline\newline
 We want to apply a \textbf{fixed learning task} $L_{fixed} = \{l_1,...,l_m\}$ with
 $m$ training patterns $l=(\vec{l}^{(l)},\vec{o}^{(l)})$ composed by input and desired outputs.
-
+\newline\newline
 We have one hidden neuron $v_k, k=1,...,m$ for each training pattern, let's define the vector
 of associated weights to the neuron $v_k$:
 $$\forall k\in\{1,...,m\}\vec{w}_{v_k}=\vec{i}^{l_k}$$
@@ -1861,7 +1767,7 @@ neuron, the radius can be computed for each of the neuron by considering heurist
 in which we take the distance between the various input patterns and we take the maximum
 distance computed between each pair of input vectors (patterns) in our dataset (this value
 is expressed as $d_{max}$).
-
+\newline\newline
 The radius of the neuron $\sigma_k$ will be choose heuristically if the activation
 function is Gaussian function:
 $$\forall k\in\{1,...,m\}:\sigma_k = \frac{d_{max}}{\sqrt{2m}}$$
@@ -1888,7 +1794,6 @@ This method guarantee a perfect approximation. This means that is not necessary 
 a simple radial basis function network. In general, if we don't want to have for each pattern a neuron,
 we will have to select $k$ subsets from the dataset and find, for each subset, a representative che assoceremo
 to a neuron in the hidden layer.
-
 \begin{figure}
     \centering
     \includegraphics[scale=0.4]{images/example_biimp_rbfn.png}
@@ -1899,38 +1804,35 @@ which will correspond at each example that the neurons will learn. We will have 
 two of this Gaussian in the final computation, we will generate an output that will
 have to be different from $0$. This is a RBFN centered in the relevant example that
 we want to learn.
-
 \begin{figure}
     \centering
     \includegraphics[scale=0.4]{images/rbfn_gauss.png}
     \caption{RBFN function centered in the examples}
 \end{figure}
-
 This is not the general case, if we take a structure like this and we want to create
 a RBFN having in mind that for each the pattens we have to contribute we need to put a neuron
 with RBFN as activation function, this implies that if we have many examples that we want to learn
 we are going to have an incredibile big structure for our network, and this is not smart.
-
+\newline\newline
 If we are considering the general radial basis function structure in which we don't want to have a neuron with $x$
 RBFN network centered on a specific example to learn, we need to try to limit the number of neurons
 we need to understand which are the neurons which are relevant and understand where to place it.
 Basically we need to select among the $m$ patterns that we want to learn a subset of $k$ patterns
 adn then we need to put the neuron centered on this example, then we need to figure out how to build
 the other outputs by combining this limited number of examples that we learn.
-
+\newline\newline
 If we want to use this kind of approach we basically need to understand were to place the center,
 but we need also to understand how large will be the radius in order to be sure that
 after placing the Gaussians we are able to recreate the examples for which we don't use the
 Gaussian.
-
+\newline\newline
 What I can do is splitting the domain of examples, and then for each subdomain find a representative
 point (not an example) in the subdomain, that will cover the group of the examples (not points)
 of the subset.
-
+\newline\newline
 This can be formalized in saying that we select $k$ training patterns as centers, where
 the connection weights for the hidden neurons are the training pattern, and the connection
 weights for the output neurons can be obtained by considering this matrix $A$:
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.4]{images/matrix_conn_weights_rbfn.png}
@@ -1941,7 +1843,6 @@ squared), but I can consider the pseudo inverse matrix:
 $$A^+=(A^T A)^{-1} A^T$$
 Now we can apply the actual computation for our vector $\vec{w}$ of the weights, given by:
 $$\vec{w}_u = A^+\vec{o}_u$$
-
 So now, \textit{how we can choose the center for creating the configuration for our RBFN?} As
 for the simple case we can take all points we just need to determine the radius for one single
 radius and the output weights (considering that we want to use a better structure, which is
@@ -1958,7 +1859,6 @@ practicable).\\Options of radial basis function centers:
 
 \subsubsection{C-means clustering}
 This is one of the best options for choosing the RBFN centers:
-
 \begin{enumerate}
     \item Considering a number of $c$ clusters to be found (input).
     \item Initialize the cluster centers \textbf{randomly}.
@@ -1967,7 +1867,6 @@ This is one of the best options for choosing the RBFN centers:
           vectors of the assigned data points, this is called \textbf{cluster center update}).
     \item Repeat the step $3$ and $4$ until clusters do not move anymore (converge).
 \end{enumerate}
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.4]{images/c-means.png}
@@ -1991,40 +1890,19 @@ Then I will apply again the same partition (Delunay-Voronoi) as before.
     \caption{Centroid update}
 \end{figure}
 
-Basically what we can do is to apply some rules for updating the weights that are similar
-to the backpropagation in the MLP; basically you have just to adjust the weights from the hidden to the output neuron
-we just need to compute the gradient:
-
-and then we need to find the direction of the maximum slope for the gradient and we need to
-compute the increase of the decrease in order to go in the d
-
-
-For the hidden layer we need to place the centers, we need to not only find the interconnection
-weights for the centers but also the size of the radius which allow to combine together
-the contribution of the various neurons in the hidden layer for generating the desired output
-with the requested minimum error.
-
-
-
-We have palced the neurons. nwo we need to understand how big the radius is big for the neuron.
-The gradient of the error with respect to the radius :
-
-Updat raule for enlarge or reduce radius:
-
-special case of Gaussian activation function:
-
+\pagebreak
 \subsection{Learning Vector Quantization}
 \textit{What happen if we don't have examples with a desired output (only the examples)?}\\Basically,
 until now we saw the fixed-learning task, now we want to see what happens with a free-learning task.
-
+\newline\newline
 Now i'm going for searching outputs that will be similar to the given input.
-
+\newline\newline
 We still consider the Delaunay and Voronoi approaches.
 The problem is that what we want to do is a suitable quantization of the domain in which
 we have our examples in order to understand the group of the examples which are similar.
 In the previous example we had given a number of clusters, now we want to find the clusters
 in a given dataset.
-
+\newline\newline
 Let's considered the input examples (or data points) as empty circles, and the cluster centers
 (or points) by the full circles.
 \begin{figure}[H]
@@ -2035,14 +1913,13 @@ Let's considered the input examples (or data points) as empty circles, and the c
 The \textbf{Learning Vector Quantization Network} (LVQ/LVQN), is a FFNN with 2-layers that performs this clustering
 of the examples by similarity, basically from an abstract point of view we see the LVQ as a radial
 function in which the hidden layer and output layer are collapsed in a single layer.
-
+\newline\newline
 The network input function of each output neuron is the distance between the input vector and the
 weight vector. The definition of the distance is the same, we are considering the Mynkowski family
 and the euclidean distance for represent the behavior of our function,
-
+\newline\newline
 The output activation function of each neuron is not a simple function of the activation of the
 neuron: it considers the activation of \textbf{all} output neurons.
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.4]{images/act_lvqnn.png}
@@ -2057,14 +1934,12 @@ this will allow the confrontation.
     \centering
     \includegraphics[scale=0.6]{images/lvqq_neur_confront.png}
 \end{figure}
-
 In the LVQN we can use the same radial functions that are use for any RBFN.
-
+\newline\newline
 \textit{How can we perform the configuration ?}
 Basically for each training pattern we look to the \textit{reference vector} which is
 we find the closest reference vector.
-
-
+\newline\newline
 I may have basically two strategy that I can consider in order to perform the adjustment of the
 weights:
 \begin{itemize}
@@ -2078,10 +1953,9 @@ weights:
 where $x$ is the input, $r$ is the reference vector for the winner neuron, and $\eta$ is the learning
 rate. Until now we meant the learning rate as fixed during the learning, by the way the are some
 situations were the constant learning rate can bring some problems.
-
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.5]{images/adapt_rulesa.png}
+    \includegraphics[scale=0.4]{images/adapt_rulesa.png}
     \caption{Adaptation rules applied on the reference vector}
 \end{figure}
 In the case of the attraction rule we move the reference vector $\eta d$ towards $x$
@@ -2098,7 +1972,6 @@ pattern i'm presenting, in the batch training I apply the various
 connection for the group of examples belonging to the same pattern and perform the update at the end
 of the entire batch (the solution of the position of the centers is smoother
 since I am putting together more then one example).
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{images/time_dep_lm.png}
@@ -2108,18 +1981,19 @@ since I am putting together more then one example).
 The problem I have with this kind of techniques, is that if I consider a fixed learning rate,
 which is a coefficient which tells me how much I want to change the position by taking
 into account the similarity.
-
+\newline\newline
 I may enter in a oscillation (left diagram), in this case
 what we can do is to dynamically change the learning rate consists by decreasing it
 as it grows iterations (called \textbf{time dependent learning rate}, \ref{fig:tdln} on right).
-\linebreak\\There are some applications in which I may have some more information
+\newline\newline
+There are some applications in which I may have some more information
 about the data tha I have, \textbf{classified data}, I may have some more information
 related to the class to which an example belong and even
-if i'm not using the supervised learning I can take advantage of this information
+if I'm not using the supervised learning I can take advantage of this information
 so that I can update not only the reference vector but I can consider updating also
 some other reference vector the once which are the nearest the reference vector
-that i'm considering.
-
+that I'm considering.
+\newline\newline
 The problem is that this may move the classes very far one from the other,
 one option to balance this is to consider the \textit{window rule}: a reference vector weill become adapted
 only if the point $p$ is near the border of the classification, the hyper-surface which separates
@@ -2134,7 +2008,7 @@ which is rather sharp but i'm considering a smooth border between the classes in
 sufficiently large RBF. In this cases I can considering the classing by a mixture og
 Gaussian which are representing the various classe, with a softer border between
 the various classes.
-
+\newline\newline
 In order to do this I have to consider that each element is not interbelonging
 to one class or another, each element of my data set as a probability of belonging to one or the other class.
 This is due to the fact that I have a gaussian shape of the radial basis function,
@@ -2148,12 +2022,12 @@ belong ot each of the classes introduced in my system. Formal definition:
 If I take the various examples of my dataset I have a set of clusters in my dataset with the parameter that defines
 the cluster, and for each element of the dataset I want to understand the prbability of belonging to
 one class respect to another.
-
+\newline\newline
 Mathematically this is very complex to be optimized, and as a consequence we try to perform an approximation introducing
 in an explicit way the position of the various Gaussians with additional random variables which are difficult to
 compute it in a exact way, we compute a maximum expected value for that, and we try to get the
 maximum of the likelihood.
-
+\newline\newline
 Basically what we need to do to perform the maximization of the likelihood, we work in two passes since we have the centers,
 and the distribution of our variables, what we can do basically we optimize the initial group
 of centers of the clusters and after this we can compute the maximum likelihood on the data we have.
@@ -2170,7 +2044,7 @@ the border but this will bring a much more complex analysis.
 Sometimes are called also \textit{Kohonen maps}, introduce from the Prof. Kohonen. It is a two-layer
 FFNN similar to the VQLN, instead of having in the output layer all the other output neurons, the
 self-organizing map has local connections only among neighboring hidden/output neurons.
-
+\newline\newline
 We do not have the winner take all over the entire set of output neurons but we work local, this is applied
 on the neighbor of each neuron. The network input function is the radial function,as before, the
 \begin{figure}[H]
@@ -2199,128 +2073,201 @@ of the structure.
     \includegraphics[scale=0.5]{images/neigh_asoc_topo.png}
     \caption{The neuron space (2D grid) and the input space (3D grid)}
 \end{figure}
-
-Basically what we want to do in this kinf of netwok is how we associate the elemnt of the dataset with the neuron
-in my grid preserving thesimilarity and the concepti of neighbouring saw before. This is how we can upadate
-parameter of our netwerkl, and enforcing hte parametee ofthwinning neuron :
+Basically what we want to do in this kind of network is how we associate the element of the dataset with the neuron
+in my grid preserving the similarity and the concept of neighboring saw before. This is how we can update
+parameter of our network, and enforcing the parameters of the winning neuron:
 $$\vec{r}_u^{(new)} = \vec{r}_u^{(old)} + \eta(t) f_{nb} (d_{\text{neurons}} (u,u_*), \rho (t)) (\vec{x}-\vec{r}_u^{(old)})$$
-ùin time I will reduce the learning radius , so I can focus the capacity of learning a sspecific pattern
-this will allor me to create a much stronger partitioning in classes by similarity.
-Considering a neighbouring function with is smooth, I may consider a smooth border and an example may excide more t***
-
-The training will work by placing the elements randomly and adjust the interconnection by asdjusting the winning neuron***
-
+in time I will reduce the learning radius , so I can focus the capacity of learning a specific pattern
+this will allow me to create a much stronger partitioning in classes by similarity.
+Considering a neighboring function with is smooth, I may consider a smooth border and an example may excide more t***
+\newline\newline
+The training will work by placing the elements randomly and adjust the interconnection by adjusting the winning neuron***
+\newline\newline
 Example a grid 10 by 10
-random associations of hte netwoek, each step will associate with the similar wxample.
+random associations of hte network, each step will associate with the similar example.
 another example,
-the problem is always the dasme the initial configuration is poort and the nn can't flatten the configuration
-of the grid. Maybe the neighbour radius is too small or le the learning rate is too small.
-
-
-Basically starting from the original 3D we are able to flat in a bidimensional one. This can be used for reduce the bidimensionality
-of the dataset
+the problem is always the same the initial configuration is poor and the NN can't flatten the configuration
+of the grid. Maybe the neighbor radius is too small or le the learning rate is too small.
+\newline\newline
+Basically starting from the original 3D we are able to flat in a bi-dimensional one. This can be used for reduce the
+bi-dimensionality of the dataset
 
 \subsection{Hopfield Networks}
-hopfield network is a NN with a loop in the graph. We have not seen in practice
-what happens with a loop that feed back the information.
+The Hopfield Network (HN) is an ANN with a loop in the graph. We have not seen in practice
+what happens with a loop that feed back the information. Is the simplest type of
+\textbf{recurrent network}, a graph with direct cycles. A first difference of HN in respect to the other ANN is
+that all the neurons are both input that output. There is no hidden layer of neurons, each neuron is connected
+to another (except single neuron loops) and the connection weights are distributed symmetrically.
 
-Essentially what we have is asingle layer of neurons for which we have the inputs that are
-giving the incoming data to them, they are oprating in such a way
-that the output of the neuron are feeding the other nuerons in the structure.
+\paragraph{Definition}\mbox{}\\
+An Hopfield network is a neural network with a graph $G=(U,C)$ that satisfies the following conditions:
+\begin{enumerate}
+    \item $U_{hidden}=\emptyset, U_{in}=U_{out}=U$
+    \item $C=U\times U-\{(u,u)|u\in U\}$
+\end{enumerate}
+The connection weights are symmetric, $\forall u,v\in U, u\neq v: w_{uv}=w_{vu}$. The network input
+function of each neuron $u$ is the weighted sum of the outputs of all other neurons:
+$$\forall u\in U: f_{net}^{(u)}(\vec{w}_u,in_u)=\vec{w}_u in_u=\sum_{v\in U-\{u\}}w_{uv}out_v$$
+The activation function of each neuron $u$ is a threshold function
+\[
+\forall u\in U: f_{act}^{(u)}(net_u,\theta_u)=
+\begin{cases}
+    1&\text{if }net_u\geq 0\\
+    -1&\text{otherwise}
+\end{cases}
+\]
+The output function of each neurons is the identity, that is,
+$$\forall u\in U: f_{out}^{(u)}(act_u)=act_u$$
+Since the connection weights are symmetric also the matrix will be symmetric
+\[
+    W=
+    \begin{bmatrix}
+        0                & w_{u_1u_2}  & \dots  & w_{u_1u_n} \\
+        w_{u_1u_2}       & 0           & \dots  & w_{u_2u_n} \\
+        \vdots           &\vdots       & \ddots & \vdots \\
+        w_{u_1u_n}       & w_{u_2u_n}  & \dots  & 0
+    \end{bmatrix}
+\]
+\paragraph{Simple Example}\mbox{}\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{images/simple_hop.png}
+    \caption{The HN oscillates if the activations of the two neurons are updated in parallel,
+    but reaches a stable state if the neurons are updated alternatingly}
+    \label{fig:s_h1}
+\end{figure}
+\[
+    W=
+    \begin{bmatrix}
+         0 & 1 \\
+         1 & 0
+    \end{bmatrix}
+\]
+Essentially what we have is a single layer of neurons for which we have the inputs that are
+giving the incoming data to them, they are operating in such a way that the output of the neuron
+are feeding the other neurons in the structure.
+\newline\newline
+The behavior of a Hopfield network can depend on the update order
+\begin{itemize}
+    \item Computations can \textbf{oscillate} if neurons are updated in parallel (\textbf{synchronous parallel update}, fig.\ref{s_h1}).
+    \item Computations always \textbf{converge} if neurons are updated sequentially (\textbf{asynchronous/sequential update}, fig.\ref{s_h1}).
+    This is assured by the \textbf{convergence theorem}.
+\end{itemize}
+\begin{itemize}
+    \item This means that we have a single layer of neurons that still have an output arc, they
+    can't only send data for feedback.
+    Basically this creates a kind of \textbf{memory}, where what is generated in a previous step is reused for the
+    subsequent step (by the way this is the motivation for introducing this kind of network).
 
-This means that we ahve a single layer of neurons that still have an output arc, they
-can't only send data for feedback.
-Basically this creates a kind of memory, what id generated in a previous step is reused for the
-subserquent step (by the way this isthe motivation for introducing this kind of network).
+\item The relevance of the output arc is the same of the feedback arc. the network input function is
+    only the weighted summation of the output of all the other neurons.
 
-The relevance of the otuput arc is thesame of the feedback arc. the network in put function is
-only the weighted usmmation of the output of all the other neurons.
+\item The we will generate the network neuron of the value, this is the input value of the activation
+    function, the activation function that we are using is essentially the step function.
 
-The we will generate the network neuron of the value, this is the input value of the activation
-function, the actiovation function that we are using is aessentially
-the step function.
+\item The output function for this neuron is the identity function. If we want ina concise way represent all
+    the connections we can use a matrix for collect all the weights. The diagonals is composed by 0
+    because this means that we don't have any contribution to the next neuron. The matrix is symmetric
+    so that the interconnection id passed correctly
+\end{itemize}
+There is the possibility to simplify the representation of more complex HN
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.3]{images/simpliefied_hop.png}
+    \caption{Simplified representation of a HN}
+    \label{fig:h2}
+\end{figure}
+Where:
+\begin{itemize}
+    \item The symmetric connections between neurons are combined.
+    \item Inputs and outputs are not explicitly represented.
+\end{itemize}
+This will enhance the readability of the graph in more complex cases, and allow a more
+abstract view of the HN and still exploiting the characteristics of the network.
+\subsubsection{State graph}
+In order to understand how the computation \textbf{evolves} and how we reach the final ready state we have
+to introduce the \textbf{state graph}. It will give the values of the activation and
+transition inside the HN. Each node in the graph represent a configuration that we
+have foreach neuron. The "+/-" encodes the neuron activations:
+\begin{itemize}
+    \item The + means that is active.
+    \item The - means that is not active.
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{images/state_graph.png}
+    \caption{State graph of the HN in figure \ref{fig:h2}}
+\end{figure}
+The arrows are labeled with the neurons, an the updates of which causes the corresponding state transition.
+\begin{itemize}
+    \item \textbf{Stable states}, cannot be left again (represented in grey).
+    \item \textbf{Unstable states}, may be left again (represented in white).
+\end{itemize}
 
-The output function for this neuron is the identity function. If we want ina concise way represent all
-the connections we can use a matrix for collect all the weights. The diagonals is composed by 0
-because this means that we don't have any contribution to the next neuron. The matrix is simmetric
-so that the interconnection id passed correctly
-
-simple example
-In this example we have 1 as interconnection weight, we see the matrix.
-the problem that we have is when we are updating the neuron ? According to how we perform
-the update the hopfield could converge or not. The computations can oscillates in the case
-of synchronous update...**+
-
-If we apply the update in an asynchronous way the situation is different, the values are chagned one at time
-ass consequence we donìt havee the cylic behavior of before. The only problem is that the steady case will
-be different, we are sure if we use the asyunchronous approach that we reach a sterady state in the end but the value
-of thesteady state will depend from the order of execution of the computation.
-
-Let's consider a more complex network, if we atake 4 or 5 neurons will be more complex. Here is a still
-readable garaph describing the connections bt growing the number of neurons it will be easily unreadable.
-There is a simpliefied versione of the graph which erxploits the characteristic of the netwoek.
-Every neuron is an output neuron, when a steady configuratin is reache is the final output of the neuron
-every neuron is an output neuron aswell.
-since the matrix of the weights is symmetric, we don't have ti create
-two arcs between the neuron $i$ and $j$ the sam***
-
-In orderer to undestand how the computation evolves and how we reach the final stready state we have
-to introduce the state graph. It will give the values of the activation and
-transition inside the hopfield network. each nod in the graph represent a configuration that we
-have foreach neuron.+ is active and - is not active.
-If we start from thisstate, if we apply the opperation for one of the three neurons what is happeniing
-is atthe the arc going out of the ***
-
-
-convergence therem
-It actually possible to prove the convergence theroem wihch tekìll us that if I a ctive the hopfield netwrok
-in a sequential asynchronous way a steady state is reached in a finite numnber of steps.
-Itis possible to prove also that his maximum number is given by n multyplied by $2^n$ steps.
-
-basically to prove this we can realy on the facti the we can associate to the bahciouir of the network
-an enrgy which can be defined in this way (not actual physical energy), but if you look
+\subsubsection{Convergence therem}
+It actually possible to prove the convergence theorem which tell us that if I active the HN
+in a sequential (\textbf{asynchronously}) way a steady state is reached in a finite number of steps.
+\newline\newline
+If the neurons are traversed and updated cyclically in
+an arbitrary, but fixed order, at most $n\cdot2^n$ steps (updates of individual
+neurons) are needed for reach the convergence, where $n$ is the number of neurons of the HN.
+\newline\newline
+The proof is carried out with the help of an energy function.
+Basically to prove this we can rely on the fact the we can associate to the behavior of the network
+an energy which can be defined in this way (not actual physical energy), but if you look
 to the shape of the function is the typical structure of an energy function:
-***
-It isimportant to point out that the order of acativation of neurons
-doesn't matter we will reach a steady state.
-
-A steady state is reached when no output is changin, if a neuron is changing theoutput the previous state of the graph can't
+$$E=-\frac{1}{2}\vec{act}^\top \vec{W}\vec{act}+\vec{\theta}^\top\vec{act}=$$
+$$=-\frac{1}{2}\sum_{u,v\in U,u\neq v}w_{uv}act_u act_v+\sum_{u\in U}\theta_u act_u$$
+It is important to point out that the order of activation of neurons doesn't matter we will
+reach a steady state.
+\newline\newline
+We can observe that the system can only evolves from one state with higher energy to another
+with lower energy. A stable state will be a local minima of the energy function.
+\newline\newline
+A steady state is reached when no output is changing, if a neuron is changing throughput
+the previous state of the graph can't
 be reached. To go back to the previous state we need to increase the energy. Any physical system
-tries to reduce the total energy iun the system. The second problem that forbid the fact of
-comeing back to the previous state is due to the fact that this implies that we may need
-tochange two outputs to go back as consequence even if is not the complete parallele of the
+tries to reduce the total energy in the system. The second problem that forbid the fact of
+coming back to the previous state is due to the fact that this implies that we may need
+to change two outputs to go back as consequence even if is not the complete parallel of the
 neuron ,that we are not following strictly the sequential activation.
+\paragraph{Associative memory}\mbox{}\\
+We can exploit this theorem for using the HNs as \textbf{associative memories},
+this by connecting a data reference to the stable state achieved (after HN computation).
+In this way we can use stable states to store patterns: \textbf{Hebbian learning rule}
+\begin{enumerate}
+    \item Store only one pattern $p$
+        \begin{itemize}
+            \item Find weights so that pattern is a stable state.
+            \item $W=pp^T - E$
+            \item $w_{uv}=\begin{cases}0 &u=v\\ 1 & u\neq v,act^{(p)}_u=act^{(p)}_v\\ -1 & otherwise   \end{cases}$
+        \end{itemize}
+    \item Storing several patterns
+        \begin{itemize}
+            \item Computer $W_i$ for each pattern $p_i$
+            \item $W=\sum_i W_i$
+        \end{itemize}
+\end{enumerate}
+\paragraph{Optimization problems}\mbox{}\\
+In the same way we can exploit the HN for solve optimization problems. We use energy minimaztion to
+solve the optimization problems.
+\begin{itemize}
+    \item Transform function to optimize into a function to minimize.
+    \item Transform function into the form of an energy function of a HN.
+    \item Read the weights and threshold value from the energy function.
+    \item Construct the corresponding HN.
+    \item Initialize HN randomly and update until convergence.
+    \item Read solution from the stable state reached.
+    \item Repeat several times and use best solution found.
+\end{itemize}
 
-To have a betteerunderstandi of the enregy reasoning we cxan place the node of the state graphs, here is
-possible to see if we compute that form of energy**
-not necessary the state graph need to be symmetric, here is lan example of another network,
-
-
-When we arereaching a steady state we ahve a memory of what we are recording, this is what the
-hopfield allows us to do. we ca conifgure the newtwo such that the steady state can represent some
-informatino that we want to retrieve. if we want to have some specific information that we want to store we
-have to **
-with a single stirng of bits is possible to show that to achieve this configuration
-(E is the identity) if we use the wight matrix we are able to present the pattern p
-and recognize it.
-what we can state is that if we ahave the apattern and we want to know if this pattern is one
-of the considered important
-
-this type of network can do even more, in particular if we predsent a pattern that is not ientycal to the
-orginal patter, the network can restruct the original pattern (reaching the state of the original
-pattern). Why this ? if we have number that we awant to recogniize, and there is some noise
-during the connection, we can understand what kind of number is that by similarity.
-
-Solving optimizations problems. we takethe function htatweewant to optimize in our oìproblem
-***
-\subsection{Boltzman machines}
+\subsection{Boltzman machines (italian)}
 Le macchine di Boltzmann sono un modello di network che sono in relazione stretta con gli
-Hopfield networks.
-Alcune variazioni speciali di questo modello hanno ottenuto un interesse rilevante
+HN. Alcune variazioni speciali di questo modello hanno ottenuto un interesse rilevante
 recentemente (specialmente nel Deep Learning). Una macchina di Boltzmann standard differisce
-da un Hopfield Network principalmente nel come gli stati dei neuroni vengono aggiornati (
+da un HN principalmente nel come gli stati dei neuroni vengono aggiornati (
 e per il fatto che può contenere neuroni nascosti)..
-
+\newline\newline
 Come per le reti Hopfield per la risoluzione di problemi di ottimizzazione si affidano ad
 una \textbf{funzione energetica} che assegna un valore numerico ad ogni stato del network. Con
 l'aiuto di questa funzione engergetica viene definita una distribuzione probabilistica su gli
@@ -2329,26 +2276,24 @@ $$P(\textbf{s})=\frac{1}{c}e^{-\frac{E(\textbf{s})}{kT}}$$
 dove il vettore il vettore $\textbf{s}$ descrive lo stato del sistema, $c$ è la costante di
 normalizzazione, $E$ è la funzione che restituisce l'energia di uno stato $s$, $T$ è la temperatura
 termodinamica del sistema e $k$ è la costante di Boltzmann.
-
+\newline\newline
 Per le macchine di Boltzmann il prodotto $kT$ è spesso sostituito solo da $T$, così combinando
 la temperatura e la costante di Boltzmann in un singolo parametro. Inoltre, lo stato $s$ consiste
 nel vettore $\textbf{act}$ delle attivazioni dei singoli neuroni.
 $$E(\textbf{act})=-\frac{1}{2}\textbf{act}^\intercal \textbf{W} \textbf{act}+\theta^T \textbf{act}$$
 dove $W$ è la matrice dei pesi connessi e $\theta$ il vettore contenente I valori delle soglie (o threshold).
-
+\newline\newline
 Ora guardiamo il singolo neurone $u$ e elaboriamo il cambio energetico che viene portato da
 questo neurone durante il suo cambiamento di stato. Consideriamo la differenza assoluta in energia
 tra $act_u=0$ e $act_u=1$ (mentre tutti gli altri neuroni mantengono la loro attivazione):
 $$\Delta E_u=E_{act_u}=1-E_{act_u}=0=\sum_{v\in U-\{u\}}w_{uv}act_v-\theta_u$$
 scrivere l'energia in termini di distribuzione di Boltzmann restituisce:
 $$P(act_u=1)=\frac{1}{1+e^{-\frac{\Delta E_u}{kT}}}$$
-
 cio è, la probabilità di un neurone di essere attivo in una funzione logistica della differenza
 energetica tra stato attivo ed inattivo. Visto che la differenza energetica è strettamente connessa
 al network in input del neurone:
 $$\Delta E_u=\sum_{v\in U-\{u\}}w_{uv}act_v-\theta_u=net_u-\theta_u$$
-questa formula suggeristiche una procedura con aggiornamento stocastico per il network.
-
+questa formula suggerisce che una procedura con aggiornamento stocastico per il network.
 La procedura di aggiornamento sviluppa come segue:
 \begin{itemize}
     \item Un neurone $u$ di una data macchina di Boltzmann viene scelto e calcola
@@ -2362,19 +2307,19 @@ La procedura di aggiornamento sviluppa come segue:
           della funzione.
 \end{itemize}
 Questa procedura si chiama \textbf{Markov-Chain Monte Carlo}.
-
+\newline\newline
 Bisogna notare che una BM potrà calcolare in modo efficace una distribuzione di probabilità se
 gli esempi forniti sono compatibili con una distribuzione di Boltzmann. Per mitigare questa
-restrizione si dividono I neurono di una BM tra neuroni \textit{visibili}, ovvero quelli
+restrizione si dividono I neuroni di una BM tra neuroni \textit{visibili}, ovvero quelli
 in grado di ricevere I segnali in input, e neuroni \textit{nascosti}, la cui attivazione
-non dipende diretatment dal dataset permettendo un adattamento più flessibile ai pattern
+non dipende direttamente dal dataset permettendo un adattamento più flessibile ai pattern
 di allenamento.
 
-\subsubsection{Allenamento}
+\subsubsection{Training}
 L'obiettivo di apprendimento è quello di adattare I pesi ed I threshold in modo che la
-distribuzione implicita nel dataset sia approssiamta dalla distribuzione rappresentata dai
+distribuzione implicita nel dataset sia approssimata dalla distribuzione rappresentata dai
 neuroni visibili di una BM.
-
+\newline\newline
 Questo è possibile scegliendo una misura che descriva la differenza tra le due distribuzioni
 ed utilizzeremo la tecnica del \textit{gradient descent} per minimizzarla. Una delle misure più
 utilizzate in questo campo è quella di Kullback-Leibler sulla divergenza dell'informazione:
@@ -2390,7 +2335,7 @@ Ogni passo di apprendimento si divide in due fasi:
 \end{itemize}
 
 Sia $p_u^+$ la probabilità che un neurone $u$ sia attivato nella postive phase, e sia $p_u^-$
-la probabliità che venga attivato nella fase negativa. Sia anche $p_{uv}^+$ la probabilità
+la probabilità che venga attivato nella fase negativa. Sia anche $p_{uv}^+$ la probabilità
 che entrambi I neuroni vengano attivati simultaneamente nella positive phase, e viceversa,
 $p_{uv}^-$ nella fase negativa. Possiamo definire la regola di aggiornamento dei pesi
 e delle threshold come:
@@ -2400,15 +2345,14 @@ input allora il suo threshold dovrà essere ridotto. Allo stesso modo, se due ne
 spesso attivati assieme allora il peso che corrisponde alla loro connessione verrà aumentato.
 
 \subsection{Restricted Boltzman Machines}
-A special variant of BM was introduced by Harmonium, but nowdas is generally referred to as
+A special variant of BM was introduced by Harmonium, but nowadays is generally referred to as
 \textbf{restricted Boltzmann machine}. The restriction consists in revoking the condition that the
-graph underlying the network must be a fully connected graph. Rather one uses a biparthite
+graph underlying the network must be a fully connected graph. Rather one uses a bipartite
 graph, in which the vertices are split in two, namely the visible and the hidden neurons.
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{images/boltzmann.png}
 \end{figure}
-
 One of the advantages of having a network where there are no connections between neurons of
 the same group is given by the fact that the process of learning can be accomplished repeating
 this three steps:
@@ -2421,7 +2365,6 @@ this three steps:
     \item Phase III: update of the weights and thresholds using the difference between the
           positive and negative gradient.
 \end{enumerate}
-
 The RBM have also been used to build deep networks similar to stacked auto-encoders for
 the MLP.
 
@@ -2429,17 +2372,16 @@ the MLP.
 Both HM and BM are examples of recurrent network (RNN) with a very costrained architecture. However.
 let's analyze what is an RNN without any kind of restriction. As we already know an RNN is an
 NN with cycles among neurons (on individual neurons or involving groups of neurons).
-
+\newline\newline
 The output in this kind of network is yield only if is reached a stable state during the
 computation.
-
+\newline\newline
 The configuration of this network can be obtained in two ways:
 \begin{itemize}
     \item by construction if the structure of the computation is known.
-    \item by extendingthe error backpropagation algorithm in time to deal with recursion
+    \item by extending the error backpropagation algorithm in time to deal with recursion
           to output stability for each input pattern.
 \end{itemize}
-
 RNN can be used to represent differential equations, like:
 $$x^{(n)}=f(t,x,x',x'',...,x^{(n-1)})$$
 which is equivalent to a system of differential equations:
@@ -2458,27 +2400,27 @@ $$    y_1(t_i)=y_1(t-1)+\Delta y_2(t_i -1)$$
 $$   ...$$
 $$y_2(t_i)=y_2(t-1)+\Delta y_{i-3}(t_i -1)$$
 $$y_1(t_i)=y_1(t-1)+ f(t_{i-1}, x(t_{i-1}), y_1(t_{i-1}),..., y_{n-1}(t_i -1))$$
-we can represent differential equation using RNN (or viceversa).
+We can represent differential equation using RNN (or viceversa).
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{images/RNN_diff_eq.png}
 \end{figure}
-we can use the derivative of the function at the previous time slice for computing the
-follwoing value. This allow to transform the equation in a RNN, creating for each
+We can use the derivative of the function at the previous time slice for computing the
+following value. This allow to transform the equation in a RNN, creating for each
 variable a node inside the graph and associating to the connections the value of the differential
 (like in the image above).
-
+\newline\newline
 It is possible to generalize this approach with functions with more than one argument thanks
 to the \textbf{vectorial neural network} (VNN). Which are RNN composed by multiple
 recurrent sub-networks. It can be used to compute vectorial differential equantions.
 The backpropagation is not directly aplliable since loops propagates errors in a cyclic manner.
 The recurrent network must be \textbf{unfolded in time} between two training patterns, this
 any time the RNN traverse a cycle and the add a copy of traversed neurons as additional layer.
-
+\newline\newline
 At this time it will bel possible to apply the backpropagation like for the FFN.
 You compute the adjustments of the weights by backpropagation on hte unfolded network, and
 combine the adjustments of the same weight to generate the value for the recurrent network.
-
+\newline\newline
 By the way, for calculating the updates of weights and thresholds will be necesdary combine the
 necessary adjustment computer respect to the added neurons.
 
@@ -2488,18 +2430,16 @@ Humans as imperfect creatures uses imprecise linguistic terms (fat, small, big, 
 All the complex human reasoning are based on that terms, the classical mathematics can't manage
 these terms.
 Classical logic manages \textit{true} and \textit{false} to each logical proposition or statement.
-When we describe such formal model, we use a terminolgy which has much more stringent rules than natural
+When we describe such formal model, we use a terminology which has much more stringent rules than natural
 language.
-
+\newline\newline
 We want to introduce these terms in the computer science field, but how? let's
-talk about \textbf{fuzzy logic}.
-
-But first let's introduce some concepts.
-\subsection{Imprecision and uncertainity}
+talk about \textbf{fuzzy logic}. But first let's introduce some concepts.
+\subsection{Imprecision and uncertainty}
 Any notion is said to be \textbf{imprecise} when its meaning is not fixed, where the value
 take places between the conditions \textit{fully}. The \textit{gradualness} is also called
 \textit{fuzziness}.
-
+\newline\newline
 A \textbf{proposition} is imprecise if it contains gradual predicates, such proposition
 may be true to a certain degree (\textit{partial truth}). An example of this in the
 natural language : \textit{very, rather, almost not, etc...}
@@ -2508,10 +2448,8 @@ natural language : \textit{very, rather, almost not, etc...}
 This is an example of \textbf{imprecision}, if a sand dune is small, adding one grain of
 sand to it leaves it small, a sand dune with a single grain is small, hence all
 sand dunes are small.
-
-The paradox comes from treatment of "small", \textit{when the dune is not anymore a
-    dune?}
-
+\newline\newline
+The paradox comes from treatment of "small", \textit{when the dune is not anymore a dune?}
 Formal statement:
 \begin{itemize}
     \item Statement $A(n):$ \textit{$n$ grainds of sand are a sand dune}.
@@ -2523,10 +2461,10 @@ Formal statement:
 \subsubsection{Uncertainity}
 This term refers to situations involving imperfect or unknown information. If we
 consider the notion "bald", a man without hair on his head is considered bald.
-
+\newline\newline
 Usually a man is not completely bald, has some hair, where to set baldness/not baldness
 threshold?
-
+\newline\newline
 The \textbf{fuzzy set theory} does not assume any threshold.
 
 \subsubsection{Difference between imprecision and uncertianity}
@@ -2539,10 +2477,9 @@ about unknown or imperfect information (\textit{"this car was probably made in G
 As the complexity of a system increases, our ability to make precise and yet significant
 statements about its behavior diminishes until a threshold is reached beyond which precision
 and significance become almost mutually exclusive characteristics.
-
+\newline\newline
 Fuzzy sets and fuzzy logic are used as mechanism for abstraction of unnecessary or too
 complex details.
-
 Some fields of fuzzy systems:
 \begin{itemize}
     \item Control Engineering
@@ -2550,7 +2487,7 @@ Some fields of fuzzy systems:
     \item Data Analysis
     \item Image Analysis
 \end{itemize}
-Advatanges brought from the using of fuzzy systems
+Advantages brought from the using of fuzzy systems
 \begin{itemize}
     \item Use of imprecise or uncertain information.
     \item Use of expert knowledge.
@@ -2563,9 +2500,8 @@ Advatanges brought from the using of fuzzy systems
 A \textbf{fuzzy subset} or \textbf{fuzzy set} $\mu$ of a set $X$ (the universe of
 discourse) is a mapping $\mu : X\rightarrow [0,1]$, which assigns to each element $x\in X$
 a \textit{degree of membership} $\mu(x)$ to the fuzzy (sub)set $\mu$ itself.
-
+\newline\newline
 This set of all fuzzy subsets (or sets) of $X$ is denoted with $\mathcal{F}(X)$.
-
 
 \subsubsection{Membership functions}
 The degree of membership is equal to $1$ when the element $x$ fully respect the property
@@ -2583,19 +2519,18 @@ The membership degree between $0 < \mu_M <1$ represent the \textbf{partial membe
 The membership function attached to a given linguistic description (such as "young") depends
 on the context. For example, a young retired person is certainly older than a young student.
 Even idea of young studend depends on the user.
-
+\newline\newline
 The membership degrees are fixed only by convention, the unit interval as range of membership
 grades is arbitrary. Natural for modeling membership grades of fuzzy sets of real numbers.
-
+\newline\newline
 There is no precise threshold between young and not young, the fuzzy sets are a natural
 interface between linguistic and numerical representations.
 \subsubsection{Linguistic variables and values}
 The \textbf{linguistic variables} represent attributes in fuzzy systems, and they assume
 \textbf{linguistic values}. Linguistic values usually partition the possible values of the
 linguistic variables subjectively.
-
+\newline\newline
 All linguistic values have a meaning, not a precise numerical value.
-
 An example of linguistic values:
 \begin{itemize}
     \item Living area of a flat (linguistic variable)
@@ -2623,7 +2558,6 @@ These tasks exploit three semantics of membership grades:
 \paragraph{Degree of similarity}\mbox{}\\
 $\mu(u)$ is the degree of proximity of $u$ from prototype elements of $u$. Proximity between
 pieces of information is modelled.
-
 This view is used in:
 \begin{itemize}
     \item pattern classification
@@ -2643,10 +2577,8 @@ The image $\mu(u)$ represents both:
     \item intensity of preference in favor of object $\mu$.
     \item feasibility of selecting $u$ as value of $X$.
 \end{itemize}
-
 Fuzzy sets represent criteria or flexible constraints, this view is ues in \textit{fuzzy optimization}
 (especially in fuzzy linear programming) and in \textit{decision analysis} (decision theory).
-
 The typical applications are in:
 \begin{itemize}
     \item engineering design
@@ -2657,12 +2589,11 @@ The typical applications are in:
 The $\mu(u)$ can be viewed as the \textit{degree of possibility} that the element $u$
 is the value of the parameter $X$, and it is used for quantifying the epistemologic status of
 an agent.
-
+\newline\newline
 The objective is to distinguish what the agent consider "surprising" from what is "typical".
-
+\newline\newline
 Supports values are mutually exclusive and membership degrees rank these values by their
 possibility. This view is used in \textit{expert systems} and \textit{artificial intelligence}.
-
 \subsubsection{Definition of a set}
 By a set we mean every collection made into a whole of definite, distinct objects of our intuition
 or of our thought.
@@ -2673,7 +2604,6 @@ Properties:
     \item The set of all subsets of $X$ is denoted as $2^X$
     \item $\emptyset$ is the empty set
 \end{itemize}
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.3]{images/ext_fuzzy-set.png}
@@ -2691,13 +2621,13 @@ to each element $x\in X$.
 
 \paragraph{Horizontal representation}\mbox{}\\
 For all membership degrees belonging to chosen subset of $[0,1]$, human experts lists elements
-of $X$ that fulfull vague concept of fuzzy set with degree $\geq\alpha$.
-
+of $X$ that fulfill vague concept of fuzzy set with degree $\geq\alpha$.
+\newline\newline
 That is the horizontal representation of fuzzy sets by their $\alpha$-cuts. Let's give the
 formal definition:\newline\\ Let $\mu\in\mathcal{X}$ and $\in[0,1]$, then the sets
 $$[\mu]_\alpha =\{x\in X|\mu(x) \geq\alpha\},[\mu]_\alpha=\{x\in X|\mu(x)>\alpha\}$$
 are called \textbf{$\alpha$-cut} and \textbf{strict $\alpha$-cut}.
-
+\newline\newline
 For example, let's consider the $\mu$ be a triangular function on $\mathbb{R}$.
 \begin{figure}[H]
     \centering
@@ -2780,14 +2710,14 @@ $$C(\mu)=[\mu]_1=\{x\in X|\mu(x)=1\}$$
 The height $h(\mu)$ of a fuzzy set $\mu\in\mathcal{F}(X)$ is the largest/highest membership grade obtained
 by any element in that set.
 $$h(\mu)=\underset{x\in X}{sup}\{\mu(x)\}$$
-A duzzy set $\mu$ is called \textbf{normal} if and only if $h(\mu)=1$, it is called \textbf{subnormal},
+A fuzzy set $\mu$ is called \textbf{normal} if and only if $h(\mu)=1$, it is called \textbf{subnormal},
 if and only if $h(\mu)<1$.
 
 \subsubsection{Convex fuzzy sets}
 Let $X$ be a vector space, a fuzzy set $\mu\in\mathcal{F}(X)$ is called \textbf{fuzzy convex}
 if its $\alpha$-cuts are convex for all $\alpha\in (0,1]$. The membership function of a convex fuzzy
 set is not a convex function.
-
+\newline\newline
 The classical definition, the membership functions are actually concave.
 
 \subsubsection{Fuzz numbers}
@@ -2808,14 +2738,14 @@ functions.
     \includegraphics[scale=0.5]{images/fuzzy-number.png}
 \end{figure}
 Upper semi-continuos functions are often convenient in applications. In manu applications the class
-of the functions and their exact parameters havea limited influence on the results. In other applications
+of the functions and their exact parameters have a limited influence on the results. In other applications
 more precise membership degrees are needed.
 
 \subsection{Fuzzy logics}
-An importanrt result of classical logic says that exixst and isomorphism between the propositional
+An important result of classical logic says that exist and isomorphism between the propositional
 logic and the theory of finite sets (on a infinite set of variables).
-
 Both this systems can be shown isomorph to finite boolean algebra.
+
 \subsubsection{Set operators}
 Set operators are defined by using traditional logics operators, let $X$ be the universal set:
 $$A\cap B=\{x\in X| x\in A \land x\in B\}$$
@@ -2830,7 +2760,7 @@ knowledge representation and reasoning about knowledge.
 \subsubsection{Classical logic}
 Classical logic deals with propositions (either true or false). The propositional logic handles combinations
 of logical variables. The key idea is to express $n$-ary logic functions with logic primitives.
-
+\newline\newline
 A set of logic primitives is complete if any logic function can be composed by a finite number of these
 primitives.
 $$\land,\lor,\lnot,NOR,NAND,|$$
@@ -2839,7 +2769,7 @@ $$\land,\lor,\lnot,NOR,NAND,|$$
 When a variable represented by a logical formula is true for all possible \textit{truth values}
 it is called \textbf{tautology}. Instead, when it is false for all possible truth values it is
 called \textbf{contradiction}.
-
+\newline\newline
 Various forms of tautologies exist to perform deductive inference, and are called inference rules:
 $$(a\land (a\rightarrow b))\rightarrow b\text{ (modus ponens)}$$
 $$(\lnot b \land (a\rightarrow b))\rightarrow \lnot a\text{ (modus tollens)}$$
@@ -2850,16 +2780,13 @@ The propositional logic based on finite set of logic variables is isomorphic to 
     set theory}. Both of these systems are isomorphic to a finite Boolean algebra.
 
 A Boolean algebra on a set $B$ is defined as quadruple $\mathcal{B}=(B,+,.,\overline{x})$, where
-$B$ has at least two elemens 0 and 1, $+$ and $.$ are binary operators on $B$, and $\overline{x}$
-is a unary operator on $B$ for the wihch the following porperties hold:
-
+$B$ has at least two elements 0 and 1, $+$ and $.$ are binary operators on $B$, and $\overline{x}$
+is a unary operator on $B$ for the which the following properties hold:
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.35]{images/bool-prop.png}
 \end{figure}
-
 Every theorem in one theory has a counterpart in each other theory.
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.35]{images/bool-counter.png}
@@ -2871,7 +2798,7 @@ Every theorem in one theory has a counterpart in each other theory.
 \subsubsection{$n$-valued logics}
 Various $n$-valued logics were developed. Usually truth values are assigned by rational number in
 $[0,1]$. The key idea is to uniformly divide $[0,1]$ into $n$ truth values.
-
+\newline\newline
 The definition: the set $T_n$ of truth values of an $n$-valued logic is defined as
 $$T_n=\left\{0=\frac{0}{n-1},\frac{1}{n-1},...,\frac{n-1}{n-1},\frac{n-1}{n-1}=1\right\}$$
 This values can be interpreted as degree of truth.
@@ -2882,7 +2809,6 @@ $$a\land b =min(a,b)$$
 $$a\lor b =max(a,b)$$
 $$a\rightarrow b = min(1,1+b-a)$$
 $$a\longleftrightarrow b= 1-|a-b|$$
-
 This $n$-valued logic is denoted by $L_n$, the sequence $(L_2,...,L_\infty)$ contains the
 classical two-valued logic $L_2$ and an infinite-valued logic $L_\infty$. The infinite-valued
 logic $L_1$ is the logic with all real numbers in $[0,1]$.
@@ -2890,24 +2816,23 @@ logic $L_1$ is the logic with all real numbers in $[0,1]$.
 \subsubsection{Fuzzy set theory}
 \textit{What does a fuzzy set represent?} A logic with values in $[0,1]$, consider fuzzy
 proposition $A$ on $\mathbb{R}$, fuzzy logic offers means to construct such
-
 $A$ is defined by membership function $\mu_A$, truth values $\forall x \in\mathbb{R}$, let
 $x\in\mathbb{R}$ be a subject/observation, and $\mu_A(x)$ is the degree of truth that $x$
 is $A$.
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{images/membership-func-fuzzy.png}
     \caption{Membership function $\mu_A$}
 \end{figure}
 \paragraph{Standard fuzzy set operators}\mbox{}\\
-We defione the following algebraic operations on $\mathcal{F}(X)$
+We define the following algebraic operations on $\mathcal{F}(X)$
 $$(\mu\land\mu')=^{def} min\{\mu(x),\mu'(x)\}\text{ intersection ("AND")}$$
 $$(\mu\lor\mu')=^{def} max\{\mu(x),\mu'(x)\} \text{ union("OR")}$$
 $$\lnot\mu =^{def} 1-\mu(x)\text{ complement("NOT")}$$
 $\mu$ is subset of $\mu'$ if and only if $\mu\leq\mu'$
 
-Theorem: $(\mathcal{F}(X),\land,\lor,\lnot)$ is a complete distributive lattice but no Boolean
+\paragraph{Theorem}\mbox{}\\
+$(\mathcal{F}(X),\land,\lor,\lnot)$ is a complete distributive lattice but no Boolean
 algebra.
 \begin{figure}[H]
     \centering
@@ -2917,14 +2842,13 @@ algebra.
 
 \paragraph{Fuzzy set complement/negation}\mbox{}\\
 Let $X$ be a given set and $\mu\in\mathcal{F}(X)$, then the complement $\overline{\mu}$ can be
-defined pointwide by $\overline{\mu}(x):=~(\mu(x))$ where $~:[0,1]\rightarrow [0,1]$
+defined pointwise by $\overline{\mu}(x):=~(\mu(x))$ where $~:[0,1]\rightarrow [0,1]$
 satisfies the following conditions:
 $$~(0)=1,~(1)=0$$
 and for $$x,y\in [0,1],x\leq y\implies ~x\geq ~y$$ (where ~ is non-increasing).
-
-A negation is called \textbf{strict} if it is also stricltly decreasing and continuos. A strict
+\newline\newline
+A negation is called \textbf{strict} if it is also strictly decreasing and continuos. A strict
 negation is said to be \textbf{strong} if it is involutive, too.
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.45]{images/neg-families.png}
@@ -2936,7 +2860,6 @@ Let $A,B$ be fuzzy subsets of $X$, $A,B\in\mathcal{F}(X)$. Their intersection an
 defined pointwise using
 $$(A\cup B)(x) = \top(A(x),B(x))\text{ where }\top:[0,1]^2\rightarrow [0,1]$$
 $$(A\cap B)(x) = \bot(A(x),B(x))\text{ where }\bot:[0,1]^2\rightarrow [0,1]$$
-
 \noindent$\top$ is a triangular norm called \textit{t-norm} $\Longleftrightarrow\top$ which satisfies
 the following conditions:
 \begin{enumerate}
@@ -2956,7 +2879,7 @@ satisfies $C1-C4$.
 \end{enumerate}
 
 \paragraph{Minimum and maximum}\mbox{}\\
-The definitions of intersection and union we give in the paragraph "Stanard fuzzy operations"
+The definitions of intersection and union we give in the paragraph "Standard fuzzy operations"
 in terms of max and min they satisfy this properties. It is possible also to prove that the
 operation of minimum is the greatest t-norm and the maximum the smallest t-conorm (they
 can be easily processed numerically).
@@ -3053,7 +2976,7 @@ question. Hence meaningful criteria are needed.
 How we extend a function $\phi:X^n\rightarrow Y$ in a fuzzy context in such a way that $\hat{\phi}$
 has as domain a tuple of a fuzzy set and as codomain a fuzzy set? A particular case is the
 one given by the evaluation of the propositions.
-
+\newline\newline
 Let $\mathcal{P}$ be set of imprecise statements that can be combined by the operators "and" and "or":
 $$truth:\mathcal{P}\rightarrow[0,1]$$
 $$truth(a)=0 \text{ means that is definitely false}$$
@@ -3061,12 +2984,10 @@ $$truth(a)=1\text{ means that is definitely false}$$
 Combination of two statements $a,b\in\mathcal{P}$:
 $$truth(a \text{ and } b)=min\{truth(a),truth(b)\}$$
 $$truth(a \text{ or } b)=max\{truth(a),truth(b)\}$$
-
 it is possible also to consider the infinite conjunctions and disjunctions (statements $a_i,i \in I$):
 $$truth(\forall i\in I:a_i)=inf\{truth(a_i)|i\in I\}$$
 $$truth(\exists i\in I:a_i)=sup\{truth(a_i)|i\in I\}$$
 This concept helps to extend $\phi:X^n \rightarrow Y$ to $\hat{\phi}:\mathcal{F}(X)^n \rightarrow\mathcal{F}(Y)$.
-
 Another example for extending the additions is given by the real sum between sets:
 $$+:2^{\mathbb{R}}\times 2^{\mathbb{R}}\implies 2^{\mathbb{R}}$$
 $$(A,B)\rightarrow A+B=\{ y | \exists a,b(y=a+b) \land (a\in A)\land (b\in B)\}$$
@@ -3080,7 +3001,7 @@ In general, a function $\phi:X^n\rightarrow Y$ can be extended to $\hat{\phi}:[2
 on classic sets in this manner:
 $$\hat{\phi}(A_1,...,A_n)=\{y\in Y|\exists (x_1,...,x_n)\in A_1\times ... \times A_n:
     \phi(x_1,...,x_n)=y\}$$
-Based on this definitoin we can generalize to the fuzzy sets on a domain $X$:
+Based on this definition we can generalize to the fuzzy sets on a domain $X$:
 $$\hat{\phi}(A_1,...,A_n)=sup\{min\{\mu_1(x_1),...,\mu_n(x_n)\} | (x_1,...,x_n)\in X^n \land \phi(x_1,...,x_n)=y\}$$
 assuming that $sup \emptyset=0$
 
@@ -3099,7 +3020,6 @@ Some class of $\mathcal{F}(\mathbb{R})$ that are often referred in literature ar
           $$\mathcal{F}_I(\mathbb{R})=^{def}\left\{\mu\in\mathcal{F}_N(\mathbb{R})|\forall a,b,c \in\mathbb{R}:c\in [a,b]\implies \mu(c)\geq min\{\mu(a),\mu(b)\}\right\}$$
 
 \end{itemize}
-
 
 \subsubsection{Quantitative fuzzy variables}
 Particular interest is held from the fuzzy interval also called \textit{fuzzy numbers} because they allow
@@ -3144,14 +3064,13 @@ $\hat{\phi}(\mu_1,...,\mu_n)$.
 A \textbf{crisp relation} represents presence or absence of association, interaction or interconnection
 between elements of $\geq$ 2 sets. This concept can be generalized to various degrees or strengths
 of association or interaction between elements.
-
+\newline\newline
 A \textbf{fuzzy relation} generalizes these degrees to membership grades. So, a crips relation is a
 restricted case of a fuzzy relation.
 
 \paragraph{Definition of Relation}\mbox{}\\
 A relation among crisp sets $X_1,...,X_n$ is a subset of $X_1\times ...\times X_n$ denoted as
 $R(X_1,...,X_n)$ or $R(X_i|1\leq i\leq n)$. So the relation $R\subseteq X_1,...,X_n$ is a set too.
-
 The basic concept of sets can be also applied to relations: containment, subset, union, intersection, complement.
 Each crisp relation can be defined by its characteristic function:
 \[
@@ -3165,7 +3084,7 @@ The membership of $(X_1,...,X_n)$ in $R$ means that the elements of the tuple ar
 A relation can be written as a set of ordered tuples, this $R(X_1,...,X_n)$ represents $n$-dimensional
 membership array $R=[r_{i_1},\dots,r_{i_n}]$. Each element $i_1$ of $R$ corresponds to exactly one
 member of $X_1$. Each element of $i_2$ of $R$ corresponds to exactly one member of $X_2$, and so on.
-
+\newline\newline
 If $(x_1,...,x_n)\in X_1\times\dots\times X_n$ corresponds to $r_{i_1},\dots,r_{i_{n}}\in R$ then:
 \[
     r_{i_1},\dots,r_{i_{n}}=
@@ -3175,11 +3094,11 @@ If $(x_1,...,x_n)\in X_1\times\dots\times X_n$ corresponds to $r_{i_1},\dots,r_{
     \end{cases}
 \]
 The characteristic function of a crisp relation can be generalized to allow tuples to have degrees of
-membership. Simlar to the generalization of the characteristic function of a crisp set. A fuzzy relation
+membership. Similar to the generalization of the characteristic function of a crisp set. A fuzzy relation
 is a fuzzy set defined on tuples $(x_1,\dots,x_n)$ that may have varying degrees of membership within
 the relation.
-
-The membership grade indicates the strength of the rpesent relation between lements of the tuple. The
+\newline\newline
+The membership grade indicates the strength of the present relation between elements of the tuple. The
 fuzzy relation can also be represented by an $n$-dimensional membership array.
 
 \paragraph{Subsequences}\mbox{}\\
@@ -3189,13 +3108,12 @@ for each sequence (n-tuple)
 $$x=(x_1,...,x_n)\in\times_{i\in\mathbb{N}_n}X_i$$
 and each subsequence (r-tuple, $r\leq n$)
 $$y=(y_1,...,y_r)\in\times_{j\in J}X_j,\;J\subseteq\mathbb{N}_n\text{ and }|J|=r$$
-
 $y$ is called subsequence of $x$ if and only if $y_j=x_j,\forall j\in J$. The symbol $y\prec x$ denotes
 that $y$ is subsequence (precedes) of $x$.
 
 \paragraph{Projection}\mbox{}\\
 Given a relation $R(x_1,...,x_n)$. Let $[R\downarrow\mathcal{Y}]$ denote the prohection of $R$ on $\mathcal{Y}$.
-It sidregards all sets in $X$ except those in the family
+It disregards all sets in $X$ except those in the family
 $$\mathcal{Y}=\{X_j|j\in J\subseteq\mathbb{N}_n\}$$
 Then $[R\downarrow\mathcal{Y}]$ is a fuzzy relation whose membership function is define on the Cartesian
 product of the sets in:
@@ -3205,14 +3123,12 @@ $t$-conorm.
 
 \paragraph{Cylindric extension}\mbox{}\\
 Let $\mathcal{X}$ and $\mathcal{Y}$ denote the same families of sets as used for projection. Let
-$R$ be a relation define on Cartesiona product of sets in family $\mathcal{Y}$.
-
-Let $[R\uparrow\mathcal{X}\setminus\mathcal{Y}]$ denote the cylindric extension of $R$ into sets
+$R$ be a relation defined on the Cartesian product of sets in family $\mathcal{Y}$.
+Let $[R\uparrow\mathcal{X}\setminus\mathcal{Y}]$ denote the cylindrical extension of $R$ into sets
 $X_1,(i\in\mathbb{N}_n)$ which are $\mathcal{X}$ but not in $\mathcal{Y}$. For each $x$ with
 $x\succ y$
 $$[R\uparrow\mathcal{X}\setminus\mathcal{Y}](x)= R(y)$$
-
-The cylindric extension:
+The cylindrical extension:
 \begin{itemize}
     \item produces tlargest fuzzy relation that is compatible with projection.
     \item is the least specific of all relations compatible with projection.
@@ -3220,12 +3136,12 @@ The cylindric extension:
 \end{itemize}
 
 \paragraph{Cylindric closure}\mbox{}\\
-Relations that can be reconstructed from one of their projections by cylindric extension exist. However,
-they are rather rare and not is more common that relation can be exactly recosntructed from several
-of its projections or by taking set intersection of their cylindric extensions.
-
-The resulting relation is usually called \textbf{cylindric closure}. Le the set of projections
-$\{P_i|i\in I\}$ of a relation on $\mathcal{X}$ be given, then the cylindric closure $cyl\{P_i\}$
+Relations that can be reconstructed from one of their projections by cylindrical extension exist. However,
+they are rather rare and not is more common that relation can be exactly reconstructed from several
+of its projections or by taking set intersection of their cylindrical extensions.
+\newline\newline
+The resulting relation is usually called \textbf{cylindrical closure}. Le the set of projections
+$\{P_i|i\in I\}$ of a relation on $\mathcal{X}$ be given, then the cylindrical closure $cyl\{P_i\}$
 is defined for each $x\in\mathcal{X}$ as
 $$cyl\{P_i\}(x)=\underset{min}{i\in I}[P_i\uparrow\mathcal{X}\setminus\mathcal{Y}_i](x)$$
 where $\mathcal{Y}_i$ denotes teh gamily of sets on which $P_i$ is defined.
@@ -3234,8 +3150,7 @@ where $\mathcal{Y}_i$ denotes teh gamily of sets on which $P_i$ is defined.
 Binary relations are significant among $n$-dimensional relations. They are generalized mathematical functions.
 On the contrary to functions from $X$ to $Y$, binary relations $R(X,Y)$ may assign to each element of $X$
 two or more elements of $Y$.
-
-some basic operations on functions, e.g. inverse and composition, are applicable to binary relations as well.
+Some basic operations on functions, e.g. inverse and composition, are applicable to binary relations as well.
 \paragraph{Domain}\mbox{}\\
 Given a fuzzy binary relation $R(X,Y)$, it's domain $dom\;R$ is the fuzzy set on $X$ whose
 membership function is defined for each $x\in X$ as
@@ -3247,7 +3162,6 @@ strongest relation to any $y\in Y$.
 The range $ran$ of $R(X,Y)$ is a fuzzy binary relation on $Y$ whose membershiè function is
 defined for each $y\in Y$ as
 $$ran\;R(y)=\underset{x\in X}{max}\{R(x,y)\}$$
-
 The height $h$ of $R(x,y)$ is a number defined by
 $$h(R)=\underset{y\in Y}{max}\underset{x\in X}{max}\{R(x,y)\}$$
 $h(R)$ is the largest membership grade obtained by any pair $(x,y)\in R$.
@@ -3281,7 +3195,7 @@ $$[P\star Q](x,y,z)=min\{P(x,y),Q(y,z)\}, \forall x \in X, \forall y \in Y,\fora
 \subsubsection{Binary relations on a single stet}
 It is also possible to define crisp or fuzzy binary relations among elements of a single set $X$.
 Such a binary relation can be denoted by $R(X,X)$ or $R(X^2)$ which is a subset of $X\times X=X^2$.
-
+\newline\newline
 These relations are often referred to as directed graphs, which is also a representation of them:
 \begin{itemize}
     \item Each element of $X$ is represented as node.
@@ -3299,7 +3213,6 @@ A crisp relation $R(X,X)$ is called:
     \item \textit{transitive} if and only if $(x,z)\in R$ whenever both
           $(x,y)\in R$ and $(y,z)\in R$ for at least one $y\in X$.
 \end{itemize}
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{images/RULES_CRISP.png}
@@ -3314,7 +3227,6 @@ membership function of the relation. A fuzzy relation $R(X,X)$ is called:
     \item \textit{symmetric} if and only if $\forall x,y\in X:R(x,y)=R(y,x)$
     \item \textit{transitive} if it satisfies $R(x,z)\geq\underset{y\in Y}{max}\;min\{R(x,y),R(y,z)\},\forall (x,z)\in X^2$
 \end{itemize}
-
 Note that a fuzzy binary relation that is reflexive, symmetric and transitive is called \textit{fuzzy equivalence
     relation}.
 
@@ -3322,10 +3234,11 @@ Note that a fuzzy binary relation that is reflexive, symmetric and transitive is
 An application of particular success of fuzzy system
 in industry are the so called \textit{fuzzy controller}. They are a
 special kind of non-linear table-based control method.
+\newline\newline
 The concept behind this is the one to define non-linear transitions between different states
 of the system without specifying a system of differential equation for each variable.
-So it is possible to define non-linear transition function withotu specifyng each entry individually.
-The goals is to define a certain bebehaviour.
+So it is possible to define non-linear transition function without specifying each entry individually.
+The goals is to define a certain behavior.
 
 \subsubsection{Table-based Control}
 Control systems all share a time-dependent \textbf{output variable}:
@@ -3345,7 +3258,7 @@ Also the \textit{disturbance variables} influences the output
 \end{itemize}
 The computation of actual value incorporates both control variable measurements of current
 output variable $\xi$ and change of output variable $\Delta\xi=\frac{d\xi}{dt}$
-
+\newline\newline
 If $\xi$ is given in finite time intervals, then set $\Delta\xi (t_{n+1})=\xi (t_{n+1})-\xi(t_n)$
 in this case measurement of $\Delta\xi$ are not necessary.
 
@@ -3417,7 +3330,7 @@ $$\{\varphi(x)\}=\{x\}\circ R_\varphi$$
 heat change should be slightly negative.
 
 \textbf{If} rate of descent = positive big \textbf{and} airspeed = negative big
-\textbf{and} glide slope = positive big, \textbf{then} rpm change = postive big \textbf{and}
+\textbf{and} glide slope = positive big, \textbf{then} rpm change = positive big \textbf{and}
 elevator angle change = insignificant change.
 
 \subsubsection{Approximate reasoning with fuzzy rules}
@@ -3438,7 +3351,7 @@ of reasoning is typically used in fuzzy controllers.
     \item \textbf{Fuzzification interface}: which receives the current input value (and
           eventually maps it to a suitable domain).
     \item \textbf{Knowledge base}: consists of data base and rule base. Data base contains
-          infomration about boundaries, possible domain trasnformations, and fuzzy sets with corresponding linguistic
+          information about boundaries, possible domain transformations, and fuzzy sets with corresponding linguistic
           terms. The rule base contains linguistic control rules.
     \item \textbf{Decision logic}: which represents the processing unit. It computers the output
           from measured input according to knowledge base.
@@ -3474,14 +3387,13 @@ to control the system can be executed in different ways. The most common methods
     \end{subfigure}
     \hfill
 \end{figure}
-
 The MCM choices an arbitrary value $y\in Y$ for which it reaches the maximum value of membership.
 This means that it can be applied to any kind of fuzzy set and to arbitrary $Y$ domain. By the
 way, it could be hard to aim the element for which the membership function be maximized. Also,
-the choice of random values make the behaviour of the controller no deterministic and
-this can bring to discontinuous actions. The MOM take $Y$ as interva and computes the
+the choice of random values make the behavior of the controller no deterministic and
+this can bring to discontinuous actions. The MOM take $Y$ as interval and computes the
 set $Y_{MAX}$ such that the output in that points is the maximum. The output value will be computed
-as the average on $Y_{MAX}$. Like in the previous case, this technique can bring to discontinuos
+as the average on $Y_{MAX}$. Like in the previous case, this technique can bring to discontinuous
 actions. The COG, as the MOM, take $Y$ as interval and returns as output the center of that area.
 Usually it has a regular behavior, even if the computation is expensive and can bring to
 counterintuitive results.
@@ -3495,7 +3407,7 @@ form, they shouldn't be interpreted as logic implications, but as partial defini
 of a function. Collectively the rules can be represented in the space like the union
 $S$ of the various intervals:
 $$S=\cup M_i\times N_i$$
-The rules can asumme \textit{crisp values} like in the figure \ref{fig:crisp}, or
+The rules can assume \textit{crisp values} like in the figure \ref{fig:crisp}, or
 fuzzy values like in the figure \ref{fig:fuz-val}. In both cases, given an input $x_0$
 the output will be computed as the composition of the singleton of $x_0$ and the
 union of the intervals of $S$, $\{x_0\}\circ S$. This output will be a fuzzy set
@@ -3517,14 +3429,14 @@ $$R:\text{if } x_1 \text{ is } \mu_1 \text{ and } x_n \text{ is }\mu_n,\text{ th
     \caption{Projection of the output respect to the union of the intervals}
 \end{figure}
 The idea is that the function is a good function for controlling the described region from the
-previous rules. For mantaining the readability of the model constructed, occurs avoid
+previous rules. For maintaining the readability of the model constructed, occurs avoid
 overlapping between the various regions described previously from the rules. Since the output
 computed is already crisp, there is no need for defuzzification.
 
 \subsubsection{Similarity-baseed reasoning (controller)}
 There is a last type of controller which uses the concept of similarity relationship (which
 is the analogous of the fuzzy sets for the equivalence relationships).
-
+\newline\newline
 A function $E:X^2\rightarrow[0,1]$ is defined as similarity relationship respect to a T-norm
 if and only if it satisfies the following conditions:
 \begin{enumerate}
@@ -3532,13 +3444,13 @@ if and only if it satisfies the following conditions:
     \item $E(x,y)=E(y,x)$
     \item $\top (E(x,y),E(y,z))=E(x,z)$
 \end{enumerate}
-This kind of relationships are used for translating the informations data from the experts, in
-such a way that the various tuple span all the possible behaviours of the system. From the
+This kind of relationships are used for translating the information data from the experts, in
+such a way that the various tuple span all the possible behaviors of the system. From the
 similarity classes we can extract the rules which are equals to the ones of \textit{Mamdani controller}.
 
 \subsection{Fuzzy data analysis}
 There are two ways for talking about \textit{fuzzy data analysis}. One refers the application of
-of fuzzy easoning techniques to crisp data (this takes the name of \textbf{fuzzy clustering}). Another,
+of fuzzy reasoning techniques to crisp data (this takes the name of \textbf{fuzzy clustering}). Another,
 instead, concerns the analysis of data presented under the shape of fuzzy set (we will talk
 about \textbf{random set} and \textbf{random fuzzy variables}).
 
@@ -3548,7 +3460,7 @@ divide the dataset in a way that:
 \begin{itemize}
     \item objects of the same cluster are the most possible similar
     \item objects from different cluster are the most possibile non-similar between them.
-          The simmilarity relationship is misured in terms of distance function, less is the
+          The similarity relationship is measured in terms of distance function, less is the
           distance, greater is the probability that 2 elements are from the same cluster.
 \end{itemize}
 in the case of the \textit{hard c-means} algorithm:
@@ -3563,9 +3475,8 @@ in the case of the \textit{hard c-means} algorithm:
 \end{enumerate}
 The cluster partition is optimal when the sum of the distances between the centers and
 the elements is minimum. A problem with this approach is that the algorithm could
-get stacked to the local minimum. For avoiding this porlbem usually are operated
+get stacked to the local minimum. For avoiding this problem usually are operated
 various iterations and then select the best.
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{images/equidistant.png}
@@ -3574,11 +3485,11 @@ various iterations and then select the best.
 \end{figure}
 A different problem is the one given by the fact that the partition is crisp. Whenever
 exists an element that is equidistant from two centers like in the figure \ref{fig:symds},
-the assignment to one of the two clusters is puraly arbitrary and doesn't reflects
+the assignment to one of the two clusters is purely arbitrary and doesn't reflects
 the information given by the data.
-
+\newline\newline
 The \textit{fuzzy clustering} gives a solution to this problem, introducing a concept
-of membership which is non-binary but conitnuos in $\in[0,1]$, this offers the possibility
+of membership which is non-binary but continuos in $\in[0,1]$, this offers the possibility
 of express the membership of a point to more than one cluster. The results is a partition
 of the data set to a fuzzy set. We can represent this partition through a matrix which
 assigns to each component $u_{ij}$ the membership grade of the point $x_j$ to
@@ -3591,20 +3502,20 @@ probabilistic case:
     \item $\sum_{i=1}^c u_{ij}=1, \forall j\in\{1,\dots,n\}$
 \end{enumerate}
 The firs conditions indicate that can't exists empty clusters, instead the second
-means that the membership is worn out from the fuzzy sets that constitues the partition.
-In the possiblitisc case we mantain only the first assumpion, and we let go the second.
-
+means that the membership is worn out from the fuzzy sets that constitutes the partition.
+In the possiblitisc case we maintain only the first assumption, and we let go the second.
+\newline\newline
 The possiblitisc interpretation is preferable when you have to manage data full of
 noises or outliers data.
 
 \subsubsection{Issues with fuzzy clustering}
 \textit{How can we know if the partition of the cluster executed by
-    our algorithm reflects the implicit informations of the data? What is the
+    our algorithm reflects the implicit information of the data? What is the
     correct number of cluster for a dataset?} In the case we got a limited number of
 dimensions, we can represent visually the dataset and having an intuition of
 how many centers and in which positions locate them. By the way, in general,
 this is not the case.
-
+\newline\newline
 Some criteria to research are: a clear separation between clusters, a minimum
 volume between clusters and the maximum number of points focussed near the centroid
 of the cluster. In literature are proposed various measured of this kind:
@@ -3635,7 +3546,7 @@ The dimension of the various clusters can change respect to the determinant of t
           cost.
 \end{itemize}
 Another approach consist in allow the non-convex clusters. The \textbf{shell clusterin} algorithms
-manage to do that, and they are particularly usefull for image recognition and analysis.
+manage to do that, and they are particularly useful for image recognition and analysis.
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{images/fuzzy_clust_alg.png}
@@ -3651,10 +3562,10 @@ $$k:\mathcal{X}\times\mathcal{X}\rightarrow\mathbb{R},\forall x,x'\in\mathcal{X}
 there is no need to know $\phi$ explicitely. Unlike other algorithms (other
 fuzzy shell clustering), the kernel methods doesn't extract prototypes
 from data for single clusters, but it computes the similarity relationship between the various inputs $\in\mathcal{X}$.
-
+\newline\newline
 The centers $c_i^\phi\in\mathbb{H}$ are linear combinations of transformed data:
 $$c_i^\phi=\sum_{r=1}^n a_{ir}\phi(x_r)$$
-Some disvantages are given by the difficulty of an adequate choice of the kernel fuction and of
+Some disadvantages are given by the difficulty of an adequate choice of the kernel function and of
 parameters, and the missing of an explicit representation of the single clusters.
 
 \paragraph{Noise clustering}\mbox{}\\
@@ -3665,9 +3576,8 @@ are not associable to any other cluster.
 \begin{itemize}
     \item it has not explicitly associated to any
           prototype.
-    \item It is directly associated to sitance between implicit prototype and data.
+    \item It is directly associated to istance between implicit prototype and data.
 \end{itemize}
-
 The center of the $c$ cluster is choice in such a way to have constant
 distance $\delta$ between all the data points of the dataset.
 \begin{itemize}
@@ -3676,36 +3586,33 @@ distance $\delta$ between all the data points of the dataset.
 \end{itemize}
 
 \subsubsection{Random sets}
-Untill now we have applied fuzzy techniques to crisp data, now we want to extend this
+Until now we have applied fuzzy techniques to crisp data, now we want to extend this
 techniques in such a way to comprehend fuzzy descriptions. For doing this we have to introduce
 the concept of \textit{random set}.
 Standard statistical data analysis is based on random variables $X:\rightarrow U$
-A measureable mapping from a probability space to a set $U$ ($U=\mathbb{R}$). A random set
+A measurable mapping from a probability space to a set $U$ ($U=\mathbb{R}$). A random set
 is the generalization of this idea, in the sense that the value of the function won't be anymore
 an element of the set $U$, but a subset of $U$. Given a function $\Gamma :\Omega\rightarrow 2^U$,
-some useful concepts to define are the one of \textbf{upper and loweer probability} (expressed as $P^*(A)$)
+some useful concepts to define are the one of \textbf{upper and lower probability} (expressed as $P^*(A)$)
 which represent the proportion of elements that the image touches in a certain subsets of $U$.
 $$P^*(A)=P\left(\{\omega\in\Omega|\Gamma(\omega)\cap A\neq\emptyset\right)$$
 
 \paragraph{Example}\mbox{}\\
 \begin{itemize}
     \item $U=\{English, German, Franch, Spanish\}$
-    \item $\Omega$ empolyees of a working group
+    \item $\Omega$ employees of a working group
     \item $\Gamma:\Omega\rightarrow 2^U$ collections of language that $\omega$ can speak
 \end{itemize}
-
 The other definition to explain is the one of \textit{lower bound of probability}:
 $$P_*(A)=P\left(\{\omega\in\Omega|\Gamma(\omega)\subseteq A\text{ and }\Gamma(\omega)\neq\emptyset\right)$$
-
 With these two instruments we can analyze data described in a fuzzy way. We can associate, for each
 element of the map a probability $E(\Gamma)$, in such a way that:
 $$E(\Gamma)=\{E(X)|X(\omega)\in\Gamma(\omega)\text{ where }X\text{ is a random variable such that }E(X),\forall\omega\in\Omega\}$$
-
 We can generalize the approach allowing to the $\Gamma$ function to map the input in a fuzzy set.
 
 \subsection{Neuro-Fuzzy Systems}
 Contrary to the NN, the fuzzy systems manages the high-level reasoning, they do not adapt to the new
-environment, they use the linguistic informations relative to the domain and they are not based on
+environment, they use the linguistic information relative to the domain and they are not based on
 data.
 \begin{figure}[H]
     \centering
@@ -3719,7 +3626,7 @@ can collaborate:
     \item \textit{cooperative model}: the two systems works independently. The NN generate some parameters
           (offline) and then optimize (online) for the fuzzy controller.
     \item \textit{hybrid model}: fuzzy sets and fuzzy rules are mapped inside a NN. The two data
-          structures are integrated and there is no overhead due to comunication. Both offline and online
+          structures are integrated and there is no overhead due to communication. Both offline and online
           learning are available.
 \end{itemize}
 In the hybrid mode, the fuzzy sets that are antecedents to the fuzzy rules, can be modeled both as weight
@@ -3734,7 +3641,7 @@ layer represent the rule, in the second the neuron of the first layer represents
 A set of fuzzy rules can be converted in a neural network following this procedure:
 \begin{enumerate}
     \item For each input variable $x_i$ we create a neuron in the input layer.
-    \item For each ouput variable $y_i$ we create a neuron in the output layer.
+    \item For each output variable $y_i$ we create a neuron in the output layer.
     \item For each fuzzy set $\mu_i^j$ we create a neuron in the first hidden layer
           and we connect to the corresponding input neuron $x_i$.
     \item For each fuzzy rule $R_i$ we create a neuron in the second hidden layer
@@ -3753,7 +3660,6 @@ A set of fuzzy rules can be converted in a neural network following this procedu
 \end{enumerate}
 The network constructed in this way can be trained with the back-propagation.
 
-
 \section{Evolutionary Computing}
 An \textbf{optimization problem} can be described from a triple $\Omega,f,\succ$ where $\Omega$
 is the search space, $f$ is an evaluation function of form $f:\Omega\rightarrow\mathbb{R}$ and
@@ -3764,7 +3670,7 @@ Given an optimization problem, we want to find and element $x\in\Omega$ which op
 the function $f$ in the whole search space. In literature are present various way
 for solving optimization problems:
 \begin{itemize}
-    \item Anayltic solutions: efficient but rarely applicable.
+    \item Analytic solutions: efficient but rarely applicable.
     \item Brute-forcing (exhausting exploration): very inefficient, so only usable in small search spaces.
     \item Random search: always usable, but mostly inefficient.
     \item Guided search: similar elements in $\Omega$ have similar function values.
@@ -3777,7 +3683,7 @@ principles are the following:
     \item Beneficial traits resulting from random variation are favored by natural selection.
     \item Better chances of procreation and multiply of individuals with beneficial traits.
 \end{itemize}
-Eveolution theory explains diversity and complexity of species and allows unifaction of all different
+Evolution theory explains diversity and complexity of species and allows unification of all different
 disciplines in biology.
 
 \subsubsection{Principles of organismic evolution}
@@ -3786,20 +3692,20 @@ The following are the principles upon which EA are based:
     \item \textbf{Diversity}: All forms of life differ from each other (even from the same species). Different genetic material
           means \textbf{diversity of species}. The currently existing life forms are a tiny fraction of
           all theoretically possible ones.
-    \item \textbf{Variation}: New \textbf{variants} are continuosly created by mutation and genetic recombination (which is sexual reproduction).
+    \item \textbf{Variation}: New \textbf{variants} are continuously created by mutation and genetic recombination (which is sexual reproduction).
     \item \textbf{Inheritance}: Variations are \textbf{heritable} as long as entering the germ line, also they are passed to the next
           generation.
     \item \textbf{Speciation}: Genetically diverge of individuals and populations.
     \item \textbf{Birth surplus}: More offspring that can ever become mature enough to procreate
           themselves.
-    \item \textbf{Adaptation/Natural selection/Riproduzione differenziale}: On average, ereditary
-          variations of the survivors of a population increses the adaptation to the local environment.
+    \item \textbf{Adaptation/Natural selection/Riproduzione differenziale}: On average, hereditary
+          variations of the survivors of a population increases the adaptation to the local environment.
     \item \textbf{Randomness}: Variations are triggered/initiated or caused by random.
     \item \textbf{Gradualism}: Variations happen in comparatively small steps.
     \item \textbf{Evolution}: Adaptation to environment (species evolve in the course of time). The
-          theory of evolution opposes crationism.
+          theory of evolution opposes creationism.
     \item \textbf{Discrete Genetic Units}: The store of genetic information in discrete units. Not
-          continuosly blend of hereditary traits (otherwise disappeare of differences).
+          continuously blend of hereditary traits (otherwise disappeared of differences).
     \item \textbf{Opportunism}: Processes of evolution work exclusively on what is present, the
           better/optimal solutions are not found if intermediary stages exhibit certain fitness handicaps.
     \item \textbf{Evolution-strategic Principles}: Not only organisms are optimized, but also the
@@ -3809,7 +3715,7 @@ The following are the principles upon which EA are based:
           and natural selection.
     \item \textbf{Irreversibility}: The course of evolution is irreversible and unrepeatable.
     \item \textbf{Unpredictability}: The course of evolution is neither determined, nor programmed, not predictable.
-    \item \textbf{Increasin complexity}: Biological evolution is increasingly more complex.
+    \item \textbf{Increasing complexity}: Biological evolution is increasingly more complex.
 \end{itemize}
 
 \subsection{Ingredients of an evolutionary algorithm}
@@ -3817,10 +3723,10 @@ The following are the principles upon which EA are based:
     \item \textit{Encoding} for the solution candidates (depends from the issue, there are no
           general rules).
     \item A method for creating an \textit{initial population}, this is commonly created
-          as simple random sequences, it depends on the chosen enconding.
+          as simple random sequences, it depends on the chosen encoding.
     \item An \textit{evaluation function} to evaluate the individuals. It represents the
           environment, and often it is the function to optimize.
-    \item The \textit{selection criterias} in relation with the evaluation function,
+    \item The \textit{selection criteria} in relation with the evaluation function,
           in such a way that it is possible to select the individuals to procreate in the
           successive generation.
     \item A set of \textit{genetico operators} to modify chromosomes, the most used
@@ -3832,7 +3738,7 @@ The following are the principles upon which EA are based:
 \end{itemize}
 
 \subsection{Formal definition}
-For every optimization problem: differen representations of solution candidates
+For every optimization problem: different representations of solution candidates
 \begin{itemize}
     \item EA separates space $\Omega$, the phenotypes, from representation of the solution
           candidate in individual, the Genotypes $\mathcal{G}$.
@@ -3866,7 +3772,6 @@ $$Sel^\xi:(\Gamma\times Z\times\mathbb{R})^r\rightarrow(\Gamma\times Z\times\mat
 $$\langle A_i\rangle_{1\leq i\leq r}\rightarrow\langle A^{(IS^\xi (c_1,\dots,c_r)_k)}\rangle_{1\leq k\leq s}mit\;A^{(i)}=(a_i,b_i,c_i)$$
 where the selection has the shape
 $$IS^\xi:\mathbb{R}^r\rightarrow \{1,\dots,r\}^s$$
-
 Now we can define an evolutionary algorithm.
 \paragraph{Fundamental evolutionary algorithm}\mbox{}\\
 A simple EA on an \textit{optimization problem} $(\xi,f,\succ)$ is an 8-tuple
@@ -3892,11 +3797,11 @@ There is an internal distinction between EA:
 
 \subsection{Meta-heuristics}
 A \textit{meta-heuristics} is an algorithmic method for finding approximated solutions for a
-combinatory optimization problem. There are definied abstract sequences of steps that can be applied
+combinatorial optimization problem. There are defined abstract sequences of steps that can be applied
 to any problem of this kind. Each single step has to be declined in base to the specificity of the problem.
-
-The need for a meta-heuristic approach borns from the fact that some classes of problems doesn't
-have an efficient algorithmic solution. The approssimation that you will obtain respect to the
+\newline\newline
+The need for a meta-heuristic approach born from the fact that some classes of problems doesn't
+have an efficient algorithmic solution. The approximation that you will obtain respect to the
 optimal solution depends from the definition of the problem and from the implementation of the single
 steps of the meta-heuristic algorithm.
 
@@ -3904,10 +3809,10 @@ steps of the meta-heuristic algorithm.
 Given an optimization problem $(\Omega, f, \succ)$, we want to find an element $x\in\Omega$, which
 optimizes $f$ (max. or min.). This method searches for the local maximum around the preselected
 points $\in\Omega$ during the initialization phase.
-
+\newline\newline
 The assumption states that $f(x_1)$ and $f(x_2)$ differs for slightly similar $x_1,x_2\in\Omega$, this
 means that there are no huge jumps in $f$.
-
+\newline\newline
 The peculiarity of this evolutionary approach is that itself limits the population to just one
 individual. This has some consequences, especially for genetic operators: the recombination operator
 is not necessary anymore, we just limit to the mutation operator.
@@ -3921,7 +3826,6 @@ avoiding local max/min). The idea is the one to use the \textit{gradient descent
 the max/min point by taking a step in the gradient direction. The width of the step shouldn't be
 too little because in that case the algorithm converges to slowly, nor too big because there will
 be oscillations.
-
 \paragraph{Gradient ascent or descent}\mbox{}\\
 \begin{enumerate}
     \item Choose a random starting point $x^{(0)}=\left(x_1^{(0)},\dots,x_n^{(0)}\right)$
@@ -3966,7 +3870,7 @@ increases by evaluating random points in the vicinity of the current point:
 A generalization of the precedents approaches is the so called \textit{simulated annealing}. The
 intuition behind this is that moving from the low to the high should be more probable than the
 contrary.
-
+\newline\newline
 The guiding principle:
 \begin{itemize}
     \item Random variants of current solution are created.
@@ -3977,7 +3881,6 @@ The guiding principle:
               \item temperature parameter
           \end{itemize}
 \end{itemize}
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{images/sim_annealing.png}
@@ -4079,7 +3982,7 @@ This algorithms unified the pros of the \textit{population-based} (slow, but giv
 (fast, but sensitive to local minimum). The origin of the name "memes" are elements of the behavior
 which can be acquired individually. Each new individual will be optimized immediately only in few
 steps or till local optimum.
-
+\newline\newline
 This often allow to accelerate the optimization process, but the evolutive dynamic are limited in a
 critical way: the mutations risks to stucks frequently in local optima, the ricombination has a
 limited starting situation and parts of the space are perhaps unreachable.
@@ -4091,12 +3994,11 @@ genetic operator \textit{DE-operator}. This operator can be saw as a combination
 recombination operator and the mutation operator. In the selection, instead, a descendent can
 substitute his ancestors if and only if has a better fitness value.
 
-
 \subsubsection{Scattered search}
 The idea at the base of the \textit{scatter search} algorithms is the one of having a population
 and to operate a local search around the individuals. Given the values registered from this
 reasearch, we force the evolution in base of the direction of the maxima registered.
-
+\newline\newline
 This is a purely deterministic method (different from the precedent methods).
 
 It is an iterative process with two phases:
@@ -4237,7 +4139,6 @@ There are some properties that can distinguish the selection methods:
     \item \textbf{On-the-fly}: the descendent substitutes the parents.
 \end{itemize}
 
-
 \subsubsection{Genetic operators}
 The genetic operators are applied to a fraction of chosen individuals. There are so
 generated mutations and recombinations of already existing solutions. The genetic operators
@@ -4251,7 +4152,6 @@ In the first class we can find the mutation operator, the one which introduce li
 changes inside the genome of the solution in which it is applied. Results useful for introducing
 the biodiversity inside the solution pool and promoting the exploration of the search space.
 There are various methods for operating the mutation:
-
 \begin{itemize}
     \item \textbf{Standard mutation}: the value of one or more genes is muted.
     \item \textbf{Pair swap}: swap of the positions of two genes.
@@ -4362,11 +4262,10 @@ is defined as:
 The relative expected improvement of an operator Mut concerning individual $A$ can be
 defined as:
 $$relEV_{Mut,A}=E(Improvement(A,Mut^\xi(A)))$$
-
 Given this meteic it is possible to judge the performance of a particular genetic operator.
 The quality of a mutation canìt, being judge independently of the current fitness level.
 The operator is never optimal over the complete process of optimization.
-
+\newline\newline
 Exists various adaptation strategies:
 \begin{itemize}
     \item \textit{Predefined adaptation}: the changes are defined before of the run.
@@ -4402,7 +4301,7 @@ the individuals in an explicit way, it is sufficient conserve the statistics of 
 As recombination operator is used the \textit{uniform crossover}. For the selection,
 are chosen the individuals that improve the statistics of the population. The mutation, instead,
 is limited to a simple \textit{bit-flip}.
-
+\newline\newline
 The distinctive feature is the \textit{learning rate}, the parameter which tunes the possibility
 of movement of the individuals in the space, this changes in the time and reduces with the number
 of iteration. This allow initially a great mobility, for establishing then when an optimum is
@@ -4427,19 +4326,19 @@ $*$ is a wild card (or "don't care symbol").
 \paragraph{Definition II}\mbox{}\\
 A chromosome $c\in\{0,1\}^L$ matches a schema $h$,if and only if it coincides
 with $h$ at all positions where $h$ is 0 or 1.
-
+\newline\newline
 For misuring the effects of the selection occurs computes the fitness of the chromosome that
 shares a certain schema. Usually as measure is chosen the \textit{mean relative fitness}
 of chromosome that match the schema $h$ in the population $P(t)$. The individuals that shares
 the schema in the next generation will be proportional to this value.
-
+\newline\newline
 Instead, for calculating the influence of the mutation operator we need to measure the probability,
 that the after the mutation the schema is preserved. We define the concept of \textbf{order of
     a scheme}.
 \paragraph{Definition III}\mbox{}\\
 The order of a schema $h$ is the number of zeroes and ones in $h$, that is $ord(h)=\#0+\#1=L-\#*$,
 where $\#$ is the "number of occurrences of".
-
+\newline\newline
 Now we can calculate the probability that a mutation operator preserves the schema $h$ thanks
 to the formula:
 $$(1-p_m)^{ord(h)}$$
@@ -4495,7 +4394,7 @@ of learning computer programs. GP is based on:
 Essentially the GP it is a family of evolutionary algorithms that allows the automatic creation of
 programs that can solve problems. For doing that, we need an encoding for representing and
 manipulate a single program.
-
+\newline\newline
 For doing this we use \textit{parse trees} (usually), where the internal nodes are the operation
 and the leaves are variables or costants. $F$ is the set of function symbols and operators, and
 $T$ is the set of terminal symbols, this two sets are specific for each problem.
@@ -4575,7 +4474,7 @@ evolution process:
     \item Life span
 \end{itemize}
 Which is susceptible to: \textit{mutation, mutation step width, speed of evolution}.
-
+\newline\newline
 What we do is to consider an optimization problem as a function $f:\mathbb{R}\rightarrow\mathbb{R}$
 that we want to minimize (or maximize). The chromosome are represented by an array of real numbers.
 Then we use only the mutation operator (the crossover is not used), this for moving the chromosome
@@ -4603,9 +4502,7 @@ The disadvantages of the +strategy:
     \item If no improvement over further generations, temporary helpful to switch off to the
           comma strategy to overcome local minima (increases diversity in population).
 \end{itemize}
-
 The ,strategy could be useful for creating diversity in the population.
-
 \subsubsection{Adaptation}
 Adaptation of random vector's variance.
 \begin{itemize}
@@ -4660,7 +4557,7 @@ $$\exists, 1\leq i\leq k: f_i(s')>f_i(s)$$
 $$\text{holds.}$$
 No value of an objective function can get better without the value of another function
 getting worse. The set of Pareto-optimal elements is called \textbf{Pareto-front}.
-
+\newline\newline
 The advantages when searchinf for Pareto-optimale solutions:
 \begin{itemize}
     \item No need for aggregating objective function.
@@ -4682,13 +4579,13 @@ simplest approach consists in using a weighted sum of the objective functinos as
 The advantage is given by the fact that the approach is simple, with low computational effort.
 The disadvantage is given by the handicap for solutions that satisfy every criterion good,
 but none perfectly. As consequence the search concentrate on marginal solutions.
-
+\newline\newline
 It is possible to apply a \textit{selection by dominance} approach, where we do a rating of the
 individuals of one population and find all the non-dominated solutions of the population. Then
 we asses the solution candidates to the best rank, and remove them from the population.
 We repeat this identification and removal of non-dominated solution candidates for other ranks,
 until population is empty.
-
+\newline\newline
 Another problem is given by the fact that all individuals of the Pareto-Front are assessed as equally
 good. This lead to \textbf{genetic drift}, Pareto-Front converges at a random point, because
 of random effects. For remedy to this we can apply niche techniquest to be able to decide between
@@ -4708,7 +4605,7 @@ fitness score, the new individual similar to them will have lower fitness score)
           new generation.
 \end{enumerate}
 This algorithm lead to a poor approximation of the Pareto-Front.
-
+\newline\newline
 The strength of the Pareto EA:
 \begin{itemize}
     \item Simple EA.
@@ -4749,15 +4646,15 @@ Two architectures used in literature:
           Each population can be seen as inhabiting an island, therefore island model, then you
           apply some EAs on the island. This is a parallel execution byu simply processing several
           independent populations.
-
+          \newline\newline
           The \textbf{pure island},
           consists in executing the same evolutionary algorithm multiple times. Results that are somewhat worse than
           those of a single run with a larger population.
-
+          \newline\newline
           It is possible to introduce a \textit{migration} between the individuals, this happens by exchanging
           individuals between the island populations at certain fixed points in time. Not in every generation.
           No direct recombination of chormosomes from different islands.
-
+          \newline\newline
           For controlling the migration there are two methods:
           \begin{itemize}
               \item \textit{Random model}: where the pairs of islands are chosen randomly, exchange
@@ -4782,7 +4679,7 @@ Two architectures used in literature:
 \subsection{Behavioral simulation}
 The theoretical basis of behavioral simulation is the \textit{game theory}. It analyzes social and
 economic situations. Models and agents and theire actions as game moves in a formally specified framework.
-
+\newline\newline
 The EAs encode the moves of an agent in a chromosome. Agents interact with each other and evaluate
 their success. Agents reproduce or die due to their achieved success.
 
@@ -4791,19 +4688,16 @@ This is the most studied problem of the game theory: two persons robbed a bank a
 available circumstantial eveidence is no sufficient for a conviction because of the bank robbery. There
 is, however, sufficient evidence fo a conviction because of a lesser criminal offense. The prosecutor
 offers both prisoners to become a key witness.
-
 \begin{itemize}
     \item If one of them confesses to the bank robbery, he/she is exmpted from punishment.
     \item The other prision will be punished with the full force of the law (10 years of prison).
 \end{itemize}
-
 The problem:
 \begin{itemize}
     \item Both prisoners are offered this possibility and thus both may be tempted to confess.
     \item Since they both pleaded guilty, they receive a mitigated sentence.
     \item Both of them have to spend 5 years in prison.
 \end{itemize}
-
 \subsection{Learning fuzzy control}
 It is possible to optimize/generate fuzzy controls with EAs. The Mamdani-Assilian contro can be
 optimized by changin:
@@ -4814,7 +4708,6 @@ optimized by changin:
     \item Parameters of the defuzzificastion method.
     \item Which input quantities to use for rules.
 \end{itemize}
-
 The possible approaches:
 \begin{enumerate}
     \item Optimize rule base and fuzzy partitioning at the same time.
@@ -4823,7 +4716,6 @@ The possible approaches:
     \item Optimize rule base for fixed fuzzy sets first, afterwards fuzzy partitioning with fixed rule
           base.
 \end{enumerate}
-
 A good control system should satisfy the following criteria:
 \begin{itemize}
     \item Find the goal state for every potential situation
@@ -4832,10 +4724,4 @@ A good control system should satisfy the following criteria:
 \end{itemize}
 The control is used multiple times to control a test system. According to success of the rules the control
 gets credits.
-
-
-
-
-
-
 \end{document}
