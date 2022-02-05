@@ -371,7 +371,7 @@ higher then the projected point onto the straight line ($\vec{q}$), are part of 
 straight line (they will \textit{satisfies} the solution), viceversa, they will be below the plane if the
 module will be shorter then $\vec{q}$ (they won't satisfy the condition).
 \newline\newline
-Basically the straight line which defines the behavior of my TLU, splits the plane in two parts (since i'm
+Basically the straight line which defines the behavior of my TLU, splits the plane in two parts (since I'm
 considering only $x_1$ and $x_2$). All the points which distance is greater then
 \begin{figure}[H]
     \centering
@@ -637,16 +637,16 @@ The $\eta$ controls the speed of updates, the bigger is the bigger will be the u
     \caption{Batch training with $\theta = \frac{3}{2},w=2,\eta = 1$}
 \end{figure}
 Basically what happens in the online training, if I start in the first move I may go here,
-and so on, i'll move one step at the time since the amount of change is control by the
+and so on, I'll move one step at the time since the amount of change is control by the
 learning rate.
 \newline\newline
 in this case I move in one direction, since I apply together the two errors correction,
-so i'm moving in combination of the two changes of the secondo batch, then again i'm applying
+so I'm moving in combination of the two changes of the secondo batch, then again I'm applying
 the two changes and I move. I do less move respect to the other since  I combine the two
 correction for the expression that I shown.
 \newline\newline
 I can try to do the same for the more complex case of the TLU, with two inputs. here I have
-the conjunction with the truth table describing the implementation. What i'm doing basically
+the conjunction with the truth table describing the implementation. What I'm doing basically
 i have found the straight line that gives the satisfied and unsatisfied area for determining
 the solution.
 
@@ -795,7 +795,7 @@ function generate the same values, FNN).
 This is not the case when we have a RNN, since if one of the outputs connected to
 a neuron is connected to an input will repeat the computation and this maybe change
 the output status (due to \textit{recomputation}). I always say \textit{"may"}
-since the actual change will depend specifically by the function that i'm using.
+since the actual change will depend specifically by the function that I'm using.
 \newline\newline
 The \textbf{recomputation} of a neuron output occurs if any of its input changes,
 we can't loop forever and not evolving. This means that the working phase continues
@@ -914,7 +914,7 @@ deviation.
 $$\sigma_{u_k}^{(l)(new)}=\frac{ext_{u_k}^{(l)(old)}-\mu_k}{\sigma_k}$$
 There is a problem that we have to seriously consider when we are looking
 to our examples, we need to have \textit{sufficiently descriptive examples},
-which have to be well distributed over the domain that i'm considering (not
+which have to be well distributed over the domain that I'm considering (not
 focussing only on a portion of the domain).
 \newline\newline
 So far we have been dealing with integer and real numbers, we want to use
@@ -929,7 +929,7 @@ that corresponds to the symbol we want to represent will be $1$ (the others will
 A \textbf{multi-layer perceptrons} it is essentially a feed-forward neural network
 in which is present a strictly layered structure. They neurons are connected in groups,
 each groups receives the input only from the previous layer or from the external input.
-The output is delivered by the subsequent group, there are different kinds of layers:
+The output is delivered to the subsequent group, there are different kinds of layers:
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{images/multi-layer-percep.png}
@@ -950,7 +950,7 @@ The activation function of each hidden neuron is a so-called \textbf{sigmoid fun
 that is, a monotonically non-decreasing function with:
 $$f:\mathbb{R}\rightarrow [0,1]\text{ with }\lim_{x\rightarrow -\infty}f(x)=0\text{ and }\lim_{x\rightarrow\infty}f(x)=1$$
 It has a shape that allows a minimum and a maximum value (shaped), such that the possible \textit{net status}
-of the neurons are inside the continuos domain between $0$ and $1$ of the function (squishification of the net status).
+of the neurons is inside the continuos domain between $0$ and $1$ (this is called \textbf{squishification} of the net status).
 If I have enough excitation in the network status the sigmoid function will give a positive excitation of the neuron,
 viceversa, it will point out a lower value in the function.
 \begin{figure}[H]
@@ -965,7 +965,7 @@ function is much more used since it is much easier to train (more similar to the
     \includegraphics[scale=0.5]{images/relu.png}
     \caption{ReLU function}
 \end{figure}
-The activation function of each output neuron can be a sigmoid or can be a \textbf{linear}
+The output function of each output neuron can be a sigmoid or can be a \textbf{linear}
 function (depends on what we want to achieve). There are many types of sigmoid function for representing
 the general behavior, the most simple is the \textbf{step function}.
 \newline\newline
@@ -1134,7 +1134,7 @@ in the formula) setting this partial derivatives of th error to $0$ it will give
 me the condition that allow us to find the minimum (\textit{Fermat's theorem}).
 $$\frac{dF}{da}=\sum_{i=1}^{n}2(a+bx_i-y_i)=0$$
 $$\frac{dF}{db}=\sum_{i=1}^{n}2(a+bx_i-y_i)x_i=0$$
-The \textit{linear algebra} tells me the solution is unique unless i'm so unlucky that
+The \textit{linear algebra} tells me the solution is unique unless I'm so unlucky that
 all the values $x$ coincides, in that case I have basically one equations but
 two variable ($a$ and $b$) and as consequence infinite solutions.
 \newline\newline
@@ -1168,11 +1168,11 @@ $$\frac{dF}{da_0}=0,\frac{dF}{da_1}=0,...,\frac{dF}{da_m}=0$$
 Until now I just tried to make the approximation more accurate going in the
 direction of polynomial,\textit{what happens if I have a function in multiple variables?}
 $$z=f(x,y)=a+bx+cy$$
-If I want to do a multi-linear regression (since i'm applying linear regression to a function
+If I want to do a multi-linear regression (since I'm applying linear regression to a function
 of two variables), I have just to apply what I wast doing before.
 \newline\newline
 I have to consider the error in the approximated function $f$, and the actual value given
-by the samples $z_i$ that i'm collecting (minimizing the sum of squared errors):
+by the samples $z_i$ that I'm collecting (minimizing the sum of squared errors):
 $$F(a,b,c)=\sum_{i=1}^{n}$$
 What we need to do? again we need to find when the error is going to $0$, this happens when
 the partial derivatives of the parameters are $0$.
@@ -1497,8 +1497,8 @@ next subsection.
 In order to understand if we have a good quality for our learning we need to
 randomly split our data sets in two parts:
 \begin{itemize}
-    \item Training set: used for the training.
-    \item Validation set: used for checking the quality of the result.
+    \item \textbf{Training set}: used for the training.
+    \item \textbf{Validation set}: used for checking the quality of the result.
 \end{itemize}
 This will allow us to see (by using the validation set) if the training makes the NN overfitting the configuration or
 not, if the error that we have is still reasonable low, we have a good quality of the learning
@@ -1511,11 +1511,13 @@ We can do the splitting in two ways:
           validation data. Then you repeat the split of the data and the training-evaluation many times and average the
           results. At the end you choose the number of hidden neurons with the best average error.
 
-    \item \textbf{N-fold cross validation}: the data is split in $n$ subsets (called \textit{folds}) of
-          about equal size. The relative frequency of the output values in the folds represent as well as possible the
-          relative frequencies of these values in the data set as a whole (\textbf{stratification}). Out of these
-          $n$ data subsets, $n$ pairs of training and validation data set are formed by using $1$ fold as a validation
-          and $n-1$ folds for training.
+    \item \textbf{k-fold cross validation}: the data is split in $k$ subsets (called \textit{folds}) of
+          equal size. Out of these
+          $k$ data subsets, $k$ pairs of training and validation data set are formed by using $1$ fold as a validation
+          and $k-1$ folds for training. In this way we train the model for each one of the $k$ training sets, avoiding
+          overfitting problems and asymmetric sampling typical of the classic cross validation. In other words the
+          sample is subdivided in group of equal size, one group at time is excluded (this is predicted by using the
+          non excluded groups), in order to verify the goodness of the prediction model used.
 \end{itemize}
 randomly the data in two subsets for training and validation (\textbf{cross validation}) and we can repeat this splitting in different
 phases and at the end we can compare the. or we can split the data set in N-folds (\textbf{N-folds validation})
@@ -1567,7 +1569,7 @@ For example, let's consider the $n$-bit parity function, which output $1$ if the
 or viceversa $0$. If we want to use an MLP with only one hidden layer, which has $2^{n-1}$ neurons, the number
 of hidden neurons grows \textbf{exponentially} with the number of inputs. This because the function is a
 disjunction of  $2^{n-1}$ conjunctions.
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[scale=0.5]{images/nbit_parity.png}
     \caption{$n$-bit parity function}
@@ -1662,7 +1664,7 @@ we are observing (an image), and tries to diminish what is in the surrounding ar
 relevant part of the image where we want to understand the contents.
 \newline\newline
 In this kind of NN we have a set of values for various inputs, we represent this with a vector, we have
-for example a three dimensional space, where each value represent the input. What i'm considering as input
+for example a three dimensional space, where each value represent the input. What I'm considering as input
 of the hidden layer is the difference between this vector and the weight vector, which is the distance
 between the vectors.
 \begin{figure}[H]
@@ -1698,7 +1700,7 @@ determine the width of this radius. The radial activation function are typically
     \caption{Radial activation functions}
 \end{figure}
 As example, let's apply an RBFN for simulating the boolean conjunction $x_1\land x_2$.
-When i'm around the black point, the input is $(1,1)$, what we want to do is creating a circle
+When I'm around the black point, the input is $(1,1)$, what we want to do is creating a circle
 around that area where the output is $1$ (significant information to extract).
 \newline\newline
 Another approach could consist in considering a RBF in the opposite way, where the interesting
@@ -1881,7 +1883,7 @@ each tassel of the domain is a cluster.
     \includegraphics[scale=0.4]{images/c-means1.png}
     \caption{Delunay Trianglulation (left) and Voronoi Diagram (right)}
 \end{figure}
-After that i'm going to search for the new centroid of each cluster, where the sum of the
+After that I'm going to search for the new centroid of each cluster, where the sum of the
 distances is minimal, after finding this element I will consider it as the new center.
 Then I will apply again the same partition (Delunay-Voronoi) as before.
 \begin{figure}[H]
@@ -1895,7 +1897,7 @@ Then I will apply again the same partition (Delunay-Voronoi) as before.
 \textit{What happen if we don't have examples with a desired output (only the examples)?}\\Basically,
 until now we saw the fixed-learning task, now we want to see what happens with a free-learning task.
 \newline\newline
-Now i'm going for searching outputs that will be similar to the given input.
+Now I'm going for searching outputs that will be similar to the given input.
 \newline\newline
 We still consider the Delaunay and Voronoi approaches.
 The problem is that what we want to do is a suitable quantization of the domain in which
@@ -1911,8 +1913,7 @@ Let's considered the input examples (or data points) as empty circles, and the c
     \caption{Vector quantization}
 \end{figure}
 The \textbf{Learning Vector Quantization Network} (LVQ/LVQN), is a FFNN with 2-layers that performs this clustering
-of the examples by similarity, basically from an abstract point of view we see the LVQ as a radial
-function in which the hidden layer and output layer are collapsed in a single layer.
+of the examples by similarity, basically from an abstract point of view we see the LVQN as a RBFN in which the hidden layer and output layer are collapsed in a single layer.
 \newline\newline
 The network input function of each output neuron is the distance between the input vector and the
 weight vector. The definition of the distance is the same, we are considering the Mynkowski family
@@ -1968,9 +1969,9 @@ moves to another class.
     \caption{Adaptation rules in case of online and batch learning}
 \end{figure}
 In the case of the online training we have a step each time according to the various
-pattern i'm presenting, in the batch training I apply the various
+pattern I'm presenting, in the batch training I apply the various
 connection for the group of examples belonging to the same pattern and perform the update at the end
-of the entire batch (the solution of the position of the centers is smoother
+of an epoch (the solution of the position of the centers is smoother
 since I am putting together more then one example).
 \begin{figure}[H]
     \centering
@@ -1995,7 +1996,7 @@ some other reference vector the once which are the nearest the reference vector
 that I'm considering.
 \newline\newline
 The problem is that this may move the classes very far one from the other,
-one option to balance this is to consider the \textit{window rule}: a reference vector weill become adapted
+one option to balance this is to consider the \textit{window rule}: a reference vector will become adapted
 only if the point $p$ is near the border of the classification, the hyper-surface which separates
 the contiguous regions of the two classes. The notion of closeness is formalized as :
 $$min\left(\frac{d(\vec{p},\vec{r}_)}{d(\vec{x},\vec{r}_k)},\frac{d(\vec{x},\vec{r}_k)}{d(\vec{x},\vec{r}_j)}\right) > \theta
@@ -2004,7 +2005,7 @@ where $\xi$ is a parameter specified from the user, which describes the "amplitu
 around the border of the classifications. If we assume that the data are randomly chosen from
 a random set of normal distributions, we could use a \textit{soft} approach, in opposite to a "crisp"
 division typical of the clustering like the \textit{c-means}. Basically we don't have a RB function
-which is rather sharp but i'm considering a smooth border between the classes induced by
+which is rather sharp but I'm considering a smooth border between the classes induced by
 sufficiently large RBF. In this cases I can considering the classing by a mixture og
 Gaussian which are representing the various classe, with a softer border between
 the various classes.
