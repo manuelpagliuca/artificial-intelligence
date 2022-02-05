@@ -1530,7 +1530,7 @@ error is sufficient low.
 \subsubsection{Sensitivity analysis}
 Is the sensitivity of the NN to the various parameters, in other words how the
 various parameters influences the behavior of our NN by causing variations. We want understand how much
-the applied learning of the NN is really independent from the NN behavior.
+of the applied learning is really independent from the NN behavior.
 \newline\newline
 This is important to understand how much the NN behavior is generalizable.
 \newline\newline
@@ -1548,7 +1548,7 @@ For the sensitivity analysis which is part of this understanding, we want to ans
 So essentially, which inputs the output(s) react(s) most sensitively, it hints about which inputs aren't needed
 and may be discarded.
 \newline\newline
-The approach consists in determine the change of ourput relative to the change of input:
+The approach consists in determine the change of output relative to the change of input:
 $$\forall u\in U_{in}:
     s(u)=\frac{1}{|L_{fixed}|} \sum_{l\in L_{fixed}} \sum_{v\in U_{out}} \frac{\partial out_v^{(l)}}{\partial ext_u^{(l)}}$$
 
@@ -1594,63 +1594,67 @@ Some solutions to the overfitting issue:
           hidden layers, or limiting the number of the active neurons.
     \item \textit{Dropout training}: some neurons of the hidden layers are omtitted during the
           evolution of the network.
+
 \end{itemize}
 While the issue of the vanishing gradient is given by the fact that the activation function it's a
 logistic function, which derivative reach at max the value of $\frac{1}{4}$. As consequence of this
 the propagation of the error to a previous layer adds a value, often smaller than $1$, and in this
 way reducing the gradient.
 \newline\newline
-A solution consists in editing slightly the activation function in a way that will be always increasing.
-Some candidates for that are the \textit{ramp function} and the \textit{softplus function}.
-\begin{figure}
-    \centering
-    \includegraphics[scale=0.5]{images/ramp_softplus.png}
-    \caption{Ramp function and softplus function}
-\end{figure}
-A totally different approach consist in building the network \textit{"layer by layer"}. A much used
-technique consists in think at the NN like a stack of \textit{autoencoder}. An autoencoder is an MLP
-which maps the input inside an approximation, using an hidden layers of less dimensions. The
-hidden layer works like an \textit{encoder} by encoding the input in a internal representation
-which will be decoded to the output layer. The autoencoder, has only one layer, it doesn't suffer
-about the same limitation and can be traversed normally from the backpropagation.
-\newline\newline
-A problem with this approach is that if there are a lot of neurons in hidden layer as much are in
-the input layer we are going to propagate with less adjustments, and without the autoencoder
-extracting any knowledge from the data.
-\newline\newline
-There are three possible solutions:
+Some solutions to the vanishing gradient issue:
 \begin{itemize}
-    \item \textit{Sparse autoencoder}: provide to use a much smaller number of neurons inside the
-          hidden layers, respect to the input layers. The autoencoder will be forced to extract from
-          the input some features instead of just propagating the data.
+    \item A solution consists in editing slightly the activation function in a way that will be always increasing.
+          Some candidates for that are the \textit{ramp function} and the \textit{softplus function}.
+    \item A totally different approach consist in building the network \textit{"layer by layer"}. A much used
+          technique consists in think at the NN like a stack of \textit{autoencoder}. An autoencoder is an MLP
+          which maps the input inside an approximation, using an hidden layers of less dimensions. The
+          hidden layer works like an \textit{encoder} by encoding the input in a internal representation
+          which will be decoded to the output layer. The autoencoder, has only one layer, it doesn't suffer
+          about the same limitation and can be traversed normally from the backpropagation.
+          \newline\newline
+          A problem with this approach is that if there are a lot of neurons in hidden layer as much are in
+          the input layer we are going to propagate with less adjustments, and without the autoencoder
+          extracting any knowledge from the data.
+          \begin{figure}[H]
+              \centering
+              \includegraphics[scale=0.5]{images/ramp_softplus.png}
+              \caption{Ramp function and softplus function}
+          \end{figure}
 
-    \item \textit{Sparse activation scheme}: in a similar way for avoiding the overfitting, we
-          decide to \textit{"shutdown"} some neurons during the computation.
+          There are three possible solutions:
+          \begin{itemize}
+              \item \textit{Sparse autoencoder}: provide to use a much smaller number of neurons inside the
+                    hidden layers, respect to the input layers. The autoencoder will be forced to extract from
+                    the input some features instead of just propagating the data.
 
-    \item \textit{De-noising autoencoder}: we add randomly some noise to the input.
+              \item \textit{Sparse activation scheme}: in a similar way for avoiding the overfitting, we
+                    decide to \textit{"shutdown"} some neurons during the computation.
+
+              \item \textit{De-noising autoencoder}: we add randomly some noise to the input.
+          \end{itemize}
+          For obtaining an MLP with multiple layers we combine differente autoencoder. Initially we start by
+          training just one autoencoder. At that time you remove the decoder and you preserve only the internal layer.
+          You use the data processed from this autoencoder for training the second, and so on until you
+          reach a satisfiable number of layers.
+          \begin{figure}[H]
+              \centering
+              \includegraphics[scale=0.5]{images/autoencoder_decoder.png}
+              \caption{Autoencoder and autoencoder with the decoder removed}
+          \end{figure}
+          MLP constructed in this way are really efficient at recognizing with success hand written numbers. If
+          we would want to use similar NN for a more broad class of applications, like, for example, the
+          feature recognized by the internal layers are not located in a specific portion of the image, we would
+          need to use a CNN (\textit{Convolutional Neural Network}, next topic). This architecture is inspired
+          by the working of the human retina, where the neurons used for the perception has a receptive field,
+          or in other words, a limited region where they can answer to stimulus.
+          \newline\newline
+          This is simulated inside the CNN by connecting the neurons of the first layer just to some neurons
+          of the input. The weights are partitioned in a way that partial networks can be evaluated  from
+          different prospective of the image.
+          \newline\newline
+          During the computation it will proceed by moving the receptive field on the totality of the image. As
+          result you will obtain a convolution of the weight matrix with the input image.
 \end{itemize}
-For obtaining an MLP with multiple layers we combine differente autoencoder. Initially we start by
-training just one autoencoder. At that time you remove the decoder and you preserve only the internal layer.
-You use the data processed from this autoencoder for training the second, and so on until you
-reach a satisfiable number of layers.
-\begin{figure}
-    \centering
-    \includegraphics[scale=0.5]{images/autoencoder_decoder.png}
-    \caption{Autoencoder and autoencoder with the decoder removed}
-\end{figure}
-MLP constructed in this way are really efficient at recognizing with success hand written numbers. If
-we would want to use similar NN for a more broad class of applications, like, for example, the
-feature recognized by the internal layers are not located in a specific portion of the image, we would
-need to use a CNN (\textit{Convolutional Neural Network}, next topic). This architecture is inspired
-by the working of the human retina, where the neurons used for the perception has a receptive field,
-or in other words, a limited region where they can answer to stimulus.
-\newline\newline
-This is simulated inside the CNN by connecting the neurons of the first layer just to some neurons
-of the input. The weights are partitioned in a way that partial networks can be evaluated  from
-different prospective of the image.
-\newline\newline
-During the computation it will proceed by moving the receptive field on the totality of the image. As
-result you will obtain a convolution of the weight matrix with the input image.
 
 \subsection{Radial Basis Function Networks}
 This is another NN model, we have a special type of structure for the neurons and a special approach
@@ -2111,11 +2115,11 @@ function of each neuron $u$ is the weighted sum of the outputs of all other neur
 $$\forall u\in U: f_{net}^{(u)}(\vec{w}_u,in_u)=\vec{w}_u in_u=\sum_{v\in U-\{u\}}w_{uv}out_v$$
 The activation function of each neuron $u$ is a threshold function
 \[
-\forall u\in U: f_{act}^{(u)}(net_u,\theta_u)=
-\begin{cases}
-    1&\text{if }net_u\geq 0\\
-    -1&\text{otherwise}
-\end{cases}
+    \forall u\in U: f_{act}^{(u)}(net_u,\theta_u)=
+    \begin{cases}
+        1  & \text{if }net_u\geq 0 \\
+        -1 & \text{otherwise}
+    \end{cases}
 \]
 The output function of each neurons is the identity, that is,
 $$\forall u\in U: f_{out}^{(u)}(act_u)=act_u$$
@@ -2123,10 +2127,10 @@ Since the connection weights are symmetric also the matrix will be symmetric
 \[
     W=
     \begin{bmatrix}
-        0                & w_{u_1u_2}  & \dots  & w_{u_1u_n} \\
-        w_{u_1u_2}       & 0           & \dots  & w_{u_2u_n} \\
-        \vdots           &\vdots       & \ddots & \vdots \\
-        w_{u_1u_n}       & w_{u_2u_n}  & \dots  & 0
+        0          & w_{u_1u_2} & \dots  & w_{u_1u_n} \\
+        w_{u_1u_2} & 0          & \dots  & w_{u_2u_n} \\
+        \vdots     & \vdots     & \ddots & \vdots     \\
+        w_{u_1u_n} & w_{u_2u_n} & \dots  & 0
     \end{bmatrix}
 \]
 \paragraph{Simple Example}\mbox{}\\
@@ -2134,14 +2138,14 @@ Since the connection weights are symmetric also the matrix will be symmetric
     \centering
     \includegraphics[scale=0.7]{images/simple_hop.png}
     \caption{The HN oscillates if the activations of the two neurons are updated in parallel,
-    but reaches a stable state if the neurons are updated alternatingly}
+        but reaches a stable state if the neurons are updated alternatingly}
     \label{fig:s_h1}
 \end{figure}
 \[
     W=
     \begin{bmatrix}
-         0 & 1 \\
-         1 & 0
+        0 & 1 \\
+        1 & 0
     \end{bmatrix}
 \]
 Essentially what we have is a single layer of neurons for which we have the inputs that are
@@ -2152,24 +2156,24 @@ The behavior of a Hopfield network can depend on the update order
 \begin{itemize}
     \item Computations can \textbf{oscillate} if neurons are updated in parallel (\textbf{synchronous parallel update}, fig.\ref{s_h1}).
     \item Computations always \textbf{converge} if neurons are updated sequentially (\textbf{asynchronous/sequential update}, fig.\ref{s_h1}).
-    This is assured by the \textbf{convergence theorem}.
+          This is assured by the \textbf{convergence theorem}.
 \end{itemize}
 \begin{itemize}
     \item This means that we have a single layer of neurons that still have an output arc, they
-    can't only send data for feedback.
-    Basically this creates a kind of \textbf{memory}, where what is generated in a previous step is reused for the
-    subsequent step (by the way this is the motivation for introducing this kind of network).
+          can't only send data for feedback.
+          Basically this creates a kind of \textbf{memory}, where what is generated in a previous step is reused for the
+          subsequent step (by the way this is the motivation for introducing this kind of network).
 
-\item The relevance of the output arc is the same of the feedback arc. the network input function is
-    only the weighted summation of the output of all the other neurons.
+    \item The relevance of the output arc is the same of the feedback arc. the network input function is
+          only the weighted summation of the output of all the other neurons.
 
-\item The we will generate the network neuron of the value, this is the input value of the activation
-    function, the activation function that we are using is essentially the step function.
+    \item The we will generate the network neuron of the value, this is the input value of the activation
+          function, the activation function that we are using is essentially the step function.
 
-\item The output function for this neuron is the identity function. If we want ina concise way represent all
-    the connections we can use a matrix for collect all the weights. The diagonals is composed by 0
-    because this means that we don't have any contribution to the next neuron. The matrix is symmetric
-    so that the interconnection id passed correctly
+    \item The output function for this neuron is the identity function. If we want ina concise way represent all
+          the connections we can use a matrix for collect all the weights. The diagonals is composed by 0
+          because this means that we don't have any contribution to the next neuron. The matrix is symmetric
+          so that the interconnection id passed correctly
 \end{itemize}
 There is the possibility to simplify the representation of more complex HN
 \begin{figure}[H]
@@ -2238,16 +2242,16 @@ this by connecting a data reference to the stable state achieved (after HN compu
 In this way we can use stable states to store patterns: \textbf{Hebbian learning rule}
 \begin{enumerate}
     \item Store only one pattern $p$
-        \begin{itemize}
-            \item Find weights so that pattern is a stable state.
-            \item $W=pp^T - E$
-            \item $w_{uv}=\begin{cases}0 &u=v\\ 1 & u\neq v,act^{(p)}_u=act^{(p)}_v\\ -1 & otherwise   \end{cases}$
-        \end{itemize}
+          \begin{itemize}
+              \item Find weights so that pattern is a stable state.
+              \item $W=pp^T - E$
+              \item $w_{uv}=\begin{cases}0 &u=v\\ 1 & u\neq v,act^{(p)}_u=act^{(p)}_v\\ -1 & otherwise   \end{cases}$
+          \end{itemize}
     \item Storing several patterns
-        \begin{itemize}
-            \item Computer $W_i$ for each pattern $p_i$
-            \item $W=\sum_i W_i$
-        \end{itemize}
+          \begin{itemize}
+              \item Computer $W_i$ for each pattern $p_i$
+              \item $W=\sum_i W_i$
+          \end{itemize}
 \end{enumerate}
 \paragraph{Optimization problems}\mbox{}\\
 In the same way we can exploit the HN for solve optimization problems. We use energy minimaztion to
